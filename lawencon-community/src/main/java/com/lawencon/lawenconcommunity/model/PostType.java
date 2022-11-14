@@ -8,8 +8,10 @@ import com.lawencon.base.BaseEntity;
 
 import lombok.Getter;
 import lombok.Setter;
-@Table(name = "tb_post_type")
+
+
 @Entity
+@Table(name = "tb_post_type")
 @Getter
 @Setter
 public class PostType extends BaseEntity{
@@ -17,10 +19,10 @@ public class PostType extends BaseEntity{
 	 * 
 	 */
 	private static final long serialVersionUID = 1371887644871388057L;
-	@Column(name = "post_type_code", unique = true)
+	@Column(name = "post_type_code",length = 5)
 	private String postTypeCode;
 	
-	@Column(name ="post_type_name")
+	@Column(name ="post_type_name",length=50)
 	private String postTypeName;
 	
 }

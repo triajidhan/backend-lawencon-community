@@ -9,8 +9,8 @@ import com.lawencon.base.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
-@Table(name = "tb_file")
 @Entity
+@Table(name = "tb_file")
 @Getter
 @Setter
 public class File extends BaseEntity {
@@ -18,6 +18,7 @@ public class File extends BaseEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = 2193244827181488175L;
+	
 	@Column(name = "file")
 	private String file;
 	
