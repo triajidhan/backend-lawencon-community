@@ -174,6 +174,7 @@ public class AbstractJpaDao {
 			entity = em().merge(entity);
 		} else {
 			entity.setCreatedBy(principalService.getAuthPrincipal());
+//			entity.setCreatedBy("salkga");
 			em().persist(entity);
 		}
 

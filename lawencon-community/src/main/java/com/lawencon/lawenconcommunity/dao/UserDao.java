@@ -38,7 +38,7 @@ public class UserDao extends AbstractJpaDao{
 		.append("WHERE email = :email");
 		
 		Object objUser = null; 
-		Optional<User> objOpt = null;
+		Optional<User> objOpt = Optional.ofNullable(null);
 		try {
 			objUser = this.createNativeQuery(sql.toString())
 			.setParameter("email", email)
