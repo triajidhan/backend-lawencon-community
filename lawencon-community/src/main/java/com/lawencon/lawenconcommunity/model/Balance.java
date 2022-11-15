@@ -1,5 +1,7 @@
 package com.lawencon.lawenconcommunity.model;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -24,10 +26,6 @@ public class Balance extends BaseEntity{
 
 
 	@Column(name="total_balance")
-	private Double totalBalance;
+	private BigDecimal totalBalance;
 	
-
-	@ManyToOne
-	@JoinColumn(name="tb_user")
-	private User user;
 }

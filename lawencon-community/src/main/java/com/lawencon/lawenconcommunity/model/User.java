@@ -39,6 +39,18 @@ public class User extends BaseEntity{
 	private String company;
 	
 	@ManyToOne
+	@JoinColumn(name = "industry_id")
+	private Industry industry;
+	
+	@ManyToOne
+	@JoinColumn(name = "position_id")
+	private Position position;
+	
+	@ManyToOne
+	@JoinColumn(name = "balance_id")
+	private Balance balance;
+	
+	@ManyToOne
 	@JoinColumn(name = "role_id")
 	private Role role;
 	
@@ -47,6 +59,6 @@ public class User extends BaseEntity{
 	private File file;
 	
 	@ManyToOne
-	@JoinColumn(name = "status_subscribe_id")
-	private StatusSubscribe statusSubscribe;
+	@JoinColumn(name = "verification_id")
+	private Verification verification;
 }
