@@ -2,7 +2,7 @@ package com.lawencon.lawenconcommunity.model;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.lawencon.base.BaseEntity;
@@ -21,11 +21,11 @@ public class PostAttachment extends BaseEntity{
 	 */
 	private static final long serialVersionUID = -8354098971607019627L;
 
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name = "tb_post")
 	private Post post;
 	
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name = "tb_file")
 	private File file;
 }
