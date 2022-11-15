@@ -23,7 +23,7 @@ public class CommentAttachment extends BaseEntity{
 
 	@ManyToOne
 	@JoinColumn(name = "tb_comment")
-	private String commentId;
+	private Comment commentId;
 	
 	@ManyToOne
 	@JoinColumn(name = "tb_file")
