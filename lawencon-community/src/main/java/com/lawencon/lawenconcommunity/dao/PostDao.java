@@ -7,4 +7,5 @@ import com.lawencon.base.AbstractJpaDao;
 @Repository
 public class PostDao extends AbstractJpaDao{
 
+	
 }

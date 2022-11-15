@@ -28,7 +28,6 @@ public class UserDao extends AbstractJpaDao{
 		.append("tr.id, tr.role_code, tr.role_name, ")
 		.append("file_id, ")
 		.append("tb.id,tb.total_balance, ")
-		.append("tss.id,tss.status_subscribe_code,tss.status_subscribe_name, ")
 		.append("tu.versions, tu.is_active FROM tb_user tu ")
 		.append("INNER JOIN tb_industry ti ON tu.industry_id = ti.id ")
 		.append("INNER JOIN tb_position tp ON tu.position_id = tp.id ")
@@ -79,7 +78,6 @@ public class UserDao extends AbstractJpaDao{
 			file.setId(objArr[12].toString());
 			
 			balance.setId(objArr[13].toString());
-			
 			balance.setTotalBalance(BigDecimal.valueOf(Double.valueOf(objArr[14].toString())));
 			
 			user.setIndustry(industry);
@@ -101,14 +99,12 @@ public class UserDao extends AbstractJpaDao{
 		final List<User> users = new ArrayList<>();
 		final StringBuilder sql = new StringBuilder();
 		
-		sql.append("SELECT tu.id, full_name, email, pass, company, ")
-		.append("ti.id, ti.industry_code, ti.industry_name, ")
-		.append("tp.id, tp.position_code, tp.position_name, ")
-		.append("tr.id, tr.role_code, tr.role_name, ")
+		sql.append("SELECT tu.id as tu_id, full_name, email, pass, company, ")
+		.append("ti.id as ti_id, ti.industry_code, ti.industry_name, ")
+		.append("tp.id  as tp_id, tp.position_code, tp.position_name, ")
+		.append("tr.id  as tr_id, tr.role_code, tr.role_name, ")
 		.append("file_id, ")
-		.append("tb.id,tb.total_balance, ")
-		.append("tss.id,tss.status_subscribe_code,tss.status_subscribe_name, ")
-		.append("tv.id, tv.verification_status, ")
+		.append("tb.id as tb_id,tb.total_balance FROM tb_user tu ")
 		.append("INNER JOIN tb_industry ti ON tu.industry_id = ti.id ")
 		.append("INNER JOIN tb_position tp ON tu.position_id = tp.id ")
 		.append("INNER JOIN tb_role tr ON tu.role_id = tr.id ")
