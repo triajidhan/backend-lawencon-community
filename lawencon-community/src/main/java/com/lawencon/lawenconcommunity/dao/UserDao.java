@@ -1,6 +1,7 @@
 package com.lawencon.lawenconcommunity.dao;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,7 +54,6 @@ public class UserDao extends AbstractJpaDao{
 		if(objUser != null) {
 			Object[] objArr = (Object[]) objUser;
 			
-			
 			final User user = new User();
 			final Industry industry = new Industry();
 			final Position position = new Position();
@@ -99,14 +99,141 @@ public class UserDao extends AbstractJpaDao{
 			user.setVersion(Integer.valueOf(objArr[17].toString()));
 			user.setIsActive(Boolean.valueOf(objArr[18].toString()));
 			
+			objOpt = Optional.ofNullable(user); 
 		}
 		
-		return null;
+		return objOpt;
 	}
 	
 	public List<User> getByRole(String roleCode){
-		return null;
+		final List<User> users = new ArrayList<>();
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT tu.id, full_name, email, pass, company, ")
+		.append("ti.id, ti.industry_code, ti.industry_name, ")
+		.append("tp.id, tp.position_code, tp.position_name, ")
+		.append("tr.id, tr.role_code, tr.role_name, ")
+		.append("file_id, ")
+		.append("tb.id,tb.total_balance, ")
+		.append("tss.id,tss.status_subscribe_code,tss.status_subscribe_name, ")
+		.append("tv.id, tv.verification_status, ")
+		.append("tu.versions, tu.is_active FROM tb_user tu ")
+		.append("INNER JOIN tb_industry ti ON tu.industry_id = ti.id ")
+		.append("INNER JOIN tb_position tp ON tu.position_id = tp.id ")
+		.append("INNER JOIN tb_role tr ON tu.role_id = tr.id ")
+		.append("INNER JOIN tb_file tf ON tu.file_id = tf.id ")
+		.append("INNER JOIN tb_balance tb ON tu.balance_id = tf.id ")
+		.append("INNER JOIN tb_verification tv ON tu.verification_id = tv.id ")
+		.append("WHERE role_code = :roleCode");
+		
+		final List<?> objUsers = this.createNativeQuery(sql.toString())
+		.setParameter("roleCode", roleCode)
+		.getResultList();
+			
+		if(objUsers != null && objUsers.size() > 0) {
+			objUsers.forEach(objUser ->{
+				Object[] objArr = (Object[]) objUser;
+				
+				final User user = new User();
+				final Industry industry = new Industry();
+				final Position position = new Position();
+				final File file = new File();
+				final Role role = new Role();
+				final Balance balance = new Balance();
+				final Verification verification = new Verification();
+				
+				user.setId(objArr[0].toString());
+				user.setFullname(objArr[1].toString());
+				user.setPass(objArr[2].toString());
+				user.setCompany(objArr[3].toString());
+				
+				
+				industry.setId(objArr[4].toString());
+				industry.setIndustryCode(objArr[5].toString());
+				industry.setIndustryName(objArr[6].toString());
+				
+				position.setId(objArr[7].toString());
+				position.setPositionCode(objArr[8].toString());
+				position.setPositionName(objArr[9].toString());
+				
+				role.setId(objArr[9].toString());
+				role.setRoleCode(objArr[10].toString());
+				role.setRoleName(objArr[11].toString());
+				
+				file.setId(objArr[12].toString());
+				
+				balance.setId(objArr[13].toString());
+				
+				balance.setTotalBalance(BigDecimal.valueOf(Double.valueOf(objArr[14].toString())));
+				
+				verification.setId(objArr[15].toString());
+				verification.setVerificationStatus(objArr[16].toString());
+				
+				user.setIndustry(industry);
+				user.setPosition(position);
+				user.setRole(role);
+				user.setBalance(balance);
+				user.setFile(file);
+				user.setVerification(verification);
+				
+				user.setVersion(Integer.valueOf(objArr[17].toString()));
+				user.setIsActive(Boolean.valueOf(objArr[18].toString()));
+				
+				users.add(user);
+			});
+		}
+		
+		return users;
 	}
 	
-
+	public int getTotalUser() {
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT count(id) as total_user from tb_user ")
+		.append("INNER JOIN tb_role tr ON tu.role_id = tr.id ");
+		
+		Object objUser = null; 
+		int totalUser = 0;
+		try {
+			objUser = this.createNativeQuery(sql.toString())
+			.getSingleResult();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objUser != null) {
+			Object objArr = (Object) objUser;
+			
+			totalUser =  Integer.parseInt(objArr.toString());
+		}
+		
+		return totalUser;
+	}
+	
+	public int getTotalByRoleCode(final String roleCode) {
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("select count(tu.id) as total_user from tb_user tu ")
+		.append("INNER JOIN tb_role tr ON tu.role_id = tr.id ")
+		.append("WHERE tr.role_code = :roleCode");
+		
+		Object objUser = null; 
+		int totalUser = 0;
+		try {
+			objUser = this.createNativeQuery(sql.toString())
+			.setParameter("roleCode", roleCode)
+			.getSingleResult();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objUser != null) {
+			Object objArr = (Object) objUser;
+			totalUser =  Integer.parseInt(objArr.toString());
+		}
+		
+		return totalUser;
+	}
 }
