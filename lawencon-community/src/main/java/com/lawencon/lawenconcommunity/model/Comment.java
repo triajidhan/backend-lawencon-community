@@ -27,7 +27,7 @@ public class Comment extends BaseEntity{
 	
 	@ManyToOne
 	@JoinColumn(name = "tb_post")
-	private String postId;
+	private Post postId;
 	
 	@ManyToOne
 	@JoinColumn(name = "tb_user")

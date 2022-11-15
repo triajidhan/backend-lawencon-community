@@ -7,19 +7,26 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.lawencon.base.BaseEntity;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Table(name = "tb_article",uniqueConstraints = {
-	@UniqueConstraint(columnNames = "activity_type_code")
+	@UniqueConstraint(columnNames = "article_code")
 })
 @Getter
 @Setter
-public class Article {
+public class Article extends BaseEntity{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3262674835335265266L;
 
 	@Column(name="article_code",length=5)
-	private String postCode;
+	private String articleCode;
 	
 	@Column(name="title",length=50)
 	private String title;

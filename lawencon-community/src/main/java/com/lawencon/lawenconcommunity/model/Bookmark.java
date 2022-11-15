@@ -23,9 +23,9 @@ public class Bookmark extends BaseEntity{
 
 	@ManyToOne
 	@JoinColumn(name = "tb_user")
-	private String userId;
+	private User userId;
 	
 	@ManyToOne
 	@JoinColumn(name = "tb_post")
-	private String postId;
+	private Post postId;
 }

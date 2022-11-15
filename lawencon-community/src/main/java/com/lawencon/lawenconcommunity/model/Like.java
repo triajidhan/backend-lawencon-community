@@ -21,11 +21,11 @@ public class Like extends BaseEntity {
 
 	@ManyToOne
 	@JoinColumn(name = "tb_like")
-	private String userId;
+	private User userId;
 	
 	@ManyToOne
 	@JoinColumn(name = "tb_post")
-	private String postId;
+	private Post postId;
 	
 	
 }
