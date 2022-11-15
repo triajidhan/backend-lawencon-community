@@ -1,44 +1,37 @@
 package com.lawencon.lawenconcommunity.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.lawencon.base.BaseCoreService;
 import com.lawencon.lawenconcommunity.dao.BalanceDao;
 import com.lawencon.lawenconcommunity.dao.FileDao;
-import com.lawencon.lawenconcommunity.dao.IndustryDao;
-import com.lawencon.lawenconcommunity.dao.PositionDao;
 import com.lawencon.lawenconcommunity.dao.RoleDao;
 import com.lawencon.lawenconcommunity.dao.UserDao;
 import com.lawencon.lawenconcommunity.dto.UserInsertResDto;
 import com.lawencon.lawenconcommunity.model.Balance;
 import com.lawencon.lawenconcommunity.model.File;
-import com.lawencon.lawenconcommunity.model.Industry;
-import com.lawencon.lawenconcommunity.model.Position;
 import com.lawencon.lawenconcommunity.model.Role;
 import com.lawencon.lawenconcommunity.model.User;
 
 @Service
 public class UserSevice extends BaseCoreService implements UserDetailsService{
 	private final UserDao userDao;
-	private final IndustryDao industryDao;
 	private final RoleDao roleDao;
 	private final FileDao fileDao;
-	private final PositionDao positionDao;
 	private final BalanceDao balanceDao;
-	public UserSevice(UserDao userDao, IndustryDao industryDao, RoleDao roleDao, FileDao fileDao,
-			PositionDao positionDao, BalanceDao balanceDao) {
+	private final PasswordEncoder passwordEncoder;
+	public UserSevice(UserDao userDao, RoleDao roleDao, FileDao fileDao, BalanceDao balanceDao, PasswordEncoder passwordEncoder) {
 		this.userDao = userDao;
-		this.industryDao = industryDao;
 		this.roleDao = roleDao;
 		this.fileDao = fileDao;
-		this.positionDao = positionDao;
 		this.balanceDao = balanceDao;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	@Override
@@ -72,7 +65,8 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 			begin();
 			fileInsert = fileDao.save(data.getFile());
 			balanceInsert = balanceDao.save(balanceInsert);
-	
+			String hashPassword = passwordEncoder.encode(data.getPass());
+			data.setPass(hashPassword);
 			data.setFile(fileInsert);
 			data.setBalance(balanceInsert);
 			userDao.save(data);
