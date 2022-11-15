@@ -58,7 +58,4 @@ public class User extends BaseEntity{
 	@JoinColumn(name = "file_id")
 	private File file;
 	
-	@OneToOne
-	@JoinColumn(name = "verification_id")
-	private Verification verification;
 }
