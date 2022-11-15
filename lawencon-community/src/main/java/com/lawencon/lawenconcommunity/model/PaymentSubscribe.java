@@ -37,4 +37,9 @@ public class PaymentSubscribe extends BaseEntity {
 	@OneToOne
 	@JoinColumn(name="tb_user")
 	private User user;
+	
+	@OneToOne
+	@JoinColumn(name="tb_file")
+	private File file;
+	
 }

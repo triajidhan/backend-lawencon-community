@@ -14,7 +14,6 @@ import com.lawencon.lawenconcommunity.model.Industry;
 import com.lawencon.lawenconcommunity.model.Position;
 import com.lawencon.lawenconcommunity.model.Role;
 import com.lawencon.lawenconcommunity.model.User;
-import com.lawencon.lawenconcommunity.model.Verification;
 
 @Repository
 public class UserDao extends AbstractJpaDao{
@@ -30,14 +29,12 @@ public class UserDao extends AbstractJpaDao{
 		.append("file_id, ")
 		.append("tb.id,tb.total_balance, ")
 		.append("tss.id,tss.status_subscribe_code,tss.status_subscribe_name, ")
-		.append("tv.id, tv.verification_status, ")
 		.append("tu.versions, tu.is_active FROM tb_user tu ")
 		.append("INNER JOIN tb_industry ti ON tu.industry_id = ti.id ")
 		.append("INNER JOIN tb_position tp ON tu.position_id = tp.id ")
 		.append("INNER JOIN tb_role tr ON tu.role_id = tr.id ")
 		.append("INNER JOIN tb_file tf ON tu.file_id = tf.id ")
 		.append("INNER JOIN tb_balance tb ON tu.balance_id = tf.id ")
-		.append("INNER JOIN tb_verification tv ON tu.verification_id = tv.id ")
 		.append("WHERE email = :email");
 		
 		Object objUser = null; 
@@ -60,7 +57,6 @@ public class UserDao extends AbstractJpaDao{
 			final File file = new File();
 			final Role role = new Role();
 			final Balance balance = new Balance();
-			final Verification verification = new Verification();
 			
 			user.setId(objArr[0].toString());
 			user.setFullname(objArr[1].toString());
@@ -86,18 +82,14 @@ public class UserDao extends AbstractJpaDao{
 			
 			balance.setTotalBalance(BigDecimal.valueOf(Double.valueOf(objArr[14].toString())));
 			
-			verification.setId(objArr[15].toString());
-			verification.setVerificationStatus(objArr[16].toString());
-			
 			user.setIndustry(industry);
 			user.setPosition(position);
 			user.setRole(role);
 			user.setBalance(balance);
 			user.setFile(file);
-			user.setVerification(verification);
 			
-			user.setVersion(Integer.valueOf(objArr[17].toString()));
-			user.setIsActive(Boolean.valueOf(objArr[18].toString()));
+			user.setVersion(Integer.valueOf(objArr[15].toString()));
+			user.setIsActive(Boolean.valueOf(objArr[16].toString()));
 			
 			objOpt = Optional.ofNullable(user); 
 		}
@@ -117,13 +109,11 @@ public class UserDao extends AbstractJpaDao{
 		.append("tb.id,tb.total_balance, ")
 		.append("tss.id,tss.status_subscribe_code,tss.status_subscribe_name, ")
 		.append("tv.id, tv.verification_status, ")
-		.append("tu.versions, tu.is_active FROM tb_user tu ")
 		.append("INNER JOIN tb_industry ti ON tu.industry_id = ti.id ")
 		.append("INNER JOIN tb_position tp ON tu.position_id = tp.id ")
 		.append("INNER JOIN tb_role tr ON tu.role_id = tr.id ")
 		.append("INNER JOIN tb_file tf ON tu.file_id = tf.id ")
 		.append("INNER JOIN tb_balance tb ON tu.balance_id = tf.id ")
-		.append("INNER JOIN tb_verification tv ON tu.verification_id = tv.id ")
 		.append("WHERE role_code = :roleCode");
 		
 		final List<?> objUsers = this.createNativeQuery(sql.toString())
@@ -140,7 +130,6 @@ public class UserDao extends AbstractJpaDao{
 				final File file = new File();
 				final Role role = new Role();
 				final Balance balance = new Balance();
-				final Verification verification = new Verification();
 				
 				user.setId(objArr[0].toString());
 				user.setFullname(objArr[1].toString());
@@ -166,18 +155,14 @@ public class UserDao extends AbstractJpaDao{
 				
 				balance.setTotalBalance(BigDecimal.valueOf(Double.valueOf(objArr[14].toString())));
 				
-				verification.setId(objArr[15].toString());
-				verification.setVerificationStatus(objArr[16].toString());
-				
 				user.setIndustry(industry);
 				user.setPosition(position);
 				user.setRole(role);
 				user.setBalance(balance);
 				user.setFile(file);
-				user.setVerification(verification);
 				
-				user.setVersion(Integer.valueOf(objArr[17].toString()));
-				user.setIsActive(Boolean.valueOf(objArr[18].toString()));
+				user.setVersion(Integer.valueOf(objArr[15].toString()));
+				user.setIsActive(Boolean.valueOf(objArr[16].toString()));
 				
 				users.add(user);
 			});

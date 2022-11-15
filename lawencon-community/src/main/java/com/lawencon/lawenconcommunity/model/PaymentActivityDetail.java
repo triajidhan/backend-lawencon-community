@@ -35,4 +35,8 @@ public class PaymentActivityDetail extends BaseEntity {
 	@JoinColumn(name = "tb_activity")
 	private Activity activity;
 	
+	@OneToOne
+	@JoinColumn(name="tb_file")
+	private File file;
+	
 }
