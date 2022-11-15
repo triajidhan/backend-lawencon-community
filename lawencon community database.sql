@@ -6,7 +6,7 @@ CREATE TABLE tb_file(
 	
 	created_by varchar(36) not null,
 	created_at timestamp without time zone not null default now(),
-	updated_by int,
+	updated_by varchar(36),
 	updated_at timestamp without time zone,
 	versions int not null,
 	is_active bool not null default true
@@ -14,8 +14,6 @@ CREATE TABLE tb_file(
 
 ALTER TABLE tb_file 
 	ADD CONSTRAINT tb_file_pk PRIMARY KEY(id);
-
-
 
 -- tabel role 
 CREATE TABLE tb_role(
@@ -25,7 +23,7 @@ CREATE TABLE tb_role(
 	
 	created_by varchar(36) not null,
 	created_at timestamp without time zone not null default now(),
-	updated_by int,
+	updated_by varchar(36),
 	updated_at timestamp without time zone,
 	versions int not null ,
 	is_active bool not null default true
@@ -45,7 +43,7 @@ CREATE TABLE tb_post_type(
 	
 	created_by varchar(36) not null,
 	created_at timestamp without time zone not null default now(),
-	updated_by int,
+	updated_by varchar(36),
 	updated_at timestamp without time zone,
 	versions int not null ,
 	is_active bool not null default true
@@ -65,7 +63,7 @@ CREATE TABLE tb_activity_type(
 	
 	created_by varchar(36) not null,
 	created_at timestamp without time zone not null default now(),
-	updated_by int,
+	updated_by varchar(36),
 	updated_at timestamp without time zone,
 	versions int not null,
 	is_active bool not null default true
@@ -85,7 +83,7 @@ CREATE TABLE tb_status_subscribe(
 	
 	created_by varchar(36) not null,
 	created_at timestamp without time zone not null default now(),
-	updated_by int,
+	updated_by varchar(36),
 	updated_at timestamp without time zone,
 	versions int not null,
 	is_active bool not null default true
@@ -97,6 +95,56 @@ ALTER TABLE tb_status_subscribe
 ALTER TABLE tb_status_subscribe 
 	ADD CONSTRAINT tb_status_subscribe_status_subscribe_code_bk UNIQUE(status_subscribe_code);
 
+
+-- tabel industry
+CREATE TABLE tb_industry(
+	id varchar(36),
+	
+	industry_code varchar(5) not null,
+	industry_name varchar(30) not null,
+	
+	created_by varchar(36) not null ,
+	created_at timestamp without time zone not null default now(),
+	updated_by varchar(36),
+	updated_at timestamp without time zone,
+	versions int not null ,
+	is_active bool not null default true
+);
+
+ALTER TABLE tb_industry 
+	ADD CONSTRAINT tb_industry_pk PRIMARY KEY(id);
+
+ALTER TABLE tb_industry 
+	ADD CONSTRAINT tb_industry_industry_code_bk UNIQUE(industry_code);
+
+ALTER TABLE tb_industry 
+	ADD CONSTRAINT tb_industry_code_industry_name_ck UNIQUE(industry_code,industry_name);
+
+-- tabel position
+CREATE TABLE tb_position(
+	id varchar(36),
+	
+	position_code varchar(5) not null,
+	position_name varchar(30) not null,
+	
+	created_by varchar(36) not null ,
+	created_at timestamp without time zone not null default now(),
+	updated_by varchar(36),
+	updated_at timestamp without time zone,
+	versions int not null ,
+	is_active bool not null default true
+);
+
+ALTER TABLE tb_position 
+	ADD CONSTRAINT tb_position_pk PRIMARY KEY(id);
+
+ALTER TABLE tb_position 
+	ADD CONSTRAINT tb_position_position_code_bk UNIQUE(position_code);
+
+ALTER TABLE tb_position 
+	ADD CONSTRAINT tb_position_code_position_name_ck UNIQUE(position_code,position_name);
+
+
 -- tabel verifikasi
 CREATE TABLE tb_verification(
 	id varchar(36),
@@ -105,7 +153,7 @@ CREATE TABLE tb_verification(
 	
 	created_by varchar(36) not null,
 	created_at timestamp without time zone not null default now(),
-	updated_by int,
+	updated_by varchar(36),
 	updated_at timestamp without time zone,
 	versions int not null,
 	is_active bool not null default true
@@ -127,19 +175,19 @@ CREATE TABLE tb_user(
 	pass text not null,
 	
 	company varchar(100) null,
-	industry varchar(100) null,
-	positions varchar(50) null,
-	
 	total_balance double precision null,
+	
+	industry_id varchar(36) null,
+	position_id varchar(36) null,
 	
 	role_id varchar(36) not null,
 	file_id varchar(36) null,
 	status_subscribe_id varchar(36) null,
 	verification_id varchar(36) null,
 	
-	created_by varchar(36) not null ,
+	created_by varchar(36) not null,
 	created_at timestamp without time zone not null default now(),
-	updated_by int,
+	updated_by varchar(36),
 	updated_at timestamp without time zone,
 	versions int not null ,
 	is_active bool not null default true
@@ -164,6 +212,14 @@ ALTER TABLE tb_user
 	REFERENCES tb_status_subscribe(id);
 
 ALTER TABLE tb_user 
+	ADD CONSTRAINT tb_user_tb_industry_fk FOREIGN KEY(industry_id)
+	REFERENCES tb_industry(id);
+
+ALTER TABLE tb_user 
+	ADD CONSTRAINT tb_user_tb_position_fk FOREIGN KEY(position_id)
+	REFERENCES tb_position(id);
+
+ALTER TABLE tb_user 
 	ADD CONSTRAINT tb_user_tb_verification_fk FOREIGN KEY(verification_id)
 	REFERENCES tb_verification(id);
 
@@ -171,7 +227,36 @@ ALTER TABLE tb_user
 ALTER TABLE tb_user 
 	ADD CONSTRAINT tb_user_full_name_email_ck UNIQUE(full_name,email);
 
--- tabel postingan
+-- tabel article
+CREATE TABLE tb_article(
+	id varchar(36),
+	
+	article_code varchar(5) not null unique,
+	title varchar(50) not null,
+	contents text,
+	
+	file_id varchar(36) null,
+	
+	created_by varchar(36) not null ,
+	created_at timestamp without time zone not null default now(),
+	updated_by varchar(36),
+	updated_at timestamp without time zone,
+	versions int not null ,
+	is_active bool not null default true
+);
+
+ALTER TABLE tb_article 
+	ADD CONSTRAINT tb_article_pk PRIMARY KEY(id);
+
+ALTER TABLE tb_article 
+	ADD CONSTRAINT tb_article_article_code_bk UNIQUE(article_code);
+
+ALTER TABLE tb_article 
+	ADD CONSTRAINT tb_article_tb_file_fk FOREIGN KEY(file_id)
+	REFERENCES tb_file(id);
+
+
+-- tabel post
 CREATE TABLE tb_post(
 	id varchar(36),
 	post_code varchar(5) not null unique,
@@ -182,10 +267,9 @@ CREATE TABLE tb_post(
 	post_type_id varchar(36) not null,
 	status_subscribe_id varchar(36) not null,
 	
-	
 	created_by varchar(36) not null ,
 	created_at timestamp without time zone not null default now(),
-	updated_by int,
+	updated_by varchar(36),
 	updated_at timestamp without time zone,
 	versions int not null ,
 	is_active bool not null default true
@@ -214,7 +298,7 @@ CREATE TABLE tb_post_attachment(
 	
 	created_by varchar(36) not null ,
 	created_at timestamp without time zone not null default now(),
-	updated_by int,
+	updated_by varchar(36),
 	updated_at timestamp without time zone,
 	versions int not null ,
 	is_active bool not null default true
@@ -243,7 +327,7 @@ CREATE TABLE tb_polling(
 	
 	created_by varchar(36) not null ,
 	created_at timestamp without time zone not null default now(),
-	updated_by int,
+	updated_by varchar(36),
 	updated_at timestamp without time zone,
 	versions int not null ,
 	is_active bool not null default true
@@ -265,7 +349,7 @@ CREATE TABLE tb_bookmark(
 	
 	created_by varchar(36) not null ,
 	created_at timestamp without time zone not null default now(),
-	updated_by int,
+	updated_by varchar(36),
 	updated_at timestamp without time zone,
 	versions int not null ,
 	is_active bool not null default true
@@ -291,7 +375,7 @@ CREATE TABLE tb_like(
 	
 	created_by varchar(36) not null ,
 	created_at timestamp without time zone not null default now(),
-	updated_by int,
+	updated_by varchar(36),
 	updated_at timestamp without time zone,
 	versions int not null ,
 	is_active bool not null default true
@@ -319,7 +403,7 @@ CREATE TABLE tb_comment(
 	
 	created_by varchar(36) not null ,
 	created_at timestamp without time zone not null default now(),
-	updated_by int,
+	updated_by varchar(36),
 	updated_at timestamp without time zone,
 	versions int not null ,
 	is_active bool not null default true
@@ -345,7 +429,7 @@ CREATE TABLE tb_comment_attachment(
 	
 	created_by varchar(36) not null ,
 	created_at timestamp without time zone not null default now(),
-	updated_by int,
+	updated_by varchar(36),
 	updated_at timestamp without time zone,
 	versions int not null ,
 	is_active bool not null default true
@@ -379,7 +463,7 @@ CREATE TABLE tb_activity(
 	
 	created_by varchar(36) not null ,
 	created_at timestamp without time zone not null default now(),
-	updated_by int,
+	updated_by varchar(36),
 	updated_at timestamp without time zone,
 	versions int not null ,
 	is_active bool not null default true
@@ -412,7 +496,7 @@ CREATE TABLE tb_payment_subscribe(
 	
 	created_by varchar(36) not null ,
 	created_at timestamp without time zone not null default now(),
-	updated_by int,
+	updated_by varchar(36),
 	updated_at timestamp without time zone,
 	versions int not null ,
 	is_active bool not null default true
@@ -438,7 +522,7 @@ CREATE TABLE tb_balance(
     
     created_by varchar(36) not null ,
     created_at timestamp without time zone not null default now(),
-    updated_by int,
+    updated_by varchar(36),
     updated_at timestamp without time zone,
     versions int not null ,
     is_active bool not null default true
@@ -463,7 +547,7 @@ CREATE TABLE tb_payment_activity_detail(
 
     created_by varchar(36) not null,
     created_at timestamp without time zone not null default now(),
-    updated_by int,
+    updated_by varchar(36),
     updated_at timestamp without time zone,
     versions int not null,
     is_active bool not null default true
@@ -478,3 +562,28 @@ ALTER TABLE tb_payment_activity_detail
 ALTER TABLE tb_payment_activity_detail 
     ADD CONSTRAINT tb_activity_detail_tb_activity_fk FOREIGN KEY(activity_id)
     REFERENCES tb_activity(id);
+    
+--- DML 
+--INSERT INTO tb_role(role_code,role_name) VALUES
+--('SYS','System'),('SA','Super Admin'),('L','Lecturer'),('S','Student');
+--
+--select * from tb_role;
+--
+--INSERT INTO tb_post_type (post_type_code,post_type_name) VALUES
+--('Po','Polling'),
+--('N','Normal'),
+--('Pr','Premium');
+--
+--select * from tb_post_type;
+--
+--INSERT INTO tb_activity_type (activity_type_code,activity_type_name) VALUES
+--('E','Event'),
+--('C','Course');
+--
+--select * from tb_activity_type;
+--
+--INSERT INTO tb_status_subscribe (status_subscribe_code,status_subscribe_name) VALUES
+--('S','Subscribe'),
+--('Un','Unsubscribe');
+--
+--select * from tb_status_subscribe; 
