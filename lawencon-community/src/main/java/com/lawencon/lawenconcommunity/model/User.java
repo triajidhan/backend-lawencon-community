@@ -3,7 +3,7 @@ package com.lawencon.lawenconcommunity.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -38,27 +38,27 @@ public class User extends BaseEntity{
 	@Column(name="company", length=100)
 	private String company;
 	
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name = "industry_id")
 	private Industry industry;
 	
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name = "position_id")
 	private Position position;
 	
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name = "balance_id")
 	private Balance balance;
 	
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name = "role_id")
 	private Role role;
 	
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name = "file_id")
 	private File file;
 	
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name = "verification_id")
 	private Verification verification;
 }
