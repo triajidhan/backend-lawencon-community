@@ -36,6 +36,7 @@ public abstract class BaseEntity implements Serializable {
 	private LocalDateTime updatedAt;
 
 	@Version
+	@Column(name = "versions")
 	private Integer version;
 
 	@Column(name = "is_active")

@@ -2,8 +2,6 @@ package com.lawencon.lawenconcommunity.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -36,9 +34,5 @@ public class Post extends BaseEntity{
 	private String contents;
 	
 	@Column(name="title_poll")
-	private String titlePoll;
-	
-	@ManyToOne
-	@JoinColumn(name = "status_subscribe_id")
-	private StatusSubscribe statusSubscribe;	
+	private String titlePoll;	
 }
