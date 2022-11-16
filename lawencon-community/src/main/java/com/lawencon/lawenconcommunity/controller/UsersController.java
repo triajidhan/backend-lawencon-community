@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -65,8 +66,14 @@ public class UsersController {
 	}
 	
 	@PostMapping()
-	public ResponseEntity<ResponseMessageDto> insert(@RequestBody User data){
-		final ResponseMessageDto userInsertResDto = userSevice.insert(data);
+	public ResponseEntity<ResponseMessageDto> insertWithLogin(@RequestBody User data){
+		final ResponseMessageDto userInsertResDto = userSevice.insertWithLogin(data);
 		return new ResponseEntity<>(userInsertResDto, HttpStatus.OK);
+	}
+	
+	@PutMapping()
+	public ResponseEntity<ResponseMessageDto> update(@RequestBody User data){
+		final ResponseMessageDto message = userSevice.update(data);
+		return new ResponseEntity<>(message, HttpStatus.OK);
 	}
 }

@@ -18,6 +18,7 @@ import com.lawencon.lawenconcommunity.dto.LoginResDto;
 import com.lawencon.lawenconcommunity.model.User;
 import com.lawencon.lawenconcommunity.service.UserSevice;
 import com.lawencon.util.JwtUtil;
+import com.lawencon.util.JwtUtil.ClaimKey;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
@@ -41,8 +42,8 @@ public class LoginController {
         final User user = userService.getByEmail(data.getEmail());
 
         Map<String, Object> claims = new HashMap<>();
-        claims.put("id", user.getId());
-        claims.put("roleCode", user.getRole().getRoleCode());
+        claims.put(ClaimKey.ID.name(), user.getId());
+        claims.put(ClaimKey.ROLE.name(), user.getRole().getRoleCode());
 
         LoginResDto res = new LoginResDto();
         res.setId(user.getId());
