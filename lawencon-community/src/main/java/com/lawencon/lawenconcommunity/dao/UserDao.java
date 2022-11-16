@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 import com.lawencon.base.AbstractJpaDao;
+import com.lawencon.base.ConnHandler;
 import com.lawencon.lawenconcommunity.model.Balance;
 import com.lawencon.lawenconcommunity.model.File;
 import com.lawencon.lawenconcommunity.model.Industry;
@@ -29,17 +30,17 @@ public class UserDao extends AbstractJpaDao{
 		.append("file_id, ")
 		.append("tb.id,tb.total_balance, ")
 		.append("tu.versions, tu.is_active FROM tb_user tu ")
-		.append("INNER JOIN tb_industry ti ON tu.industry_id = ti.id ")
-		.append("INNER JOIN tb_position tp ON tu.position_id = tp.id ")
+		.append("LEFT JOIN tb_industry ti ON tu.industry_id = ti.id ")
+		.append("LEFT JOIN tb_position tp ON tu.position_id = tp.id ")
 		.append("INNER JOIN tb_role tr ON tu.role_id = tr.id ")
 		.append("INNER JOIN tb_file tf ON tu.file_id = tf.id ")
-		.append("INNER JOIN tb_balance tb ON tu.balance_id = tf.id ")
-		.append("WHERE email = :email");
+		.append("INNER JOIN tb_balance tb ON tu.balance_id = tb.id ")
+		.append("WHERE email iLike :email");
 		
 		Object objUser = null; 
 		Optional<User> objOpt = Optional.ofNullable(null);
 		try {
-			objUser = this.createNativeQuery(sql.toString())
+			objUser = ConnHandler.getManager().createNativeQuery(sql.toString())
 			.setParameter("email", email)
 			.getSingleResult();
 			
@@ -105,14 +106,14 @@ public class UserDao extends AbstractJpaDao{
 		.append("tr.id  as tr_id, tr.role_code, tr.role_name, ")
 		.append("file_id, ")
 		.append("tb.id as tb_id,tb.total_balance FROM tb_user tu ")
-		.append("INNER JOIN tb_industry ti ON tu.industry_id = ti.id ")
-		.append("INNER JOIN tb_position tp ON tu.position_id = tp.id ")
+		.append("LEFT JOIN tb_industry ti ON tu.industry_id = ti.id ")
+		.append("LEFT JOIN tb_position tp ON tu.position_id = tp.id ")
 		.append("INNER JOIN tb_role tr ON tu.role_id = tr.id ")
 		.append("INNER JOIN tb_file tf ON tu.file_id = tf.id ")
-		.append("INNER JOIN tb_balance tb ON tu.balance_id = tf.id ")
-		.append("WHERE role_code = :roleCode");
+		.append("INNER JOIN tb_balance tb ON tu.balance_id = tb.id ")
+		.append("WHERE role_code iLike :roleCode");
 		
-		final List<?> objUsers = this.createNativeQuery(sql.toString())
+		final List<?> objUsers = ConnHandler.getManager().createNativeQuery(sql.toString())
 		.setParameter("roleCode", roleCode)
 		.getResultList();
 			
@@ -176,7 +177,7 @@ public class UserDao extends AbstractJpaDao{
 		Object objUser = null; 
 		int totalUser = 0;
 		try {
-			objUser = this.createNativeQuery(sql.toString())
+			objUser = ConnHandler.getManager().createNativeQuery(sql.toString())
 			.getSingleResult();
 			
 		}catch(Exception e) {
@@ -202,7 +203,7 @@ public class UserDao extends AbstractJpaDao{
 		Object objUser = null; 
 		int totalUser = 0;
 		try {
-			objUser = this.createNativeQuery(sql.toString())
+			objUser = ConnHandler.getManager().createNativeQuery(sql.toString())
 			.setParameter("roleCode", roleCode)
 			.getSingleResult();
 			
