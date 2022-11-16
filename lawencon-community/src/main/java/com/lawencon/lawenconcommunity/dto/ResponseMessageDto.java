@@ -5,6 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserInsertResDto {
+public class ResponseMessageDto {
 	private String message;
 }
