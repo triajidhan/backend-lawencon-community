@@ -1,7 +1,6 @@
 package com.lawencon.lawenconcommunity.dao;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +32,7 @@ public class UserDao extends AbstractJpaDao{
 		.append("LEFT JOIN tb_industry ti ON tu.industry_id = ti.id ")
 		.append("LEFT JOIN tb_position tp ON tu.position_id = tp.id ")
 		.append("INNER JOIN tb_role tr ON tu.role_id = tr.id ")
-		.append("INNER JOIN tb_file tf ON tu.file_id = tf.id ")
+		.append("LEFT JOIN tb_file tf ON tu.file_id = tf.id ")
 		.append("INNER JOIN tb_balance tb ON tu.balance_id = tb.id ")
 		.append("WHERE email iLike :email");
 		
@@ -60,26 +59,34 @@ public class UserDao extends AbstractJpaDao{
 			
 			user.setId(objArr[0].toString());
 			user.setFullname(objArr[1].toString());
-			user.setPass(objArr[2].toString());
-			user.setCompany(objArr[3].toString());
+			user.setEmail(objArr[2].toString());
+			user.setPass(objArr[3].toString());
+			user.setCompany(objArr[4].toString());
+			
+			if(objArr[5] != null) {
+				industry.setId(objArr[5].toString());
+				industry.setIndustryCode(objArr[6].toString());
+				industry.setIndustryName(objArr[7].toString());
+			}
+			
+			if(objArr[8] != null) {
+				position.setId(objArr[8].toString());
+				position.setPositionCode(objArr[9].toString());
+				position.setPositionName(objArr[10].toString());
+			}
 			
 			
-			industry.setId(objArr[4].toString());
-			industry.setIndustryCode(objArr[5].toString());
-			industry.setIndustryName(objArr[6].toString());
+			role.setId(objArr[11].toString());
+			role.setRoleCode(objArr[12].toString());
+			role.setRoleName(objArr[13].toString());
 			
-			position.setId(objArr[7].toString());
-			position.setPositionCode(objArr[8].toString());
-			position.setPositionName(objArr[9].toString());
+			if(objArr[14] != null) {
+				file.setId(objArr[14].toString());
+			}
 			
-			role.setId(objArr[9].toString());
-			role.setRoleCode(objArr[10].toString());
-			role.setRoleName(objArr[11].toString());
 			
-			file.setId(objArr[12].toString());
-			
-			balance.setId(objArr[13].toString());
-			balance.setTotalBalance(BigDecimal.valueOf(Double.valueOf(objArr[14].toString())));
+			balance.setId(objArr[15].toString());
+			balance.setTotalBalance(BigDecimal.valueOf(Double.valueOf(objArr[16].toString())));
 			
 			user.setIndustry(industry);
 			user.setPosition(position);
@@ -87,8 +94,9 @@ public class UserDao extends AbstractJpaDao{
 			user.setBalance(balance);
 			user.setFile(file);
 			
-			user.setVersion(Integer.valueOf(objArr[15].toString()));
-			user.setIsActive(Boolean.valueOf(objArr[16].toString()));
+			
+			user.setVersion(Integer.valueOf(objArr[17].toString()));
+			user.setIsActive(Boolean.valueOf(objArr[18].toString()));
 			
 			objOpt = Optional.ofNullable(user); 
 		}
@@ -104,7 +112,7 @@ public class UserDao extends AbstractJpaDao{
 		.append("LEFT JOIN tb_industry ti ON tu.industry_id = ti.id ")
 		.append("LEFT JOIN tb_position tp ON tu.position_id = tp.id ")
 		.append("INNER JOIN tb_role tr ON tu.role_id = tr.id ")
-		.append("INNER JOIN tb_file tf ON tu.file_id = tf.id ")
+		.append("LEFT JOIN tb_file tf ON tu.file_id = tf.id ")
 		.append("INNER JOIN tb_balance tb ON tu.balance_id = tb.id ")
 		.append("WHERE role_code iLike :roleCode");
 		
