@@ -66,8 +66,14 @@ public class UsersController {
 	}
 	
 	@PostMapping()
-	public ResponseEntity<ResponseMessageDto> insertWithLogin(@RequestBody User data){
+	public ResponseEntity<ResponseMessageDto> registerAdmin(@RequestBody User data){
 		final ResponseMessageDto userInsertResDto = userSevice.insertWithLogin(data);
+		return new ResponseEntity<>(userInsertResDto, HttpStatus.OK);
+	}
+	
+	@PostMapping("register")
+	public ResponseEntity<ResponseMessageDto> registerUser(@RequestBody User data){
+		final ResponseMessageDto userInsertResDto = userSevice.insertWithoutLogin(data);
 		return new ResponseEntity<>(userInsertResDto, HttpStatus.OK);
 	}
 	

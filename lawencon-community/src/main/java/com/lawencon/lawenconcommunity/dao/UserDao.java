@@ -172,4 +172,90 @@ public class UserDao extends AbstractJpaDao{
 		
 		return totalUser;
 	}
+	
+public Optional<User> getSystem(final String roleCode){
+		
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT tu.id, full_name, email, pass, company, ")
+		.append("ti.id as ti_id, ti.industry_code, ti.industry_name, ")
+		.append("tp.id as tp_id, tp.position_code, tp.position_name, ")
+		.append("tr.id as tr_id, tr.role_code, tr.role_name, ")
+		.append("file_id, ")
+		.append("tb.id as tb_id ,tb.total_balance, ")
+		.append("tu.versions, tu.is_active FROM tb_user tu ")
+		.append("LEFT JOIN tb_industry ti ON tu.industry_id = ti.id ")
+		.append("LEFT JOIN tb_position tp ON tu.position_id = tp.id ")
+		.append("INNER JOIN tb_role tr ON tu.role_id = tr.id ")
+		.append("LEFT JOIN tb_file tf ON tu.file_id = tf.id ")
+		.append("INNER JOIN tb_balance tb ON tu.balance_id = tb.id ")
+		.append("WHERE role_code iLike :roleCode");
+		
+		Object objUser = null; 
+		Optional<User> objOpt = Optional.ofNullable(null);
+		try {
+			objUser = ConnHandler.getManager().createNativeQuery(sql.toString())
+			.setParameter("roleCode", roleCode)
+			.getSingleResult();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objUser != null) {
+			Object[] objArr = (Object[]) objUser;
+			
+			final User user = new User();
+			final Industry industry = new Industry();
+			final Position position = new Position();
+			final File file = new File();
+			final Role role = new Role();
+			final Balance balance = new Balance();
+			
+			user.setId(objArr[0].toString());
+			user.setFullname(objArr[1].toString());
+			user.setEmail(objArr[2].toString());
+			user.setPass(objArr[3].toString());
+			user.setCompany(objArr[4].toString());
+			
+			if(objArr[5] != null) {
+				industry.setId(objArr[5].toString());
+				industry.setIndustryCode(objArr[6].toString());
+				industry.setIndustryName(objArr[7].toString());
+			}
+			
+			if(objArr[8] != null) {
+				position.setId(objArr[8].toString());
+				position.setPositionCode(objArr[9].toString());
+				position.setPositionName(objArr[10].toString());
+			}
+			
+			
+			role.setId(objArr[11].toString());
+			role.setRoleCode(objArr[12].toString());
+			role.setRoleName(objArr[13].toString());
+			
+			if(objArr[14] != null) {
+				file.setId(objArr[14].toString());
+			}
+			
+			
+			balance.setId(objArr[15].toString());
+			balance.setTotalBalance(BigDecimal.valueOf(Double.valueOf(objArr[16].toString())));
+			
+			user.setIndustry(industry);
+			user.setPosition(position);
+			user.setRole(role);
+			user.setBalance(balance);
+			user.setFile(file);
+			
+			
+			user.setVersion(Integer.valueOf(objArr[17].toString()));
+			user.setIsActive(Boolean.valueOf(objArr[18].toString()));
+			
+			objOpt = Optional.ofNullable(user); 
+		}
+		
+		return objOpt;
+	}
 }
