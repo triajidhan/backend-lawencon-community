@@ -7,10 +7,10 @@ import java.util.Optional;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.lawencon.base.BaseCoreService;
-import com.lawencon.config.ApiConfiguration;
 import com.lawencon.lawenconcommunity.dao.BalanceDao;
 import com.lawencon.lawenconcommunity.dao.FileDao;
 import com.lawencon.lawenconcommunity.dao.RoleDao;
@@ -20,7 +20,6 @@ import com.lawencon.lawenconcommunity.model.Balance;
 import com.lawencon.lawenconcommunity.model.File;
 import com.lawencon.lawenconcommunity.model.Role;
 import com.lawencon.lawenconcommunity.model.User;
-import com.lawencon.security.principal.PrincipalService;
 
 @Service
 public class UserSevice extends BaseCoreService implements UserDetailsService{
@@ -28,15 +27,14 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 	private final RoleDao roleDao;
 	private final FileDao fileDao;
 	private final BalanceDao balanceDao;
-	private final ApiConfiguration apiConfiguration;
-	private final PrincipalService principalService;
-	public UserSevice(UserDao userDao, RoleDao roleDao, FileDao fileDao, BalanceDao balanceDao, ApiConfiguration apiConfiguration, PrincipalService principalService) {
+	private final PasswordEncoder passwordEncoder;
+	public UserSevice(UserDao userDao, RoleDao roleDao, FileDao fileDao, BalanceDao balanceDao, PasswordEncoder passwordEncoder) {
 		this.userDao = userDao;
 		this.roleDao = roleDao;
 		this.fileDao = fileDao;
 		this.balanceDao = balanceDao;
-		this.apiConfiguration = apiConfiguration;
-		this.principalService = principalService;
+		this.passwordEncoder = passwordEncoder;
+		
 	}
 
 	@Override
@@ -78,22 +76,46 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 	public ResponseMessageDto insertWithLogin (User data) {
 		File fileInsert = new File();
 		Balance balanceInsert = new Balance();
+		ResponseMessageDto userInsertResDto = new ResponseMessageDto();
+		userInsertResDto.setMessage("Registration is Failed");
 		valInsert(data);
 		try {
 			begin();
 			fileInsert = fileDao.save(data.getFile());
 			balanceInsert = balanceDao.save(balanceInsert);
-			String hashPassword = apiConfiguration.passwordEncoder().encode((data.getPass()));
+			String hashPassword = passwordEncoder.encode((data.getPass()));
 			data.setPass(hashPassword);
 			data.setFile(fileInsert);
 			data.setBalance(balanceInsert);
 			userDao.save(data);
+			userInsertResDto.setMessage("Registration is successful");
 			commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return userInsertResDto;
+	}
+	
+	public ResponseMessageDto insertWithoutLogin (User data) {
+		File fileInsert = new File();
+		Balance balanceInsert = new Balance();
 		ResponseMessageDto userInsertResDto = new ResponseMessageDto();
-		userInsertResDto.setMessage("Registration is successful");
+		userInsertResDto.setMessage("Registration is Failed");
+		valInsert(data);
+		try {
+			begin();
+			fileInsert = fileDao.saveNoLogin(data.getFile(), () -> userDao.getSystem("SYS").get().getId());
+			balanceInsert = balanceDao.saveNoLogin(balanceInsert, () -> userDao.getSystem("SYS").get().getId());
+			String hashPassword = passwordEncoder.encode((data.getPass()));
+			data.setPass(hashPassword);
+			data.setFile(fileInsert);
+			data.setBalance(balanceInsert);
+			userDao.saveNoLogin(data, ()->userDao.getSystem("SYS").get().getId());
+			userInsertResDto.setMessage("Registration is successful");
+			commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return userInsertResDto;
 	}
 	
@@ -147,6 +169,9 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 	public  ResponseMessageDto update(User data) {
 		User user = userDao.getById(User.class, data.getId());
 		User userUpdate = new User();
+		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
+		responseMessageDto.setMessage("Failed!");
+		begin();
 		if(user != null) {
 			userUpdate = user;
 			
@@ -173,40 +198,29 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 			if(data.getStatusSubscribe()!=null) {
 				userUpdate.setStatusSubscribe(data.getStatusSubscribe());
 			}
-			
-			if (data.getFile() != null) {
-				File file = new File();
-				try {
-					file = fileDao.save(data.getFile());
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				userUpdate.setFile(file);
-			}
-			
-			if(data.getIsActive() != null) {
-				userUpdate.setIsActive(data.getIsActive());
-			}
-			
-			if(data.getVersion() !=null) {
-				userUpdate.setVersion(data.getVersion());
-			}
-			
 			try {
-				valUpdate(userUpdate);
-				userUpdate.setUpdatedBy(principalService.getAuthPrincipal());
+				if (data.getFile() != null) {
+					File file = new File();
+					file = fileDao.save(data.getFile());
+					userUpdate.setFile(file);
+				}
+				
+				if(data.getIsActive() != null) {
+					userUpdate.setIsActive(data.getIsActive());
+				}
+				
+				if(data.getVersion() !=null) {
+					userUpdate.setVersion(data.getVersion());
+				}
+				userUpdate = userDao.save(userUpdate);
+				responseMessageDto.setMessage("Success");		
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			
 		}
+		commit();
 		
-		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
-		responseMessageDto.setMessage("Success");
-		try {
-			userUpdate = userDao.save(userUpdate);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		return responseMessageDto; 
 	}
 	public void valUpdate(User data) {
@@ -219,4 +233,6 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 			throw new RuntimeException("No User Found!");
 		}
 	}
+	
+	
 }
