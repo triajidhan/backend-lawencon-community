@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lawencon.lawenconcommunity.dto.UserInsertResDto;
+import com.lawencon.lawenconcommunity.dto.ResponseMessageDto;
 import com.lawencon.lawenconcommunity.model.User;
 import com.lawencon.lawenconcommunity.service.UserSevice;
 
@@ -34,7 +34,7 @@ public class UsersController {
 		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
 	
-	@GetMapping("{id}")
+	@GetMapping("id/{id}")
 	public ResponseEntity<User> getById(@PathVariable("id") String id ){
 		final User user = userSevice.getById(id);
 		return new ResponseEntity<>(user, HttpStatus.OK);
@@ -47,14 +47,14 @@ public class UsersController {
 	}
 	
 	@GetMapping("email")
-	public ResponseEntity<List<User>> getByEmail(@RequestParam("email") String email){
-		final List<User> users = userSevice.getByRoleCode(email);
+	public ResponseEntity<User> getByEmail(@RequestParam("email") String email){
+		final User users = userSevice.getByEmail(email);
 		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
 	
 	@PostMapping()
-	public ResponseEntity<UserInsertResDto> insert(@RequestBody User data){
-		final UserInsertResDto userInsertResDto = userSevice.insert(data);
+	public ResponseEntity<ResponseMessageDto> insert(@RequestBody User data){
+		final ResponseMessageDto userInsertResDto = userSevice.insert(data);
 		return new ResponseEntity<>(userInsertResDto, HttpStatus.OK);
 	}
 }

@@ -1,19 +1,21 @@
 package com.lawencon.lawenconcommunity.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.lawencon.base.BaseCoreService;
+import com.lawencon.config.ApiConfiguration;
 import com.lawencon.lawenconcommunity.dao.BalanceDao;
 import com.lawencon.lawenconcommunity.dao.FileDao;
 import com.lawencon.lawenconcommunity.dao.RoleDao;
 import com.lawencon.lawenconcommunity.dao.UserDao;
-import com.lawencon.lawenconcommunity.dto.UserInsertResDto;
+import com.lawencon.lawenconcommunity.dto.ResponseMessageDto;
 import com.lawencon.lawenconcommunity.model.Balance;
 import com.lawencon.lawenconcommunity.model.File;
 import com.lawencon.lawenconcommunity.model.Role;
@@ -25,19 +27,24 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 	private final RoleDao roleDao;
 	private final FileDao fileDao;
 	private final BalanceDao balanceDao;
-	private final PasswordEncoder passwordEncoder;
-	public UserSevice(UserDao userDao, RoleDao roleDao, FileDao fileDao, BalanceDao balanceDao, PasswordEncoder passwordEncoder) {
+	private final ApiConfiguration apiConfiguration;
+	public UserSevice(UserDao userDao, RoleDao roleDao, FileDao fileDao, BalanceDao balanceDao, ApiConfiguration apiConfiguration) {
 		this.userDao = userDao;
 		this.roleDao = roleDao;
 		this.fileDao = fileDao;
 		this.balanceDao = balanceDao;
-		this.passwordEncoder = passwordEncoder;
+		this.apiConfiguration = apiConfiguration;
+	;
 	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+		final Optional<User> userOptional = userDao.getByEmail(username);
+		
+		if(userOptional.isPresent()) {
+			return new org.springframework.security.core.userdetails.User(username, userOptional.get().getPass(), new ArrayList<>()); 
+		}
+		throw new UsernameNotFoundException("Email And Password Wrong");
 	}
 	
 	public List<User> getAll(Integer startPosition, Integer limitPage) {
@@ -58,7 +65,7 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 	}
 	
 	
-	public UserInsertResDto insert (User data) {
+	public ResponseMessageDto insert (User data) {
 		File fileInsert = new File();
 		Balance balanceInsert = new Balance();
 		valInsert(data);
@@ -66,7 +73,7 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 			begin();
 			fileInsert = fileDao.save(data.getFile());
 			balanceInsert = balanceDao.save(balanceInsert);
-			String hashPassword = passwordEncoder.encode(data.getPass());
+			String hashPassword = apiConfiguration.passwordEncoder().encode((data.getPass()));
 			data.setPass(hashPassword);
 			data.setFile(fileInsert);
 			data.setBalance(balanceInsert);
@@ -75,7 +82,7 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		UserInsertResDto userInsertResDto = new UserInsertResDto();
+		ResponseMessageDto userInsertResDto = new ResponseMessageDto();
 		userInsertResDto.setMessage("Registration is successful");
 		return userInsertResDto;
 	}
