@@ -20,6 +20,7 @@ import com.lawencon.lawenconcommunity.model.Balance;
 import com.lawencon.lawenconcommunity.model.File;
 import com.lawencon.lawenconcommunity.model.Role;
 import com.lawencon.lawenconcommunity.model.User;
+import com.lawencon.security.principal.PrincipalService;
 
 @Service
 public class UserSevice extends BaseCoreService implements UserDetailsService{
@@ -28,13 +29,14 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 	private final FileDao fileDao;
 	private final BalanceDao balanceDao;
 	private final ApiConfiguration apiConfiguration;
-	public UserSevice(UserDao userDao, RoleDao roleDao, FileDao fileDao, BalanceDao balanceDao, ApiConfiguration apiConfiguration) {
+	private final PrincipalService principalService;
+	public UserSevice(UserDao userDao, RoleDao roleDao, FileDao fileDao, BalanceDao balanceDao, ApiConfiguration apiConfiguration, PrincipalService principalService) {
 		this.userDao = userDao;
 		this.roleDao = roleDao;
 		this.fileDao = fileDao;
 		this.balanceDao = balanceDao;
 		this.apiConfiguration = apiConfiguration;
-	;
+		this.principalService = principalService;
 	}
 
 	@Override
@@ -73,7 +75,7 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 	}
 	
 	
-	public ResponseMessageDto insert (User data) {
+	public ResponseMessageDto insertWithLogin (User data) {
 		File fileInsert = new File();
 		Balance balanceInsert = new Balance();
 		valInsert(data);
@@ -101,6 +103,7 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 		fkFound(data);
 	}
 	
+
 	public void idNullInsert(User data) {
 		if(data.getId()!=null) {
 			throw new RuntimeException("Id Must Be Empty!");
@@ -123,7 +126,7 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 		}
 	}
 	
-	public void notNull(User data) {
+	public void bkNotNull(User data) {
 		if(data.getRole()==null) {
 			throw new RuntimeException("Role Required!");
 		}
@@ -141,5 +144,79 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 		}
 	}
 
-
+	public  ResponseMessageDto update(User data) {
+		User user = userDao.getById(User.class, data.getId());
+		User userUpdate = new User();
+		if(user != null) {
+			userUpdate = user;
+			
+			if(data.getFullname() != null) {
+				userUpdate.setFullname(data.getFullname());
+			}
+			
+			if(data.getRole() != null) {
+				userUpdate.setRole(data.getRole());
+			}
+			
+			if(data.getCompany() !=null) {
+				userUpdate.setCompany(data.getCompany());
+			}
+			
+			if(data.getIndustry() != null) {
+				userUpdate.setIndustry(data.getIndustry());
+			}
+			
+			if(data.getPosition()!=null) {
+				userUpdate.setPosition(data.getPosition());
+			}
+			
+			if(data.getStatusSubscribe()!=null) {
+				userUpdate.setStatusSubscribe(data.getStatusSubscribe());
+			}
+			
+			if (data.getFile() != null) {
+				File file = new File();
+				try {
+					file = fileDao.save(data.getFile());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				userUpdate.setFile(file);
+			}
+			
+			if(data.getIsActive() != null) {
+				userUpdate.setIsActive(data.getIsActive());
+			}
+			
+			if(data.getVersion() !=null) {
+				userUpdate.setVersion(data.getVersion());
+			}
+			
+			try {
+				valUpdate(userUpdate);
+				userUpdate.setUpdatedBy(principalService.getAuthPrincipal());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
+		responseMessageDto.setMessage("Success");
+		try {
+			userUpdate = userDao.save(userUpdate);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return responseMessageDto; 
+	}
+	public void valUpdate(User data) {
+		idAvailableUpdate(data);
+		fkFound(data);
+	}
+	
+	public void idAvailableUpdate(User data) {
+		if(userDao.getByIdAndDetach(User.class, data.getId()) == null) {
+			throw new RuntimeException("No User Found!");
+		}
+	}
 }

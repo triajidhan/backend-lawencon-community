@@ -58,4 +58,6 @@ public class User extends BaseEntity{
 	@JoinColumn(name = "file_id")
 	private File file;
 	
+	@Column(name = "status_subscribe")
+	private Boolean statusSubscribe;
 }
