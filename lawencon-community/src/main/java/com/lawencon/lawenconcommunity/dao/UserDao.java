@@ -117,8 +117,8 @@ public class UserDao extends AbstractJpaDao{
 	public int getTotalUser() {
 		final StringBuilder sql = new StringBuilder();
 		
-		sql.append("SELECT count(id) as total_user from tb_user ")
-		.append("INNER JOIN tb_role tr ON tu.role_id = tr.id ");
+		sql.append("SELECT count(tb_user.id) as total_user from tb_user ")
+		.append("INNER JOIN tb_role tr ON tb_user.role_id = tr.id ");
 		
 		Object objUser = null; 
 		int totalUser = 0;
@@ -142,9 +142,9 @@ public class UserDao extends AbstractJpaDao{
 	public int getTotalByRoleCode(final String roleCode) {
 		final StringBuilder sql = new StringBuilder();
 		
-		sql.append("select count(tu.id) as total_user from tb_user tu ")
-		.append("INNER JOIN tb_role tr ON tu.role_id = tr.id ")
-		.append("WHERE tr.role_code = :roleCode");
+		sql.append("select count(tb_user.id) as total_user from tb_user ")
+		.append("INNER JOIN tb_role tr ON tb_user.role_id = tr.id ")
+		.append("WHERE tr.role_code iLike :roleCode");
 		
 		Object objUser = null; 
 		int totalUser = 0;
