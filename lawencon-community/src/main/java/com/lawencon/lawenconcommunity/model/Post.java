@@ -2,6 +2,8 @@ package com.lawencon.lawenconcommunity.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -17,7 +19,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Post extends BaseEntity{
-	
 	
 	/**
 	 * 
@@ -35,4 +36,10 @@ public class Post extends BaseEntity{
 	
 	@Column(name="title_poll")
 	private String titlePoll;	
+	
+	
+	@OneToOne
+	@JoinColumn(name="tb_post_type")
+	private PostType postType;
+	
 }
