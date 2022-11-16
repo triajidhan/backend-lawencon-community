@@ -64,6 +64,14 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 		return userDao.getByRole(roleCode);
 	}
 	
+	public int getTotalUser() {
+		return userDao.getTotalUser();
+	}
+	
+	public int getTotalUserByRole(String role) {
+		return userDao.getTotalByRoleCode(role);
+	}
+	
 	
 	public ResponseMessageDto insert (User data) {
 		File fileInsert = new File();
