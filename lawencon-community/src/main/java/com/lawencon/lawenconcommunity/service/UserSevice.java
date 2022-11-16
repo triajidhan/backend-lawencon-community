@@ -46,7 +46,7 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 	}
 	
 	public User getById(String id) {
-		return userDao.getById(User.class, id);
+		return userDao.getByIdAndDetach(User.class, id);
 	}
 	
 	public User getByEmail(String email){
@@ -56,6 +56,7 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 	public List<User> getByRoleCode(String roleCode){
 		return userDao.getByRole(roleCode);
 	}
+	
 	
 	public UserInsertResDto insert (User data) {
 		File fileInsert = new File();

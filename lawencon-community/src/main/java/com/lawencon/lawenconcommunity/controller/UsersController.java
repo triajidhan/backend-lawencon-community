@@ -46,6 +46,12 @@ public class UsersController {
 		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
 	
+	@GetMapping("email")
+	public ResponseEntity<List<User>> getByEmail(@RequestParam("email") String email){
+		final List<User> users = userSevice.getByRoleCode(email);
+		return new ResponseEntity<>(users, HttpStatus.OK);
+	}
+	
 	@PostMapping()
 	public ResponseEntity<UserInsertResDto> insert(@RequestBody User data){
 		final UserInsertResDto userInsertResDto = userSevice.insert(data);
