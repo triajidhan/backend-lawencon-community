@@ -22,10 +22,10 @@ public class PostAttachment extends BaseEntity{
 	private static final long serialVersionUID = -8354098971607019627L;
 
 	@OneToOne
-	@JoinColumn(name = "tb_post")
+	@JoinColumn(name = "post_id")
 	private Post post;
 	
 	@OneToOne
-	@JoinColumn(name = "tb_file")
+	@JoinColumn(name = "file_id")
 	private File file;
 }

@@ -1,6 +1,6 @@
 package com.lawencon.lawenconcommunity.dao;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
@@ -49,7 +49,7 @@ public class ArticleDao extends AbstractJpaDao{
 			article.setFile(file);
 			
 			article.setCreatedBy(objArr[4].toString());
-			article.setCreatedAt(LocalDateTime.parse(objArr[5].toString()));
+			article.setCreatedAt(Timestamp.valueOf(objArr[5].toString()).toLocalDateTime());
 			article.setVersion(Integer.parseInt(objArr[6].toString()));
 			
 			

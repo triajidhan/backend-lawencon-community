@@ -22,10 +22,10 @@ public class Bookmark extends BaseEntity{
 	private static final long serialVersionUID = -4335686179070314947L;
 
 	@OneToOne
-	@JoinColumn(name = "tb_user")
+	@JoinColumn(name = "user_id")
 	private User userId;
 	
 	@OneToOne
-	@JoinColumn(name = "tb_post")
+	@JoinColumn(name = "post_id")
 	private Post postId;
 }

@@ -22,11 +22,11 @@ public class CommentAttachment extends BaseEntity{
 	private static final long serialVersionUID = -2203761108088123714L;
 
 	@OneToOne
-	@JoinColumn(name = "tb_comment")
-	private Comment commentId;
+	@JoinColumn(name = "comment_id")
+	private Comment comment;
 	
 	@OneToOne
-	@JoinColumn(name = "tb_file")
+	@JoinColumn(name = "file_id")
 	private File file;
 	
 

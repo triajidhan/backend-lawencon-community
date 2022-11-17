@@ -29,6 +29,7 @@ public class LoginController {
 	private final JwtUtil jwtUtil;
 	private final UserSevice userService;
 	private final AuthenticationManager authenticationManager;
+	
 	public LoginController(JwtUtil jwtUtil, UserSevice userService, AuthenticationManager authenticationManager){
 		this.jwtUtil = jwtUtil;
 		this.userService = userService;
@@ -52,5 +53,4 @@ public class LoginController {
         res.setToken(jwtUtil.generateToken(claims, Duration.ofHours(1)));
         return new ResponseEntity<LoginResDto>(res, HttpStatus.OK);
     }
-	
 }

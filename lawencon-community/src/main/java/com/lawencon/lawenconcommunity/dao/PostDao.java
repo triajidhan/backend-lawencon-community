@@ -1,6 +1,6 @@
 package com.lawencon.lawenconcommunity.dao;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,7 +56,7 @@ public class PostDao extends AbstractJpaDao{
 			
 			// tp.created_by,tp.created_at, tp.versions
 			post.setCreatedBy(objArr[8].toString());
-			post.setCreatedAt(LocalDateTime.parse(objArr[9].toString()));
+			post.setCreatedAt(Timestamp.valueOf(objArr[9].toString()).toLocalDateTime());
 			post.setVersion(Integer.parseInt(objArr[10].toString()));
 			
 			optPost = Optional.ofNullable(post);
@@ -74,10 +74,10 @@ public class PostDao extends AbstractJpaDao{
 		.append("INNER JOIN tb_post_type tpt ON tp.post_type_id = tpt.id ")
 		.append("WHERE tp.created_by = :userId");
 		
-		final List<Post> objPost = ConnHandler.getManager().createNativeQuery(sql.toString())
+		final List<Post> objResultPosts = ConnHandler.getManager().createNativeQuery(sql.toString(),Post.class)
 				.setParameter("userId", userId)
 				.getResultList();
 		
-		return objPost;
+		return objResultPosts;
 	}
 }

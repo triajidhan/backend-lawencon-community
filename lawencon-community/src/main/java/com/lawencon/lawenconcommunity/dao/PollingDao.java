@@ -1,7 +1,6 @@
 package com.lawencon.lawenconcommunity.dao;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
@@ -14,8 +13,9 @@ import com.lawencon.lawenconcommunity.model.Post;
 @Repository
 public class PollingDao extends AbstractJpaDao{
 
-	public List<Polling> getByPost(final String postId){
+	public Optional<Polling> getByPost(final String postId){
 		final StringBuilder sql = new StringBuilder();
+		
 		sql.append("SELECT ")
 		.append("tpol.id as tpol_id, poll_content,total_poll, ")
 		.append("tpos.id as tpos_id, tpos.post_code, tpos.title, tpos.title_poll, ")
@@ -24,19 +24,21 @@ public class PollingDao extends AbstractJpaDao{
 		.append("INNER JOIN tb_post tpos ON  tpos.id  = tpol.post_id ")
 		.append("WHERE tpos.id = :postId ");
 		
-		Object objPolling = null;
+		Object pollingObj = null;
+		
 		Optional<Polling> pollingOpt = Optional.ofNullable(null);
 		
 		try {
-			objPolling = ConnHandler.getManager().createNativeQuery(sql.toString())
+			pollingObj = ConnHandler.getManager().createNamedQuery(sql.toString())
 					.setParameter("postId", postId)
 					.getSingleResult();
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 		
-		if(objPolling != null) {
-			Object[] objArr = (Object[]) objPolling;
+		if(pollingObj != null) {
+			Object[] objArr = (Object[]) pollingObj;
 			
 			final Polling polling = new Polling();
 			final Post post = new Post();
@@ -60,6 +62,7 @@ public class PollingDao extends AbstractJpaDao{
 			pollingOpt = Optional.ofNullable(polling);
 		}
 		
-		return null;
+		
+		return pollingOpt;
 	}
 }
