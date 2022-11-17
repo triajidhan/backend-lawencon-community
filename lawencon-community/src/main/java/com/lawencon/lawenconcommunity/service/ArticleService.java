@@ -112,10 +112,12 @@ public class ArticleService extends BaseCoreService {
 					fileInsert = fileDao.save(data.getFile());
 					data.setFile(fileInsert);
 					data.setArticleCode(null);
-					articleDao.saveAndFlush(data);
+					articleUpdate.setFile(fileInsert);
 				}
 				articleDao.saveAndFlush(articleUpdate);
 				responseMessageDto.setMessage("Success");
+			}else {
+				throw new RuntimeException("User Not Found!");
 			}
 		} catch (Exception e) {
 			responseMessageDto.setMessage("Failed!");
