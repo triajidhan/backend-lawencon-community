@@ -39,7 +39,9 @@ public class ArticleService extends BaseCoreService {
 		valInsert(data);
 		try {
 			begin();
-			fileInsert = fileDao.save(data.getFile());
+			if(fileInsert != null) {
+				fileInsert = fileDao.save(data.getFile());				
+			}
 			data.setFile(fileInsert);
 			data.setArticleCode(generateService.generate(5));
 			articleDao.save(data);
