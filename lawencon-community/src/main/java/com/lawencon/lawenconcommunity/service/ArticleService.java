@@ -30,6 +30,11 @@ public class ArticleService extends BaseCoreService {
 	public Article getByArticleCode(String articleCode) {
 		return articleDao.getByArticleCode(articleCode).get();
 	}
+	
+	public Article getById(String id) {
+		return articleDao.getById(Article.class, id);
+				
+	}
 
 	public ResponseMessageDto insert(Article data) {
 
@@ -41,8 +46,8 @@ public class ArticleService extends BaseCoreService {
 			begin();
 			if(fileInsert != null) {
 				fileInsert = fileDao.save(data.getFile());				
+				data.setFile(fileInsert);
 			}
-			data.setFile(fileInsert);
 			data.setArticleCode(generateService.generate(5));
 			articleDao.save(data);
 			responseMessageDto.setMessage("Article created successfully!");
