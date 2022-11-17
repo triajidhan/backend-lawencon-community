@@ -19,7 +19,8 @@ public class ArticleService extends BaseCoreService {
 	private ArticleDao articleDao;
 	@Autowired
 	private FileDao fileDao;
-
+	@Autowired
+	private GenerateService generateService;
 	public List<Article> getAll(Integer startPosition, Integer limitPage) {
 		final List<Article> articles = articleDao.getAll(Article.class, startPosition, limitPage);
 
@@ -31,7 +32,7 @@ public class ArticleService extends BaseCoreService {
 	}
 
 	public ResponseMessageDto insert(Article data) {
-		
+
 		File fileInsert = new File();
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
 		responseMessageDto.setMessage("Failed to create the article!");
@@ -40,41 +41,95 @@ public class ArticleService extends BaseCoreService {
 			begin();
 			fileInsert = fileDao.save(data.getFile());
 			data.setFile(fileInsert);
-			articleDao.save(data);	
+			data.setArticleCode(generateService.generate(5));
+			articleDao.save(data);
 			responseMessageDto.setMessage("Article created successfully!");
 			commit();
 		} catch (Exception e) {
+			responseMessageDto.setMessage("Failed to create the article!");
 			e.printStackTrace();
 		}
 		return responseMessageDto;
-		
+
 	}
-	
+
 	public void valInsert(Article data) {
-//		valDuplicateBk(data);
+		valDuplicateBk(data);
 		valNotNullInsert(data);
 		valIdNullInsert(data);
 	}
-	
+
 	public void valIdNullInsert(Article data) {
 		if (data.getId() != null) {
 			throw new RuntimeException("Id Must Be Empty!");
 		}
 
-		if (data.getFile().getId() != null) {
-			throw new RuntimeException("Id Must Be Empty!");
+		if (data.getFile() != null) {
+			if(data.getFile().getId() != null) {
+				throw new RuntimeException("Id Must Be Empty!");				
+			}
 		}
 	}
-	
+
 	public void valNotNullInsert(Article data) {
-		if (data.getTitle()==null) {
+		if (data.getTitle() == null) {
 			throw new RuntimeException("Title Required!");
 		}
 	}
-	
+
 	public void valDuplicateBk(Article data) {
-		if(articleDao.getByArticleCode(data.getArticleCode()).get() != null) {
+		if (articleDao.getByArticleCode(data.getArticleCode()).isPresent()) {
 			throw new RuntimeException("Duplicate article code detected!");
+		}
+	}
+
+	public ResponseMessageDto update(Article data) {
+		File fileInsert = new File();
+		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
+		responseMessageDto.setMessage("Failed!");
+		Article articleUpdate = new Article();
+		Article article = articleDao.getById(Article.class, data.getId());
+		valUpdate(data);
+		begin();
+		try {
+			articleUpdate = article;
+			if (article != null) {
+				if(data.getTitle() != null) {
+					articleUpdate.setTitle(data.getTitle());
+				}
+				
+				if(data.getContents() != null) {
+					articleUpdate.setContents(data.getContents());
+				}
+				
+				if(data.getIsActive() !=null) {
+					articleUpdate.setIsActive(data.getIsActive());
+				}
+				
+				if(data.getFile() != null) {
+					fileInsert = fileDao.save(data.getFile());
+					data.setFile(fileInsert);
+					data.setArticleCode(null);
+					articleDao.saveAndFlush(data);
+				}
+				articleDao.saveAndFlush(articleUpdate);
+				responseMessageDto.setMessage("Success");
+			}
+		} catch (Exception e) {
+			responseMessageDto.setMessage("Failed!");
+			e.printStackTrace();
+		}
+		commit();
+		return responseMessageDto;
+	}
+
+	public void valUpdate(Article data) {
+		valFoundId(data);
+	}
+
+	public void valFoundId(Article data) {
+		if (articleDao.getById(Article.class, data.getId()) == null) {
+			throw new RuntimeException("Account Not Found");
 		}
 	}
 

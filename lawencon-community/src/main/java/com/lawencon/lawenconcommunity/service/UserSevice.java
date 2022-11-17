@@ -92,6 +92,7 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 			data.setPass(hashPassword);
 			data.setFile(fileInsert);
 			data.setBalance(balanceInsert);
+			data.setStatusSubscribe(true);
 			userDao.save(data);
 			userInsertResDto.setMessage("Registration is successful");
 			commit();
@@ -117,10 +118,12 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 			data.setPass(hashPassword);
 			data.setFile(fileInsert);
 			data.setBalance(balanceInsert);
+			data.setStatusSubscribe(false);
 			userDao.saveNoLogin(data, ()->userDao.getSystem("SYS").get().getId());
 			userInsertResDto.setMessage("Registration is successful");
 			commit();
 		} catch (Exception e) {
+			userInsertResDto.setMessage("Registration is Failed");
 			e.printStackTrace();
 		}
 		return userInsertResDto;
@@ -138,8 +141,10 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 			throw new RuntimeException("Id Must Be Empty!");
 		}
 		
-		if(data.getFile().getId()!=null) {
-			throw new RuntimeException("Id Must Be Empty!");
+		if (data.getFile() != null) {
+			if(data.getFile().getId() != null) {
+				throw new RuntimeException("Id Must Be Empty!");				
+			}
 		}
 	}
 	
@@ -178,6 +183,7 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 		User userUpdate = new User();
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
 		responseMessageDto.setMessage("Failed!");
+		valUpdate(data);
 		begin();
 		if(user != null) {
 			userUpdate = user;
@@ -232,7 +238,6 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 	}
 	public void valUpdate(User data) {
 		idAvailableUpdate(data);
-		fkFound(data);
 	}
 	
 	public void idAvailableUpdate(User data) {
