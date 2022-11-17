@@ -86,13 +86,13 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 		
 		try {
 			begin();
-			if(fileInsert != null) {
-				fileInsert = fileDao.save(data.getFile());				
+			if(data.getFile() != null) {
+				fileInsert = fileDao.save(data.getFile());	
+				data.setFile(fileInsert);
 			}
 			balanceInsert = balanceDao.save(balanceInsert);
 			String hashPassword = passwordEncoder.encode((data.getPass()));
 			data.setPass(hashPassword);
-			data.setFile(fileInsert);
 			data.setBalance(balanceInsert);
 			data.setStatusSubscribe(true);
 			userDao.save(data);
@@ -114,13 +114,13 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 		valInsert(data);
 		try {
 			begin();
-			if(fileInsert != null) {
-				fileInsert = fileDao.saveNoLogin(data.getFile(), () -> userDao.getSystem("SYS").get().getId());				
+			if(data.getFile() != null) {
+				fileInsert = fileDao.saveNoLogin(data.getFile(), () -> userDao.getSystem("SYS").get().getId());	
+				data.setFile(fileInsert);
 			}
 			balanceInsert = balanceDao.saveNoLogin(balanceInsert, () -> userDao.getSystem("SYS").get().getId());
 			String hashPassword = passwordEncoder.encode((data.getPass()));
-			data.setPass(hashPassword);
-			data.setFile(fileInsert);
+			data.setPass(hashPassword);		
 			data.setBalance(balanceInsert);
 			data.setStatusSubscribe(false);
 			userDao.saveNoLogin(data, ()->userDao.getSystem("SYS").get().getId());

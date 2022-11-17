@@ -33,7 +33,7 @@ public class UserDao extends AbstractJpaDao{
 		.append("LEFT JOIN tb_position tp ON tu.position_id = tp.id ")
 		.append("INNER JOIN tb_role tr ON tu.role_id = tr.id ")
 		.append("LEFT JOIN tb_file tf ON tu.file_id = tf.id ")
-		.append("INNER JOIN tb_balance tb ON tu.balance_id = tb.id ")
+		.append("LEFT JOIN tb_balance tb ON tu.balance_id = tb.id ")
 		.append("WHERE email iLike :email");
 		
 		Object objUser = null; 
@@ -61,7 +61,10 @@ public class UserDao extends AbstractJpaDao{
 			user.setFullname(objArr[1].toString());
 			user.setEmail(objArr[2].toString());
 			user.setPass(objArr[3].toString());
-			user.setCompany(objArr[4].toString());
+			
+			if(objArr[4] != null) {				
+				user.setCompany(objArr[4].toString());
+			}
 			
 			if(objArr[5] != null) {
 				industry.setId(objArr[5].toString());
@@ -84,9 +87,12 @@ public class UserDao extends AbstractJpaDao{
 				file.setId(objArr[14].toString());
 			}
 			
-			
-			balance.setId(objArr[15].toString());
-			balance.setTotalBalance(BigDecimal.valueOf(Double.valueOf(objArr[16].toString())));
+			if(objArr[15] != null) {				
+				balance.setId(objArr[15].toString());
+				
+				
+				balance.setTotalBalance(BigDecimal.valueOf(Double.valueOf(objArr[16].toString())));
+			}
 			
 			user.setIndustry(industry);
 			user.setPosition(position);
@@ -113,7 +119,7 @@ public class UserDao extends AbstractJpaDao{
 		.append("LEFT JOIN tb_position tp ON tu.position_id = tp.id ")
 		.append("INNER JOIN tb_role tr ON tu.role_id = tr.id ")
 		.append("LEFT JOIN tb_file tf ON tu.file_id = tf.id ")
-		.append("INNER JOIN tb_balance tb ON tu.balance_id = tb.id ")
+		.append("LEFT JOIN tb_balance tb ON tu.balance_id = tb.id ")
 		.append("WHERE role_code iLike :roleCode");
 		
 		final List<User> objUsers = ConnHandler.getManager().createNativeQuery(sql.toString(), User.class)
@@ -188,7 +194,7 @@ public Optional<User> getSystem(final String roleCode){
 		.append("LEFT JOIN tb_position tp ON tu.position_id = tp.id ")
 		.append("INNER JOIN tb_role tr ON tu.role_id = tr.id ")
 		.append("LEFT JOIN tb_file tf ON tu.file_id = tf.id ")
-		.append("INNER JOIN tb_balance tb ON tu.balance_id = tb.id ")
+		.append("LEFT JOIN tb_balance tb ON tu.balance_id = tb.id ")
 		.append("WHERE role_code iLike :roleCode");
 		
 		Object objUser = null; 
@@ -216,7 +222,10 @@ public Optional<User> getSystem(final String roleCode){
 			user.setFullname(objArr[1].toString());
 			user.setEmail(objArr[2].toString());
 			user.setPass(objArr[3].toString());
-			user.setCompany(objArr[4].toString());
+			
+			if(objArr[4] != null) {				
+				user.setCompany(objArr[4].toString());
+			}
 			
 			if(objArr[5] != null) {
 				industry.setId(objArr[5].toString());
@@ -239,16 +248,16 @@ public Optional<User> getSystem(final String roleCode){
 				file.setId(objArr[14].toString());
 			}
 			
-			
-			balance.setId(objArr[15].toString());
-			balance.setTotalBalance(BigDecimal.valueOf(Double.valueOf(objArr[16].toString())));
+			if(objArr[15] != null) {				
+				balance.setId(objArr[15].toString());
+				balance.setTotalBalance(BigDecimal.valueOf(Double.valueOf(objArr[16].toString())));
+			}
 			
 			user.setIndustry(industry);
 			user.setPosition(position);
 			user.setRole(role);
 			user.setBalance(balance);
 			user.setFile(file);
-			
 			
 			user.setVersion(Integer.valueOf(objArr[17].toString()));
 			user.setIsActive(Boolean.valueOf(objArr[18].toString()));
