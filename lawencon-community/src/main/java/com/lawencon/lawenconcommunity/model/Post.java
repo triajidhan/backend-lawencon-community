@@ -37,9 +37,7 @@ public class Post extends BaseEntity{
 	@Column(name="title_poll")
 	private String titlePoll;	
 	
-	
 	@OneToOne
-	@JoinColumn(name="tb_post_type")
+	@JoinColumn(name="post_type_id")
 	private PostType postType;
-	
 }

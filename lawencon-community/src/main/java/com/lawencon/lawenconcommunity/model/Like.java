@@ -20,12 +20,12 @@ public class Like extends BaseEntity {
 	private static final long serialVersionUID = -2153507728509756122L;
 
 	@OneToOne
-	@JoinColumn(name = "tb_like")
-	private User userId;
+	@JoinColumn(name = "like_id")
+	private User user;
 	
 	@OneToOne
-	@JoinColumn(name = "tb_post")
-	private Post postId;
+	@JoinColumn(name = "post_id")
+	private Post post;
 	
 	
 }

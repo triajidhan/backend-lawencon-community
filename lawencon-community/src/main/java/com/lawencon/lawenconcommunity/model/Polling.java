@@ -12,7 +12,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tb_post_attachment")
+@Table(name = "tb_polling")
 @Getter
 @Setter
 public class Polling extends BaseEntity{
@@ -29,7 +29,7 @@ public class Polling extends BaseEntity{
 	private Integer totalPoll;
 	
 	@OneToOne
-	@JoinColumn(name = "tb_post")
+	@JoinColumn(name = "post_id")
 	private Post post;
 	
 }

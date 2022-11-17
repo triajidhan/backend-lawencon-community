@@ -28,6 +28,7 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 	private final FileDao fileDao;
 	private final BalanceDao balanceDao;
 	private final PasswordEncoder passwordEncoder;
+	
 	public UserSevice(UserDao userDao, RoleDao roleDao, FileDao fileDao, BalanceDao balanceDao, PasswordEncoder passwordEncoder) {
 		this.userDao = userDao;
 		this.roleDao = roleDao;
@@ -79,6 +80,7 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 		ResponseMessageDto userInsertResDto = new ResponseMessageDto();
 		userInsertResDto.setMessage("Registration is Failed");
 		valInsert(data);
+		
 		try {
 			begin();
 			fileInsert = fileDao.save(data.getFile());

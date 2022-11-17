@@ -20,10 +20,16 @@ public class SecurityConfig {
 		requestMatchers.add(new AntPathRequestMatcher("/users/register", HttpMethod.POST.name()));
 //		requestMatchers.add(new AntPathRequestMatcher("/users/**", HttpMethod.POST.name()));
 //		requestMatchers.add(new AntPathRequestMatcher("/users/**", HttpMethod.PUT.name()));
+		
 		requestMatchers.add(new AntPathRequestMatcher("/files/**", HttpMethod.GET.name()));
 		requestMatchers.add(new AntPathRequestMatcher("/swagger-ui/**", HttpMethod.GET.name()));
 		requestMatchers.add(new AntPathRequestMatcher("/v3/**", HttpMethod.GET.name()));
 		requestMatchers.add(new AntPathRequestMatcher("/login/**", HttpMethod.POST.name()));
+		
+		requestMatchers.add(new AntPathRequestMatcher("/posts/**", HttpMethod.GET.name()));
+		requestMatchers.add(new AntPathRequestMatcher("/articles/**", HttpMethod.GET.name()));
+		requestMatchers.add(new AntPathRequestMatcher("/activities/**", HttpMethod.GET.name()));
+		
 		return requestMatchers;
 	}
 }

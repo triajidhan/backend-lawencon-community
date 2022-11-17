@@ -32,11 +32,11 @@ public class PaymentActivityDetail extends BaseEntity {
 	private Boolean approve;
 	
 	@OneToOne
-	@JoinColumn(name = "tb_activity")
+	@JoinColumn(name = "activity_id")
 	private Activity activity;
 	
 	@OneToOne
-	@JoinColumn(name="tb_file")
+	@JoinColumn(name="file_id")
 	private File file;
 	
 }

@@ -13,7 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tb_comment_attachment",uniqueConstraints = {
+@Table(name = "tb_payment_subscribe",uniqueConstraints = {
 	@UniqueConstraint(columnNames = "payment_code")	
 })
 @Getter
@@ -35,11 +35,11 @@ public class PaymentSubscribe extends BaseEntity {
 	private Boolean approve;
 	
 	@OneToOne
-	@JoinColumn(name="tb_user")
+	@JoinColumn(name="user_id")
 	private User user;
 	
 	@OneToOne
-	@JoinColumn(name="tb_file")
+	@JoinColumn(name="file_id")
 	private File file;
 	
 }

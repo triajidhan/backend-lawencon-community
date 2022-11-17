@@ -26,11 +26,11 @@ public class Comment extends BaseEntity{
 	private String commentBody;
 	
 	@OneToOne
-	@JoinColumn(name = "tb_post")
-	private Post postId;
+	@JoinColumn(name = "post_id")
+	private Post post;
 	
 	@OneToOne
-	@JoinColumn(name = "tb_user")
+	@JoinColumn(name = "user_id")
 	private User user;
  
 }
