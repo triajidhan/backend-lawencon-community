@@ -1,9 +1,11 @@
 package com.lawencon.lawenconcommunity.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,20 +25,20 @@ import com.lawencon.lawenconcommunity.model.User;
 
 @Service
 public class UserSevice extends BaseCoreService implements UserDetailsService{
-	private final UserDao userDao;
-	private final RoleDao roleDao;
-	private final FileDao fileDao;
-	private final BalanceDao balanceDao;
-	private final PasswordEncoder passwordEncoder;
+	@Autowired
+	private UserDao userDao;
 	
-	public UserSevice(UserDao userDao, RoleDao roleDao, FileDao fileDao, BalanceDao balanceDao, PasswordEncoder passwordEncoder) {
-		this.userDao = userDao;
-		this.roleDao = roleDao;
-		this.fileDao = fileDao;
-		this.balanceDao = balanceDao;
-		this.passwordEncoder = passwordEncoder;
-		
-	}
+	@Autowired
+	private RoleDao roleDao;
+	
+	@Autowired
+	private FileDao fileDao;
+	
+	@Autowired
+	private BalanceDao balanceDao;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -77,6 +79,7 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 	public ResponseMessageDto insertWithLogin (User data) {
 		File fileInsert = new File();
 		Balance balanceInsert = new Balance();
+		balanceInsert.setTotalBalance(new BigDecimal(0));
 		ResponseMessageDto userInsertResDto = new ResponseMessageDto();
 		userInsertResDto.setMessage("Registration is Failed");
 		valInsert(data);
@@ -93,6 +96,7 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 			userInsertResDto.setMessage("Registration is successful");
 			commit();
 		} catch (Exception e) {
+			userInsertResDto.setMessage("Registration is Failed");
 			e.printStackTrace();
 		}
 		return userInsertResDto;
@@ -101,6 +105,7 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 	public ResponseMessageDto insertWithoutLogin (User data) {
 		File fileInsert = new File();
 		Balance balanceInsert = new Balance();
+		balanceInsert.setTotalBalance(new BigDecimal(0));
 		ResponseMessageDto userInsertResDto = new ResponseMessageDto();
 		userInsertResDto.setMessage("Registration is Failed");
 		valInsert(data);

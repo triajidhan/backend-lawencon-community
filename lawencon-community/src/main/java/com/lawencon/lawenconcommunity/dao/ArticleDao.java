@@ -18,7 +18,7 @@ public class ArticleDao extends AbstractJpaDao{
 		
 		//id, article_code, title, file_id,created_by,created_at,versions
 		sql.append("SELECT ")
-		.append("id, article_code, title, file_id, created_by, created_at, versions ")
+		.append("id, article_code, title, file_id, created_by, created_at, versions, is_active ")
 		.append("FROM tb_article ")
 		.append("WHERE article_code = :articleCode");
 		
@@ -27,7 +27,7 @@ public class ArticleDao extends AbstractJpaDao{
 		Optional<Article> articleOpt = Optional.ofNullable(null);
 		
 		try {
-			articleObjs = ConnHandler.getManager().createNativeQuery(sql.toString(),Article.class)
+			articleObjs = ConnHandler.getManager().createNativeQuery(sql.toString())
 					.setParameter("articleCode",articleCode).getSingleResult();
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -51,7 +51,7 @@ public class ArticleDao extends AbstractJpaDao{
 			article.setCreatedBy(objArr[4].toString());
 			article.setCreatedAt(Timestamp.valueOf(objArr[5].toString()).toLocalDateTime());
 			article.setVersion(Integer.parseInt(objArr[6].toString()));
-			
+			article.setIsActive(Boolean.parseBoolean(objArr[7].toString()));
 			
 			articleOpt = Optional.ofNullable(article);
 		}
