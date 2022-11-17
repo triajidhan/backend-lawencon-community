@@ -21,10 +21,6 @@ public class PostService extends BaseCoreService{
 		return posts;
 	}
 	
-	
-	
-	
-	
 	public List<Post> getByUser(String userId){
 		final List<Post> posts = postDao.getByUser(userId);
 		
@@ -34,5 +30,7 @@ public class PostService extends BaseCoreService{
 	public Post getByPostCode(String postCode) {
 		return postDao.getByPostCode(postCode).get();
 	}
+	
+	
 	
 }

@@ -6,10 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lawencon.lawenconcommunity.dto.ResponseMessageDto;
 import com.lawencon.lawenconcommunity.model.Article;
 import com.lawencon.lawenconcommunity.service.ArticleService;
 
@@ -36,5 +39,11 @@ public class ArticleController {
 		final Article article = articleService.getByArticleCode(articleCode);
 		
 		return new ResponseEntity<>(article,HttpStatus.OK);
+	}
+	
+	@PostMapping()
+	public ResponseEntity<ResponseMessageDto> insert(@RequestBody Article data){
+		final ResponseMessageDto responseMessageDto = articleService.insert(data);
+		return new ResponseEntity<>(responseMessageDto,HttpStatus.CREATED);
 	}
 }
