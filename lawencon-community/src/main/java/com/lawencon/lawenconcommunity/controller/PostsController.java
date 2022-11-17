@@ -6,10 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lawencon.lawenconcommunity.dto.ResponseMessageDto;
 import com.lawencon.lawenconcommunity.model.Post;
 import com.lawencon.lawenconcommunity.service.PostService;
 
@@ -42,5 +46,17 @@ public class PostsController {
 		final Post post = postService.getByPostCode(postCode);
 		
 		return new ResponseEntity<>(post,HttpStatus.OK);
+	}
+	
+	@PostMapping()
+	public ResponseEntity<ResponseMessageDto> insert(@RequestBody Post data){
+		final ResponseMessageDto responseMessageDto = postService.insert(data);
+		return new ResponseEntity<>(responseMessageDto,HttpStatus.CREATED);
+	}
+	
+	@PutMapping()
+	public ResponseEntity<ResponseMessageDto> update(@RequestBody Post data){
+		final ResponseMessageDto responseMessageDto = postService.update(data);
+		return new ResponseEntity<>(responseMessageDto,HttpStatus.OK);
 	}
 }
