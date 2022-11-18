@@ -3,6 +3,7 @@ package com.lawencon.lawenconcommunity.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.lawencon.base.BaseCoreService;
 import com.lawencon.lawenconcommunity.dao.BookmarkDao;
@@ -14,6 +15,7 @@ import com.lawencon.lawenconcommunity.model.Like;
 import com.lawencon.lawenconcommunity.model.Post;
 import com.lawencon.lawenconcommunity.model.User;
 
+@Service
 public class BookmarkService extends BaseCoreService{
 
 	@Autowired
