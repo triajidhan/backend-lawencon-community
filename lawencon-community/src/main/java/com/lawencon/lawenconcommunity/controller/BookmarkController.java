@@ -52,4 +52,5 @@ public class BookmarkController {
 		final ResponseMessageDto responseMessageDto = bookmarkService.insert(data);
 		return new ResponseEntity<ResponseMessageDto>(responseMessageDto, HttpStatus.CREATED);
 	}
+}
 
