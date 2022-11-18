@@ -13,7 +13,6 @@ import com.lawencon.lawenconcommunity.dao.PostAttachmentDao;
 import com.lawencon.lawenconcommunity.dao.PostDao;
 import com.lawencon.lawenconcommunity.dao.PostTypeDao;
 import com.lawencon.lawenconcommunity.dto.ResponseMessageDto;
-import com.lawencon.lawenconcommunity.model.Article;
 import com.lawencon.lawenconcommunity.model.File;
 import com.lawencon.lawenconcommunity.model.Polling;
 import com.lawencon.lawenconcommunity.model.Post;
