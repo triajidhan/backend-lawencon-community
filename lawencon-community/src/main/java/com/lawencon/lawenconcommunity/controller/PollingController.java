@@ -30,7 +30,6 @@ public class PollingController {
 		return new ResponseEntity<>(pollings,HttpStatus.OK);
 	}
 	
-	
 	@GetMapping("post")
 	public ResponseEntity<List<Polling>> getByPost(@RequestParam("postId") String postId){
 		final List<Polling> pollings = pollingService.getByPost(postId);
@@ -44,4 +43,6 @@ public class PollingController {
 		
 		return new ResponseEntity<>(pollings,HttpStatus.OK);
 	}
+	
+	
 }
