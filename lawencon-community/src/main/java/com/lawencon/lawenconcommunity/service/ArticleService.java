@@ -32,8 +32,7 @@ public class ArticleService extends BaseCoreService {
 	}
 	
 	public Article getById(String id) {
-		return articleDao.getById(Article.class, id);
-				
+		return articleDao.getById(Article.class, id);	
 	}
 
 	public ResponseMessageDto insert(Article data) {

@@ -49,6 +49,10 @@ public class PostService extends BaseCoreService {
 	public Post getByPostCode(String postCode) {
 		return postDao.getByPostCode(postCode).get();
 	}
+	
+	public Post getById(String id) {
+		return postDao.getById(Post.class, id);
+	}
 
 	public ResponseMessageDto insert(Post data) {
 		Post postInsert = new Post();
@@ -224,9 +228,5 @@ public class PostService extends BaseCoreService {
 		if (postDao.getById(Post.class, data.getId()) == null) {
 			throw new RuntimeException("Post Not Found");
 		}
-	}
-	
-	public ResponseMessageDto updatePolling(Polling data) {
-		return null;
 	}
 }

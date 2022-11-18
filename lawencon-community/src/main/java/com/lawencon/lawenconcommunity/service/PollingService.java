@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.lawencon.base.BaseCoreService;
 import com.lawencon.lawenconcommunity.dao.PollingDao;
+import com.lawencon.lawenconcommunity.dto.ResponseMessageDto;
 import com.lawencon.lawenconcommunity.model.Polling;
 
 @Service
@@ -31,5 +32,36 @@ public class PollingService extends BaseCoreService{
 		List<Polling> pollings = pollingDao.getByPost(postId);
 		
 		return pollings;
+	}
+	
+	public Polling getById(String id) {
+		Polling polling = pollingDao.getById(Polling.class, id);
+		return polling;
+	}
+	
+	
+	public void valUpdate(Polling data){
+		if(pollingDao.getById(Polling.class, data.getId())== null ) {
+			throw new RuntimeException("Polling is not found!");
+		}
+	}
+	
+	public ResponseMessageDto update(Polling data) {
+		valUpdate(data);
+		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
+		responseMessageDto.setMessage("Polling Failed!");
+		Polling pollingUpdate = new Polling();
+		Polling poling = pollingDao.getById(Polling.class, data.getId());
+		begin();
+		try {
+			pollingUpdate = poling;
+			pollingUpdate.setTotalPoll(pollingUpdate.getTotalPoll()+1);
+			responseMessageDto.setMessage("Polling Success!");
+		} catch (Exception e) {
+			responseMessageDto.setMessage("Polling Failed!");
+			e.printStackTrace();
+		}
+		commit();
+		return responseMessageDto;
 	}
 }
