@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lawencon.lawenconcommunity.dto.ResponseMessageDto;
 import com.lawencon.lawenconcommunity.model.Article;
-import com.lawencon.lawenconcommunity.model.Post;
 import com.lawencon.lawenconcommunity.service.ArticleService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
