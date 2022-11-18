@@ -109,8 +109,7 @@ public class LikeDao extends AbstractJpaDao{
 		return total;
 	}
 	
-	
-	public Optional<Like> userLike(String userId,String postId){
+	public Optional<Like> userLikePost(String userId,String postId){
 		StringBuilder sql = new StringBuilder();
 		
 		sql.append("Select count(*) ")
