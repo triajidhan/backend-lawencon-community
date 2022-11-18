@@ -35,10 +35,14 @@ public class CommentService extends BaseCoreService{
 		return bookmarks;
 	}
 	
+	public Comment getById(String id) {
+		return commentDao.getByIdAndDetach(Comment.class, id);
+	}
+	
 	public ResponseMessageDto insert(Comment data) {
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
 		responseMessageDto.setMessage("Comment Failed!");
-		valFk(data);
+		valInsert(data);
 		begin();
 		try {
 			commentDao.save(data);
@@ -61,11 +65,46 @@ public class CommentService extends BaseCoreService{
 			throw new RuntimeException("ID must be empty!");
 		}
 	}
+	
 	public void valFk(Comment data) {
-		if(postingDao.getById(Post.class, data.getPost().getId()) == null) {
+		if(postingDao.getByIdAndDetach(Post.class, data.getPost().getId()) == null) {
 			throw new RuntimeException("There are no poll posts that you voted for!");
 		}
 	}
 	
+	public void valUpdate(Comment data) {
+		valFoundIdUpdate(data);
+	}
+	
+	public void valFoundIdUpdate(Comment data) {
+		if(commentDao.getByIdAndDetach(Comment.class, data.getId()) == null) {
+			throw new RuntimeException("Comment not found!");
+		}
+	}
+	
+	public ResponseMessageDto update(Comment data) {
+		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
+		responseMessageDto.setMessage("Comment Failed Update!");
+		valUpdate(data);
+		Comment comment = commentDao.getByIdAndDetach(Comment.class, data.getId());
+		Comment commentUpdate = comment;
+		begin();
+		try {
+			if(data.getCommentBody() != null) {				
+				commentUpdate.setCommentBody(data.getCommentBody());
+			}
+			
+			if(data.getIsActive() != null) {				
+				commentUpdate.setIsActive(data.getIsActive());
+			}
+			commentDao.save(commentUpdate);
+			responseMessageDto.setMessage("Comment Success Update!");
+		} catch (Exception e) {
+			responseMessageDto.setMessage("Comment Failed Update!");
+			e.printStackTrace();
+		}
+		commit();
+		return responseMessageDto;
+	}
 
 }

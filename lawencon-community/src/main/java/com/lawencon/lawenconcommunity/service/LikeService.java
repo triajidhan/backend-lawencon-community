@@ -5,9 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.lawencon.base.BaseCoreService;
-import com.lawencon.lawenconcommunity.dao.BookmarkDao;
 import com.lawencon.lawenconcommunity.dao.LikeDao;
-import com.lawencon.lawenconcommunity.model.Bookmark;
 import com.lawencon.lawenconcommunity.model.Like;
 
 public class LikeService extends BaseCoreService{

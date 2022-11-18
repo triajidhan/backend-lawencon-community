@@ -51,7 +51,7 @@ public class PostService extends BaseCoreService {
 	}
 	
 	public Post getById(String id) {
-		return postDao.getById(Post.class, id);
+		return postDao.getByIdAndDetach(Post.class, id);
 	}
 
 	public ResponseMessageDto insert(Post data) {
@@ -197,7 +197,7 @@ public class PostService extends BaseCoreService {
 		Post postUpdate = new Post();
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
 		responseMessageDto.setMessage("Failed!");
-		Post post = postDao.getById(Post.class, data.getId());
+		Post post = postDao.getByIdAndDetach(Post.class, data.getId());
 		valUpdate(data);
 		begin();
 		try {
@@ -230,7 +230,7 @@ public class PostService extends BaseCoreService {
 	}
 
 	public void valFoundId(Post data) {
-		if (postDao.getById(Post.class, data.getId()) == null) {
+		if (postDao.getByIdAndDetach(Post.class, data.getId()) == null) {
 			throw new RuntimeException("Post Not Found");
 		}
 	}
