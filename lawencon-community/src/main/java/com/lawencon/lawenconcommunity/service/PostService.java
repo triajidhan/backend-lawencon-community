@@ -84,19 +84,20 @@ public class PostService extends BaseCoreService {
 					pollingInsert.setTotalPoll(0);
 					pollingInsert = pollingDao.save(pollingInsert);
 				}
-
-				if (data.getFile().size() >= 0) {
-					for (int i = 0; i < data.getFile().size(); i++) {
-						File fileInsert = new File();
-						fileInsert.setFile(data.getFile().get(i).getFile());
-						fileInsert.setExt(data.getFile().get(i).getExt());
-						fileInsert = fileDao.save(fileInsert);
-
-						PostAttachment postAttachmentInsert = new PostAttachment();
-						postAttachmentInsert.setFile(fileInsert);
-						postAttachmentInsert.setPost(postInsert);
-						postAttachmentInsert = postAttachmentDao.save(postAttachmentInsert);
-					}
+				if(data.getFile() != null) {
+					if (data.getFile().size() >= 0) {
+						for (int i = 0; i < data.getFile().size(); i++) {
+							File fileInsert = new File();
+							fileInsert.setFile(data.getFile().get(i).getFile());
+							fileInsert.setExt(data.getFile().get(i).getExt());
+							fileInsert = fileDao.save(fileInsert);
+							
+							PostAttachment postAttachmentInsert = new PostAttachment();
+							postAttachmentInsert.setFile(fileInsert);
+							postAttachmentInsert.setPost(postInsert);
+							postAttachmentInsert = postAttachmentDao.save(postAttachmentInsert);
+						}
+					}					
 				}
 
 			} else if (PostType.PRE.toString().equals(postType.getPostTypeCode())) {
@@ -107,18 +108,20 @@ public class PostService extends BaseCoreService {
 				postInsert.setTitlePoll(data.getTitlePoll());
 				postInsert = postDao.save(postInsert);
 				responseMessageDto.setMessage("Success to create the Post!");
-				if (data.getFile().size() >= 0) {
-					for (int i = 0; i < data.getFile().size(); i++) {
-						File fileInsert = new File();
-						fileInsert.setFile(data.getFile().get(i).getFile());
-						fileInsert.setExt(data.getFile().get(i).getExt());
-						fileInsert = fileDao.save(fileInsert);
-
-						PostAttachment postAttachmentInsert = new PostAttachment();
-						postAttachmentInsert.setFile(fileInsert);
-						postAttachmentInsert.setPost(postInsert);
-						postAttachmentInsert = postAttachmentDao.save(postAttachmentInsert);
-					}
+				if(data.getFile() != null) {
+					if (data.getFile().size() >= 0) {
+						for (int i = 0; i < data.getFile().size(); i++) {
+							File fileInsert = new File();
+							fileInsert.setFile(data.getFile().get(i).getFile());
+							fileInsert.setExt(data.getFile().get(i).getExt());
+							fileInsert = fileDao.save(fileInsert);
+							
+							PostAttachment postAttachmentInsert = new PostAttachment();
+							postAttachmentInsert.setFile(fileInsert);
+							postAttachmentInsert.setPost(postInsert);
+							postAttachmentInsert = postAttachmentDao.save(postAttachmentInsert);
+						}
+					}					
 				}
 			} else {
 				postInsert.setContents(data.getContents());
@@ -128,18 +131,20 @@ public class PostService extends BaseCoreService {
 				postInsert.setTitlePoll(data.getTitlePoll());
 				postInsert = postDao.save(postInsert);
 				responseMessageDto.setMessage("Success to create the Post!");
-				if (data.getFile().size() >= 0) {
-					for (int i = 0; i < data.getFile().size(); i++) {
-						File fileInsert = new File();
-						fileInsert.setFile(data.getFile().get(i).getFile());
-						fileInsert.setExt(data.getFile().get(i).getExt());
-						fileInsert = fileDao.save(fileInsert);
-
-						PostAttachment postAttachmentInsert = new PostAttachment();
-						postAttachmentInsert.setFile(fileInsert);
-						postAttachmentInsert.setPost(postInsert);
-						postAttachmentInsert = postAttachmentDao.save(postAttachmentInsert);
-					}
+				if(data.getFile() != null) {
+					if (data.getFile().size() >= 0) {
+						for (int i = 0; i < data.getFile().size(); i++) {
+							File fileInsert = new File();
+							fileInsert.setFile(data.getFile().get(i).getFile());
+							fileInsert.setExt(data.getFile().get(i).getExt());
+							fileInsert = fileDao.save(fileInsert);
+							
+							PostAttachment postAttachmentInsert = new PostAttachment();
+							postAttachmentInsert.setFile(fileInsert);
+							postAttachmentInsert.setPost(postInsert);
+							postAttachmentInsert = postAttachmentDao.save(postAttachmentInsert);
+						}
+					}					
 				}
 			}
 		} catch (Exception e) {
