@@ -46,10 +46,10 @@ public class BookmarkController {
 		
 		return new ResponseEntity<>(bookmarks,HttpStatus.OK);
 	}
-	
+
 	@PostMapping
 	public ResponseEntity<ResponseMessageDto> insert(@RequestBody Bookmark data){
 		final ResponseMessageDto responseMessageDto = bookmarkService.insert(data);
 		return new ResponseEntity<ResponseMessageDto>(responseMessageDto, HttpStatus.CREATED);
 	}
-}
+

@@ -21,6 +21,8 @@ public class SecurityConfig {
 //		requestMatchers.add(new AntPathRequestMatcher("/users/**", HttpMethod.POST.name()));
 //		requestMatchers.add(new AntPathRequestMatcher("/users/**", HttpMethod.PUT.name()));
 		
+		requestMatchers.add(new AntPathRequestMatcher("/verification-code/**", HttpMethod.POST.name()));
+		
 		requestMatchers.add(new AntPathRequestMatcher("/files/**", HttpMethod.GET.name()));
 		requestMatchers.add(new AntPathRequestMatcher("/swagger-ui/**", HttpMethod.GET.name()));
 		requestMatchers.add(new AntPathRequestMatcher("/v3/**", HttpMethod.GET.name()));
