@@ -1,8 +1,10 @@
+
 package com.lawencon.lawenconcommunity.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.lawencon.base.BaseCoreService;
 import com.lawencon.lawenconcommunity.dao.CommentDao;
@@ -11,6 +13,7 @@ import com.lawencon.lawenconcommunity.dto.ResponseMessageDto;
 import com.lawencon.lawenconcommunity.model.Comment;
 import com.lawencon.lawenconcommunity.model.Post;
 
+@Service
 public class CommentService extends BaseCoreService{
 	
 	@Autowired
