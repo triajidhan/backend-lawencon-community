@@ -4,14 +4,17 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.lawencon.base.BaseEntity;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "tb_like")
 @Getter
+@Setter
 public class Like extends BaseEntity {
 
 	/**
@@ -27,5 +30,10 @@ public class Like extends BaseEntity {
 	@JoinColumn(name = "post_id")
 	private Post post;
 	
+	@Transient
+	private Integer countOfLike;
+	
+	@Transient
+	private Integer userLike;
 	
 }
