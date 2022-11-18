@@ -1,6 +1,7 @@
 package com.lawencon.lawenconcommunity.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +13,6 @@ import com.lawencon.lawenconcommunity.model.Like;
 @Repository
 public class LikeDao extends AbstractJpaDao{
 	
-
 	@SuppressWarnings("unchecked")
 	public List<Like> getByUser(String userId){
 		final StringBuilder sql = new StringBuilder();
@@ -108,4 +108,41 @@ public class LikeDao extends AbstractJpaDao{
 		
 		return total;
 	}
+	
+	public Optional<Like> userLikePost(String userId,String postId){
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("Select count(*) ")
+		.append("(SELECT count(*) from tb_like where user_id = :userId AND post_id = :postId) as user_id ")
+		.append("FROM tb_like WHERE post_id = :postId");
+		
+		
+		Object objLike = null;
+		Optional<Like> optLike = Optional.ofNullable(null);
+		
+		try {
+			objLike = ConnHandler.getManager().createNativeQuery(sql.toString(), Like.class)
+					.setParameter("userId", userId)
+					.setParameter("postId", postId)
+					.getSingleResult();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objLike != null) {
+			Object[] objArr = (Object[]) objLike;
+			
+			Like like = new Like();
+			
+			like.setCountOfLike(Integer.parseInt(objArr[0].toString()));
+			
+			like.setUserLike(Integer.parseInt(objArr[1].toString()));
+			
+			optLike = Optional.ofNullable(like);
+		}
+		
+		return optLike;
+	}
+	
+	
 }
