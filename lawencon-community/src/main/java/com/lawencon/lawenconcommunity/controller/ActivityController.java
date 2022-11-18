@@ -6,10 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lawencon.lawenconcommunity.dto.ResponseMessageDto;
 import com.lawencon.lawenconcommunity.model.Activity;
 import com.lawencon.lawenconcommunity.service.ActivityService;
 
@@ -42,6 +45,12 @@ public class ActivityController {
 		final List<Activity> activities = activityService.getByActivityType(activityTypeId);
 		
 		return new ResponseEntity<>(activities,HttpStatus.OK);
+	}
+	
+	@PostMapping()
+	public ResponseEntity<ResponseMessageDto> insert(@RequestBody Activity data){
+		final ResponseMessageDto responseMessageDto = activityService.insert(data);
+		return new ResponseEntity<ResponseMessageDto>(responseMessageDto, HttpStatus.CREATED);
 	}
 	
 }
