@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.lawencon.lawenconcommunity.model.Bookmark;
-import com.lawencon.lawenconcommunity.model.Polling;
 import com.lawencon.lawenconcommunity.service.BookmarkService;
-import com.lawencon.lawenconcommunity.service.PollingService;
 
 public class BookmarkController {
 

@@ -32,7 +32,7 @@ public class ArticleService extends BaseCoreService {
 	}
 	
 	public Article getById(String id) {
-		return articleDao.getById(Article.class, id);	
+		return articleDao.getByIdAndDetach(Article.class, id);	
 	}
 
 	public ResponseMessageDto insert(Article data) {
@@ -94,7 +94,7 @@ public class ArticleService extends BaseCoreService {
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
 		responseMessageDto.setMessage("Failed!");
 		Article articleUpdate = new Article();
-		Article article = articleDao.getById(Article.class, data.getId());
+		Article article = articleDao.getByIdAndDetach(Article.class, data.getId());
 		valUpdate(data);
 		begin();
 		try {
@@ -136,7 +136,7 @@ public class ArticleService extends BaseCoreService {
 	}
 
 	public void valFoundId(Article data) {
-		if (articleDao.getById(Article.class, data.getId()) == null) {
+		if (articleDao.getByIdAndDetach(Article.class, data.getId()) == null) {
 			throw new RuntimeException("Account Not Found");
 		}
 	}

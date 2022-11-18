@@ -35,13 +35,13 @@ public class PollingService extends BaseCoreService{
 	}
 	
 	public Polling getById(String id) {
-		Polling polling = pollingDao.getById(Polling.class, id);
+		Polling polling = pollingDao.getByIdAndDetach(Polling.class, id);
 		return polling;
 	}
 	
 	
 	public void valUpdate(Polling data){
-		if(pollingDao.getById(Polling.class, data.getId())== null ) {
+		if(pollingDao.getByIdAndDetach(Polling.class, data.getId())== null ) {
 			throw new RuntimeException("Polling is not found!");
 		}
 	}
@@ -51,7 +51,7 @@ public class PollingService extends BaseCoreService{
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
 		responseMessageDto.setMessage("Polling Failed!");
 		Polling pollingUpdate = new Polling();
-		Polling poling = pollingDao.getById(Polling.class, data.getId());
+		Polling poling = pollingDao.getByIdAndDetach(Polling.class, data.getId());
 		begin();
 		try {
 			pollingUpdate = poling;

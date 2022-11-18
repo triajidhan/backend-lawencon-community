@@ -159,7 +159,7 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 	}
 	
 	public void fkFound(User data) {		
-		if(roleDao.getById(Role.class, data.getRole().getId())==null) {
+		if(roleDao.getByIdAndDetach(Role.class, data.getRole().getId())==null) {
 			throw new RuntimeException("Role not found!");
 		}
 	}
@@ -183,7 +183,7 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 	}
 
 	public  ResponseMessageDto update(User data) {
-		User user = userDao.getById(User.class, data.getId());
+		User user = userDao.getByIdAndDetach(User.class, data.getId());
 		User userUpdate = new User();
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
 		responseMessageDto.setMessage("Failed!");
