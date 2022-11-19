@@ -34,7 +34,7 @@ public class UserDao extends AbstractJpaDao{
 		.append("INNER JOIN tb_role tr ON tu.role_id = tr.id ")
 		.append("LEFT JOIN tb_file tf ON tu.file_id = tf.id ")
 		.append("LEFT JOIN tb_balance tb ON tu.balance_id = tb.id ")
-		.append("WHERE email iLike :email");
+		.append("WHERE email iLike :email AND tu.is_active = true");
 		
 		Object objUser = null; 
 		Optional<User> objOpt = Optional.ofNullable(null);
@@ -110,6 +110,8 @@ public class UserDao extends AbstractJpaDao{
 		return objOpt;
 	}
 	
+	
+	
 	@SuppressWarnings("unchecked")
 	public List<User> getByRole(String roleCode){
 		final StringBuilder sql = new StringBuilder();
@@ -120,11 +122,12 @@ public class UserDao extends AbstractJpaDao{
 		.append("INNER JOIN tb_role tr ON tu.role_id = tr.id ")
 		.append("LEFT JOIN tb_file tf ON tu.file_id = tf.id ")
 		.append("LEFT JOIN tb_balance tb ON tu.balance_id = tb.id ")
-		.append("WHERE role_code iLike :roleCode");
+		.append("WHERE role_code iLike :roleCode AND tu.is_active = true");
 		
 		final List<User> objUsers = ConnHandler.getManager().createNativeQuery(sql.toString(), User.class)
 		.setParameter("roleCode", roleCode)
 		.getResultList();
+		
 		return objUsers;
 	}
 	
@@ -132,7 +135,8 @@ public class UserDao extends AbstractJpaDao{
 		final StringBuilder sql = new StringBuilder();
 		
 		sql.append("SELECT count(tb_user.id) as total_user from tb_user ")
-		.append("INNER JOIN tb_role tr ON tb_user.role_id = tr.id ");
+		.append("INNER JOIN tb_role tr ON tb_user.role_id = tr.id ")
+		.append("WHERE tb_user.is_active = true");
 		
 		Object objUser = null; 
 		int totalUser = 0;
@@ -156,9 +160,9 @@ public class UserDao extends AbstractJpaDao{
 	public int getTotalByRoleCode(final String roleCode) {
 		final StringBuilder sql = new StringBuilder();
 		
-		sql.append("select count(tb_user.id) as total_user from tb_user ")
+		sql.append("select count(tb_user.id) as total_user tb from tb_user ")
 		.append("INNER JOIN tb_role tr ON tb_user.role_id = tr.id ")
-		.append("WHERE tr.role_code iLike :roleCode");
+		.append("WHERE tr.role_code iLike :roleCode AND tb.is_active = true");
 		
 		Object objUser = null; 
 		int totalUser = 0;
@@ -179,7 +183,7 @@ public class UserDao extends AbstractJpaDao{
 		return totalUser;
 	}
 	
-public Optional<User> getSystem(final String roleCode){
+	public Optional<User> getSystem(final String roleCode){
 		
 		final StringBuilder sql = new StringBuilder();
 		
@@ -195,7 +199,7 @@ public Optional<User> getSystem(final String roleCode){
 		.append("INNER JOIN tb_role tr ON tu.role_id = tr.id ")
 		.append("LEFT JOIN tb_file tf ON tu.file_id = tf.id ")
 		.append("LEFT JOIN tb_balance tb ON tu.balance_id = tb.id ")
-		.append("WHERE role_code iLike :roleCode");
+		.append("WHERE role_code iLike :roleCode AND is_active = true");
 		
 		Object objUser = null; 
 		Optional<User> objOpt = Optional.ofNullable(null);

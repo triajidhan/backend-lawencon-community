@@ -22,11 +22,11 @@ public class ActivityDao extends AbstractJpaDao{
 		.append("ta.id as ta_id,ta.activity_code, ta.title,ta.provider,ta.locations,begin_schedule,finish_schedule,price, ")
 		.append("file_id, ")
 		.append("tat.id as tat_id,tat.activity_type_code,tat.activity_type_name, ")
-		.append("ta.created_by,ta.created_at,ta.versions ")
+		.append("ta.created_by,ta.created_at,ta.versions, ta.is_active ")
 		.append("FROM tb_activity ta ")
 		.append("INNER JOIN  ")
 		.append("tb_activity_type tat ON ta.activity_type_id = tat.id ")
-		.append("WHERE activity_code = :activityCode");
+		.append("WHERE activity_code = :activityCode AND ta.is_active = true");
 		
 		Object activityObjs = null;
 		
@@ -85,7 +85,7 @@ public class ActivityDao extends AbstractJpaDao{
 		sql.append("SELECT * ")
 		.append("FROM tb_activity ta ")
 		.append("INNER JOIN tb_activity_type tat  ON ta.activity_type_id = tat.id ")
-		.append("WHERE tat.id = :activityTypeId");
+		.append("WHERE tat.id = :activityTypeId AND ta.is_active = true");
 		
 		final List<Activity> objResultActivities = ConnHandler.getManager().createNativeQuery(sql.toString(),Activity.class)
 				.setParameter("activityTypeId", activityId)

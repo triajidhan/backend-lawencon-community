@@ -13,9 +13,9 @@ public class IndustryDao extends AbstractJpaDao{
 	public Optional<Industry> getByIndustryCode(final String code){
 		final StringBuilder sql = new StringBuilder();
 		
-		sql.append("SELECT id, versions, industry_code, industry_name ")
+		sql.append("SELECT id, versions, industry_code, industry_name, is_active ")
 		.append("FROM tb_industry tr ")
-		.append("WHERE industry_code = :code");
+		.append("WHERE industry_code = :code is_active = true");
 		
 		Object objIndustry = null; 
 		Optional<Industry> objOpt = null;
