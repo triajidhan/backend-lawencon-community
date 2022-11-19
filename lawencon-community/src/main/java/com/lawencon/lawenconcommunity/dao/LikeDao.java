@@ -21,7 +21,7 @@ public class LikeDao extends AbstractJpaDao{
 		.append("FROM tb_like tl ")
 		.append("INNER JOIN tb_user tu ON tu.id = tl.user_id ")
 		.append("INNER JOIN tb_post tp ON tp.id = tl.post_id ")
-		.append("WHERE user_id  = :userId");
+		.append("WHERE user_id  = :userId AND tl.is_active = true");
 		
 		List<Like> likes = ConnHandler.getManager().createNativeQuery(sql.toString(),Like.class)
 				.setParameter("userId", userId)
@@ -38,7 +38,7 @@ public class LikeDao extends AbstractJpaDao{
 		.append("FROM tb_like tl ")
 		.append("INNER JOIN tb_user tu ON tu.id = tl.user_id ")
 		.append("INNER JOIN tb_post tp ON tp.id = tl.post_id ")
-		.append("WHERE user_id  = :userId");
+		.append("WHERE user_id  = :userId AND tl.is_active = true");
 		
 		Object objLike = null;
 		int total = 0;
@@ -69,7 +69,7 @@ public class LikeDao extends AbstractJpaDao{
 		.append("FROM tb_like tl ")
 		.append("INNER JOIN tb_user tu ON tu.id = tl.user_id ")
 		.append("INNER JOIN tb_post tp ON tp.id = tl.post_id ")
-		.append("WHERE post_id  = :postId");
+		.append("WHERE post_id  = :postId AND is_active = true");
 		
 		List<Like> likes = ConnHandler.getManager().createNativeQuery(sql.toString(),Like.class)
 				.setParameter("postId", postId)
@@ -86,7 +86,7 @@ public class LikeDao extends AbstractJpaDao{
 		.append("FROM tb_like tl ")
 		.append("INNER JOIN tb_user tu ON tu.id = tl.user_id ")
 		.append("INNER JOIN tb_post tp ON tp.id = tl.post_id ")
-		.append("WHERE post_id  = :postId");
+		.append("WHERE post_id  = :postId AND tl.is_active = true");
 		
 		Object objLike = null;
 		int total = 0;
@@ -136,13 +136,10 @@ public class LikeDao extends AbstractJpaDao{
 			
 			like.setCountOfLike(Integer.parseInt(objArr[0].toString()));
 			
-			like.setUserLike(Integer.parseInt(objArr[1].toString()));
+			like.setUserLikePost(Integer.parseInt(objArr[1].toString()));
 			
 			optLike = Optional.ofNullable(like);
 		}
-		
 		return optLike;
 	}
-	
-	
 }

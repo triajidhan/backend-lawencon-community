@@ -15,8 +15,8 @@ public class PositionDao extends AbstractJpaDao
 		final StringBuilder sql = new StringBuilder();
 		
 		sql.append("SELECT id, versions, position_code, position_name ")
-		.append("FROM tb_position tp ")
-		.append("WHERE position_code = :code");
+		.append("FROM tb_position, is_active tp ")
+		.append("WHERE position_code = :code AND is_active = true");
 		
 		Object objPosition = null; 
 		Optional<Position> objOpt = null;

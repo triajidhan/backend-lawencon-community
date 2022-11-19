@@ -20,7 +20,7 @@ public class ArticleDao extends AbstractJpaDao{
 		sql.append("SELECT ")
 		.append("id, article_code, title, file_id, created_by, created_at, versions, is_active ")
 		.append("FROM tb_article ")
-		.append("WHERE article_code = :articleCode");
+		.append("WHERE article_code = :articleCode AND is_active = true");
 		
 		Object articleObjs = null;
 		

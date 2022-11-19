@@ -23,7 +23,7 @@ public class PostDao extends AbstractJpaDao{
 		.append("tp.created_by,tp.created_at, tp.versions ")
 		.append("FROM tb_post tp ")
 		.append("INNER JOIN tb_post_type tpt  ON tp.post_type_id = tpt.id ")
-		.append("WHERE post_code = :postCode");
+		.append("WHERE post_code = :postCode AND tp.is_active = true");
 		
 		Object objPost = null;
 		Optional<Post> optPost = Optional.ofNullable(null);
@@ -72,7 +72,7 @@ public class PostDao extends AbstractJpaDao{
 		sql.append("SELECT * ")
 		.append("FROM tb_post tp ")
 		.append("INNER JOIN tb_post_type tpt ON tp.post_type_id = tpt.id ")
-		.append("WHERE tp.created_by = :userId");
+		.append("WHERE tp.created_by = :userId AND tp.is_active = true");
 		
 		final List<Post> objResultPosts = ConnHandler.getManager().createNativeQuery(sql.toString(),Post.class)
 				.setParameter("userId", userId)

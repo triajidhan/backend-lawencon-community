@@ -19,7 +19,7 @@ public class BookmarkDao extends AbstractJpaDao{
 		.append("FROM tb_bookmark tb")
 		.append("INNER JOIN tb_user tu ON tu.id = tb.user_id ")
 		.append("INNER JOIN tb_post tp ON tp.id = tb.post_id ")
-		.append("WHERE user_id  = :userId");
+		.append("WHERE user_id  = :userId AND is_active = true");
 		
 		List<Bookmark> bookmarks = ConnHandler.getManager().createNativeQuery(sql.toString(),Bookmark.class)
 				.setParameter("userId", userId)
@@ -36,7 +36,7 @@ public class BookmarkDao extends AbstractJpaDao{
 		.append("FROM tb_bookmark tb")
 		.append("INNER JOIN tb_user tu ON tu.id = tb.user_id ")
 		.append("INNER JOIN tb_post tp ON tp.id = tb.post_id ")
-		.append("WHERE post_id  = :postId");
+		.append("WHERE post_id  = :postId AND is_active = true");
 		
 		List<Bookmark> bookmarks = ConnHandler.getManager().createNativeQuery(sql.toString(),Bookmark.class)
 				.setParameter("postId", postId)
