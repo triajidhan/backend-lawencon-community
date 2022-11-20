@@ -42,4 +42,22 @@ public class PollingDao extends AbstractJpaDao{
 		
 		return pollings;
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Polling> getByIsActive(int startPosition,int limit){
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT * FROM tb_polling tpol ")
+		.append("INNER JOIN tb_post tpos ON  tpos.id = tpol.post_id ")
+		.append("WHERE tpol.is_active = true ")
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		final List<Polling> objResultPollings = ConnHandler.getManager().createNativeQuery(sql.toString(),Polling.class)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
+				.getResultList();
+		
+		return objResultPollings;
+	}
 }

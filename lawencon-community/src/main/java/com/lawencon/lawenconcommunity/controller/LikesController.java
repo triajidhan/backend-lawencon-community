@@ -56,7 +56,7 @@ public class LikesController {
 	
 	@GetMapping("total-users")
 	public ResponseEntity<Integer> getTotalByUser(@RequestParam("userId") String userId){
-		final int total = likeService.getTotalByPost(userId);
+		final int total = likeService.getTotalByUser(userId);
 		
 		return new ResponseEntity<>(total,HttpStatus.OK);
 	}

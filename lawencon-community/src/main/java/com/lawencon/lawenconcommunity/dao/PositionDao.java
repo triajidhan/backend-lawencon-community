@@ -1,10 +1,12 @@
 package com.lawencon.lawenconcommunity.dao;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
 import com.lawencon.base.AbstractJpaDao;
+import com.lawencon.base.ConnHandler;
 import com.lawencon.lawenconcommunity.model.Position;
 
 @Repository
@@ -14,8 +16,8 @@ public class PositionDao extends AbstractJpaDao
 	public Optional<Position> getByIndustryCode(String code){
 		final StringBuilder sql = new StringBuilder();
 		
-		sql.append("SELECT id, versions, position_code, position_name ")
-		.append("FROM tb_position, is_active tp ")
+		sql.append("SELECT id, versions, created_by, position_code, position_name, is_active ")
+		.append("FROM tb_position tp ")
 		.append("WHERE position_code = :code AND is_active = true");
 		
 		Object objPosition = null; 
@@ -43,5 +45,21 @@ public class PositionDao extends AbstractJpaDao
 		}
 		
 		return objOpt;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Position> getByIsActive(int startPosition,int limit){
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT * ")
+		.append("FROM tb_position tp ")
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		final List<Position> objResultPositions = ConnHandler.getManager().createNativeQuery(sql.toString(),Position.class)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
+				.getResultList();
+		
+		return objResultPositions;
 	}
 }

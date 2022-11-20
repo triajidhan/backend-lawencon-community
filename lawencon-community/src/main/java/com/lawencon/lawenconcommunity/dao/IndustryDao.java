@@ -1,10 +1,12 @@
 package com.lawencon.lawenconcommunity.dao;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
 import com.lawencon.base.AbstractJpaDao;
+import com.lawencon.base.ConnHandler;
 import com.lawencon.lawenconcommunity.model.Industry;
 
 @Repository
@@ -42,5 +44,22 @@ public class IndustryDao extends AbstractJpaDao{
 		}
 		
 		return objOpt;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Industry> getByIsActive(int startPosition,int limit){
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT * ")
+		.append("FROM tb_industry tp ")
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		final List<Industry> objResultIndustries = ConnHandler.getManager().createNativeQuery(sql.toString(),Industry.class)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
+				.getResultList();
+		
+		return objResultIndustries;
 	}
 }

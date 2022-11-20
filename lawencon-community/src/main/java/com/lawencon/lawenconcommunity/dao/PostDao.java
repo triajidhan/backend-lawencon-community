@@ -42,19 +42,16 @@ public class PostDao extends AbstractJpaDao{
 			final Post post = new Post();
 			final PostType postType = new PostType();
 			
-			//tp.id as tp_id, post_code, title , contents , title_poll,
 			post.setId(objArr[0].toString());
 			post.setPostCode(objArr[1].toString());
 			post.setTitle(objArr[2].toString());
 			post.setContents(objArr[3].toString());
 			post.setTitlePoll(objArr[4].toString());
 			
-			// tpt.id as tpt_id,tpt.post_type_code, tpt.post_type_name,
 			postType.setId(objArr[5].toString());
 			postType.setPostTypeCode(objArr[6].toString());
 			postType.setPostTypeName(objArr[7].toString());
 			
-			// tp.created_by,tp.created_at, tp.versions
 			post.setCreatedBy(objArr[8].toString());
 			post.setCreatedAt(Timestamp.valueOf(objArr[9].toString()).toLocalDateTime());
 			post.setVersion(Integer.parseInt(objArr[10].toString()));
@@ -80,4 +77,23 @@ public class PostDao extends AbstractJpaDao{
 		
 		return objResultPosts;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Post> getByIsActive(int startPosition,int limit){
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT * ")
+		.append("FROM tb_post tp ")
+		.append("INNER JOIN tb_post_type tpt ON tp.post_type_id = tpt.id ")
+		.append("WHERE tp.is_active = true ")
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		final List<Post> objResultPosts = ConnHandler.getManager().createNativeQuery(sql.toString(),Post.class)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
+				.getResultList();
+		
+		return objResultPosts;
+	}
+	
 }
