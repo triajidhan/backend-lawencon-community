@@ -82,10 +82,11 @@ public class PaymentActivityDetailService extends BaseCoreService {
 		valUpdate(data);
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
 		responseMessageDto.setMessage("Approving Failed!");
-		User user = userDao.getById(User.class, data.getCreatedBy());
 		PaymentActivityDetail paymentActivityDetail = paymentActivityDetailDao.getById(PaymentActivityDetail.class,
 				data.getId());
+		User user = userDao.getById(User.class, paymentActivityDetail.getActivity().getCreatedBy());
 		PaymentActivityDetail paymentApproving = paymentActivityDetail;
+		User userSystem = userDao.getById(User.class,userDao.getSystem("SYS").get().getId());
 		begin();
 		try {
 			paymentApproving.setApprove(true);
@@ -96,6 +97,14 @@ public class PaymentActivityDetailService extends BaseCoreService {
 			balance.setTotalBalance(totalBalance);
 			user.setBalance(balance);
 			userDao.save(user);
+			
+			BigDecimal totalBalanceSystem = userSystem.getBalance().getTotalBalance().add(new BigDecimal(5000));
+			Balance sysBalance = new Balance();
+			sysBalance = userSystem.getBalance();
+			sysBalance.setTotalBalance(totalBalanceSystem);
+			userSystem.setBalance(sysBalance);
+			userDao.save(userSystem);
+			
 			responseMessageDto.setMessage("Approving Success!");
 		} catch (Exception e) {
 			responseMessageDto.setMessage("Approving Failed!");
