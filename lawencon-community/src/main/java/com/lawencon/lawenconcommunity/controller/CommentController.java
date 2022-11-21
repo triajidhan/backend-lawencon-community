@@ -34,7 +34,6 @@ public class CommentController {
 		Comment comment = commentService.getById(id);
 		
 		return new ResponseEntity<>(comment,HttpStatus.OK);
-		
 	}
 	
 	@GetMapping("users")

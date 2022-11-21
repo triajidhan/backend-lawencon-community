@@ -46,6 +46,11 @@ public class CommentService extends BaseCoreService{
 		return commentDao.getByIdAndDetach(Comment.class, id);
 	}
 	
+	
+	public List<Comment> getByIsActive(Integer startPosition, Integer limitPage){
+		return commentDao.getByIsActive(startPosition, limitPage);
+	}
+	
 	public ResponseMessageDto insert(Comment data) {
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
 		responseMessageDto.setMessage("Comment Failed!");

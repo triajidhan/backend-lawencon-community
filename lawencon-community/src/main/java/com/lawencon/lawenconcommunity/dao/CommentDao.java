@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.lawencon.base.AbstractJpaDao;
 import com.lawencon.base.ConnHandler;
+import com.lawencon.lawenconcommunity.model.Bookmark;
 import com.lawencon.lawenconcommunity.model.Comment;
 
 @Repository
@@ -43,5 +44,23 @@ public class CommentDao extends AbstractJpaDao{
 				.getResultList();
 		
 		return comments;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Comment> getByIsActive(int startPosition,int limit){
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT * ")
+		.append("FROM tb_comment tc ")
+		.append("INNER JOIN tb_user tu ON tu.id = tc.user_id ")
+		.append("INNER JOIN tb_post tp ON tp.id = tc.post_id ")
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		final List<Comment> objResult = ConnHandler.getManager().createNativeQuery(sql.toString(),Bookmark.class)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
+				.getResultList();
+		
+		return objResult;
 	}
 }

@@ -110,7 +110,7 @@ public class BookmarkDao extends AbstractJpaDao{
 	public Optional<Bookmark> getUserBookmarkPost(String userId,String postId){
 		StringBuilder sql = new StringBuilder();
 		
-		sql.append("Select count(*) ")
+		sql.append("Select count(*), ")
 		.append("(SELECT count(*) from tb_bookmark where user_id = :userId AND post_id = :postId) as user_id ")
 		.append("FROM tb_bookmark WHERE post_id = :postId");
 		
