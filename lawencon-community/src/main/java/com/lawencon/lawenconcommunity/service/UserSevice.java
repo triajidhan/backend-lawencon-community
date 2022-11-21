@@ -40,6 +40,7 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		final Optional<User> userOptional = userDao.getByEmail(username);
@@ -214,6 +215,15 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 			
 			if(data.getStatusSubscribe()!=null) {
 				userUpdate.setStatusSubscribe(data.getStatusSubscribe());
+			}
+			
+			if(data.getPass()!=null) {
+				final Boolean checkpassword = passwordEncoder.matches(data.getPass(), userUpdate.getPass());
+				if(checkpassword) {
+					userUpdate.setPass(passwordEncoder.encode(data.getPass()));
+				}else {
+					throw new RuntimeException("Wrong Password!");
+				}
 			}
 			try {
 				if (data.getFile() != null) {
