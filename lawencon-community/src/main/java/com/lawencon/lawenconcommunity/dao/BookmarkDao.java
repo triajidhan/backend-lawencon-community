@@ -1,6 +1,7 @@
 package com.lawencon.lawenconcommunity.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -43,6 +44,38 @@ public class BookmarkDao extends AbstractJpaDao{
 				.getResultList();
 		
 		return bookmarks;
+	}
+	
+	public Optional<Bookmark> userBookmarkPost(String userId,String postId){
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("Select count(*) ")
+		.append("(SELECT count(*) from tb_bookmark where user_id = :userId AND post_id = :postId) as user_id ")
+		.append("FROM tb_bookmark WHERE post_id = :postId");
+		
+		
+		Object objBookmark = null;
+		Optional<Bookmark> optLike = Optional.ofNullable(null);
+		
+		try {
+			objBookmark = ConnHandler.getManager().createNativeQuery(sql.toString())
+					.setParameter("userId", userId)
+					.setParameter("postId", postId)
+					.getSingleResult();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objBookmark != null) {
+			Object[] objArr = (Object[]) objBookmark;
+			
+			Bookmark bookmark = new Bookmark();
+			bookmark.setCountOfBookmark(Integer.parseInt(objArr[0].toString()));
+			bookmark.setUserBookmarkPost(Integer.parseInt(objArr[1].toString()));
+			
+			optLike = Optional.ofNullable(bookmark);
+		}
+		return optLike;
 	}
 	
 	@SuppressWarnings("unchecked")

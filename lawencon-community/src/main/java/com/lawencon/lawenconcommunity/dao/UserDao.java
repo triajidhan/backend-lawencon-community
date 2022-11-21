@@ -110,26 +110,7 @@ public class UserDao extends AbstractJpaDao{
 		return objOpt;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<User> getByIsActive(int startPosition,int limit){
-		final StringBuilder sql = new StringBuilder();
-		
-		sql.append("SELECT * FROM tb_user tu ")
-		.append("LEFT JOIN tb_industry ti ON tu.industry_id = ti.id ")
-		.append("LEFT JOIN tb_position tp ON tu.position_id = tp.id ")
-		.append("INNER JOIN tb_role tr ON tu.role_id = tr.id ")
-		.append("LEFT JOIN tb_file tf ON tu.file_id = tf.id ")
-		.append("LEFT JOIN tb_balance tb ON tu.balance_id = tb.id ")
-		.append("WHERE tu.is_active = true ")
-		.append("LIMIT :limit OFFSET :startPosition");
-		
-		final List<User> objUsers = ConnHandler.getManager().createNativeQuery(sql.toString())
-		.setParameter("startPosition", startPosition)
-		.setParameter("limit", limit)
-		.getResultList();
-		
-		return objUsers;
-	}
+	
 	
 	
 	@SuppressWarnings("unchecked")
@@ -291,5 +272,51 @@ public class UserDao extends AbstractJpaDao{
 		}
 		
 		return objOpt;
+	}
+	
+	public int getTotalSubscribe() {
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("select count(tu.id) as total_user from tb_user tu ")
+		.append("WHERE is_active = true AND status_subscribe = true ");
+		
+		Object objUser = null; 
+		int totalUserSubscribe = 0;
+		try {
+			objUser = ConnHandler.getManager().createNativeQuery(sql.toString())
+			.getSingleResult();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objUser != null) {
+			Object objArr = (Object) objUser;
+			totalUserSubscribe =  Integer.parseInt(objArr.toString());
+		}
+		
+		return totalUserSubscribe;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<User> getByIsActive(int startPosition,int limit){
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT * FROM tb_user tu ")
+		.append("LEFT JOIN tb_industry ti ON tu.industry_id = ti.id ")
+		.append("LEFT JOIN tb_position tp ON tu.position_id = tp.id ")
+		.append("INNER JOIN tb_role tr ON tu.role_id = tr.id ")
+		.append("LEFT JOIN tb_file tf ON tu.file_id = tf.id ")
+		.append("LEFT JOIN tb_balance tb ON tu.balance_id = tb.id ")
+		.append("WHERE tu.is_active = true ")
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		final List<User> objUsers = ConnHandler.getManager().createNativeQuery(sql.toString())
+		.setParameter("startPosition", startPosition)
+		.setParameter("limit", limit)
+		.getResultList();
+		
+		return objUsers;
 	}
 }
