@@ -88,7 +88,7 @@ public class PostService extends BaseCoreService {
 					if (data.getFile().size() >= 0) {
 						for (int i = 0; i < data.getFile().size(); i++) {
 							File fileInsert = new File();
-							fileInsert.setFile(data.getFile().get(i).getFile());
+							fileInsert.setFiles(data.getFile().get(i).getFiles());
 							fileInsert.setExt(data.getFile().get(i).getExt());
 							fileInsert = fileDao.save(fileInsert);
 							
@@ -112,7 +112,7 @@ public class PostService extends BaseCoreService {
 					if (data.getFile().size() >= 0) {
 						for (int i = 0; i < data.getFile().size(); i++) {
 							File fileInsert = new File();
-							fileInsert.setFile(data.getFile().get(i).getFile());
+							fileInsert.setFiles(data.getFile().get(i).getFiles());
 							fileInsert.setExt(data.getFile().get(i).getExt());
 							fileInsert = fileDao.save(fileInsert);
 							
@@ -135,7 +135,7 @@ public class PostService extends BaseCoreService {
 					if (data.getFile().size() >= 0) {
 						for (int i = 0; i < data.getFile().size(); i++) {
 							File fileInsert = new File();
-							fileInsert.setFile(data.getFile().get(i).getFile());
+							fileInsert.setFiles(data.getFile().get(i).getFiles());
 							fileInsert.setExt(data.getFile().get(i).getExt());
 							fileInsert = fileDao.save(fileInsert);
 							

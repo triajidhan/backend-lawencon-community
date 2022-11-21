@@ -9,7 +9,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lawencon.base.BaseEntity;
 
 import lombok.Getter;
@@ -40,11 +39,9 @@ public class Activity extends BaseEntity{
 	@Column(name="locations",length=100)
 	private String location;
 	
-	@JsonFormat(pattern="yyyy-mm-dd hh:mm:ss. fffffffff")
 	@Column(name="begin_schedule")
 	private LocalDateTime beginSchedule;
 
-	@JsonFormat(pattern="yyyy-mm-dd hh:mm:ss. fffffffff")
 	@Column(name="finish_schedule")
 	private LocalDateTime finishSchedule;
 	

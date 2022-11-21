@@ -17,7 +17,6 @@ public class ArticleDao extends AbstractJpaDao{
 	public Optional<Article> getByArticleCode(final String articleCode){
 		final StringBuilder sql = new StringBuilder();
 		
-		//id, article_code, title, file_id,created_by,created_at,versions
 		sql.append("SELECT ")
 		.append("id, article_code, title, file_id, created_by, created_at, versions, is_active ")
 		.append("FROM tb_article ")
@@ -58,6 +57,31 @@ public class ArticleDao extends AbstractJpaDao{
 		}
 		
 		return articleOpt;
+	}
+	
+	public int getTotalArticle() {
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT count(*) from tb_article ")
+		.append("WHERE is_active = true");
+		
+		
+		Object objArticle = null;
+		int totalArticle = 0;
+		try {
+			objArticle = ConnHandler.getManager().createNativeQuery(sql.toString())
+					.getSingleResult();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objArticle != null) {
+			Object obj = (Object) objArticle;
+			
+			totalArticle = Integer.parseInt(obj.toString());
+		}
+		
+		return totalArticle;
 	}
 	
 	@SuppressWarnings("unchecked")
