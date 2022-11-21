@@ -45,6 +45,7 @@ public class ActivityDao extends AbstractJpaDao{
 			final ActivityType activityType = new ActivityType();
 			final File file = new File();
 
+
 			activity.setId(objArr[0].toString());
 			activity.setActivityCode(objArr[1].toString());
 			activity.setTitle(objArr[2].toString());
@@ -54,10 +55,12 @@ public class ActivityDao extends AbstractJpaDao{
 			activity.setFinishSchedule(Timestamp.valueOf(objArr[6].toString()).toLocalDateTime());
 			activity.setPrice(Float.valueOf(objArr[7].toString()));
 			
+
 			if(objArr[8] != null) {
 				file.setId(objArr[8].toString());
 			}
 			
+
 			activityType.setId(objArr[9].toString());
 			activityType.setActivityTypeCode(objArr[10].toString());
 			activityType.setActivityTypeName(objArr[11].toString());

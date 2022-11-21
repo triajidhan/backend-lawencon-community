@@ -59,6 +59,7 @@ public class ArticleDao extends AbstractJpaDao{
 		return articleOpt;
 	}
 	
+
 	public int getTotalArticle() {
 		final StringBuilder sql = new StringBuilder();
 		

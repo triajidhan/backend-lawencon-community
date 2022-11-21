@@ -47,6 +47,31 @@ public class PositionDao extends AbstractJpaDao
 		return objOpt;
 	}
 	
+	public int totalPosition() {
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT count(*) from tb_position ")
+		.append("WHERE is_active = true");
+		
+		
+		Object objPosition = null;
+		int totalPosition = 0;
+		try {
+			objPosition = ConnHandler.getManager().createNativeQuery(sql.toString())
+					.getSingleResult();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objPosition != null) {
+			Object obj = (Object) objPosition;
+			
+			totalPosition = Integer.parseInt(obj.toString());
+		}
+		
+		return totalPosition;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Position> getByIsActive(int startPosition,int limit){
 		final StringBuilder sql = new StringBuilder();

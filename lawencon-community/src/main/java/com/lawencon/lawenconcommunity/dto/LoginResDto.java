@@ -15,6 +15,7 @@ public class LoginResDto {
 	private String id;
 	private String fullName;
 	private String email;
+	private String company;
 	private Role role;
 	private File file;
 	private Position position;

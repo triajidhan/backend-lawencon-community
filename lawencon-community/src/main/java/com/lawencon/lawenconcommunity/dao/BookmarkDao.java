@@ -76,6 +76,7 @@ public class BookmarkDao extends AbstractJpaDao{
 		return bookmarks;
 	}
 	
+
 	public int getTotalByPost(String postId){
 		final StringBuilder sql = new StringBuilder();
 		
@@ -115,7 +116,9 @@ public class BookmarkDao extends AbstractJpaDao{
 		
 		
 		Object objBookmark = null;
+
 		Optional<Bookmark> opt = Optional.ofNullable(null);
+
 		
 		try {
 			objBookmark = ConnHandler.getManager().createNativeQuery(sql.toString())
@@ -133,6 +136,7 @@ public class BookmarkDao extends AbstractJpaDao{
 			bookmark.setCountOfBookmark(Integer.parseInt(objArr[0].toString()));
 			bookmark.setUserBookmarkPost(Integer.parseInt(objArr[1].toString()));
 			
+
 			opt = Optional.ofNullable(bookmark);
 		}
 		return opt;
