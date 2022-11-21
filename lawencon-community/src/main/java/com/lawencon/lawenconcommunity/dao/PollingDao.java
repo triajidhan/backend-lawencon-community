@@ -43,7 +43,6 @@ public class PollingDao extends AbstractJpaDao{
 		return pollings;
 	}
 	
-	
 	@SuppressWarnings("unchecked")
 	public List<Polling> getByIsActive(int startPosition,int limit){
 		final StringBuilder sql = new StringBuilder();

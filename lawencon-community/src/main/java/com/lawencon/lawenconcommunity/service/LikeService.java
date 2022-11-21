@@ -64,6 +64,12 @@ public class LikeService extends BaseCoreService{
 		return likeDao.userLikePost(userId, postId).get();
 	}
 	
+	public List<Like> getByIsActive(Integer startPosition, Integer limitPage){
+		List<Like> likes = likeDao.getByIsActive(startPosition, limitPage);
+		
+		return likes;
+	}
+	
 	public ResponseMessageDto insert(Like data) {
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
 		responseMessageDto.setMessage("Like Failed!");
