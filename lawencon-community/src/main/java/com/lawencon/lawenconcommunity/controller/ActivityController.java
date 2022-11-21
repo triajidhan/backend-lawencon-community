@@ -28,7 +28,7 @@ public class ActivityController {
 	
 	@GetMapping
 	public ResponseEntity<List<Activity>> getAll(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limitPage){
-		final List<Activity> activities = activityService.getAll(startPosition, limitPage);
+		final List<Activity> activities = activityService.getByIsActive(startPosition, limitPage);
 		
 		return new ResponseEntity<>(activities,HttpStatus.OK);
 	}
@@ -41,11 +41,20 @@ public class ActivityController {
 	}
 	
 	@GetMapping("activity-type")
-	public ResponseEntity<List<Activity>> getByActivity(@RequestParam("activityTypeId") String activityTypeId){
-		final List<Activity> activities = activityService.getByActivityType(activityTypeId);
+	public ResponseEntity<List<Activity>> getByActivity(@RequestParam("activityTypeId") String activityTypeId, @RequestParam("startPosition") int startPosition,@RequestParam("limit") int limitPage){
+		final List<Activity> activities = activityService.getByActivityType(activityTypeId,startPosition,limitPage);
 		
 		return new ResponseEntity<>(activities,HttpStatus.OK);
 	}
+	
+	@GetMapping("total-activity-code")
+	public ResponseEntity<Integer> getTotalByActivityCode(@RequestParam("activityCode") String activityCode){
+		int activity = activityService.getTotalByActivityCode(activityCode);
+		
+		return new ResponseEntity<>(activity,HttpStatus.OK);
+	}
+	
+	
 	
 	@PostMapping()
 	public ResponseEntity<ResponseMessageDto> insert(@RequestBody Activity data){

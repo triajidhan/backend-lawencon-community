@@ -34,6 +34,16 @@ public class ArticleService extends BaseCoreService {
 	public Article getById(String id) {
 		return articleDao.getByIdAndDetach(Article.class, id);	
 	}
+	
+	public int getTotalArticle() {
+		return articleDao.getTotalArticle();
+	}
+	
+	public List<Article> getByIsActive(int startPosition,int limit){
+		final List<Article> activities = articleDao.getByIsActive(startPosition, limit);
+		
+		return activities;
+	}
 
 	public ResponseMessageDto insert(Article data) {
 

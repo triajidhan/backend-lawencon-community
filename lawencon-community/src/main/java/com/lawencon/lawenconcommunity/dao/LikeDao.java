@@ -80,7 +80,6 @@ public class LikeDao extends AbstractJpaDao{
 	public int getTotalByPost(String postId){
 		final StringBuilder sql = new StringBuilder();
 		
-		
 		sql.append("SELECT count(*) ")
 		.append("FROM tb_like tl ")
 		.append("INNER JOIN tb_user tu ON tu.id = tl.user_id ")

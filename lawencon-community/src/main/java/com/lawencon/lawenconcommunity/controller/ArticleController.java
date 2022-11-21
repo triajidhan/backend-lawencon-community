@@ -30,11 +30,17 @@ public class ArticleController {
 	
 	@GetMapping()
 	public ResponseEntity<List<Article>> getAll(@RequestParam("startPostion") int startPosition, @RequestParam("limit") int limit){
-		final List<Article> articles = articleService.getAll(startPosition, limit);
+		final List<Article> articles = articleService.getByIsActive(startPosition, limit);
 		
 		return new ResponseEntity<>(articles,HttpStatus.OK);
 	}
 	
+	@GetMapping("total-article")
+	public ResponseEntity<Integer> getTotalByArticle(){
+		int activity = articleService.getTotalArticle();
+		
+		return new ResponseEntity<>(activity,HttpStatus.OK);
+	}
 	
 	@GetMapping("article-code")
 	public ResponseEntity<Article> getByArticleCode(@RequestParam("articleCode") String articleCode){

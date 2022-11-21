@@ -48,6 +48,28 @@ public class BookmarkService extends BaseCoreService{
 		return bookmarks;
 	}
 	
+	public List<Bookmark> getByIsActive(Integer startPosition, Integer limitPage){
+		List<Bookmark> bookmarks = bookmarkDao.getByIsActive(startPosition, limitPage);
+		
+		return bookmarks;
+	}
+	
+	public int getTotalByUser(String userId){
+		int totalBookmarks = bookmarkDao.getTotalByUser(userId);
+		
+		return totalBookmarks;
+	}
+	
+	public int getTotalByPost(String postId){
+		int totalBookmarks = bookmarkDao.getTotalByPost(postId);
+		
+		return totalBookmarks;
+	}
+	
+	public Bookmark getUserBookmarkPost(String userId,String postId) {
+		return bookmarkDao.getUserBookmarkPost(userId, postId).get();
+	}
+	
 	public ResponseMessageDto insert(Bookmark data) {
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
 		responseMessageDto.setMessage("Bookmark Failed!");

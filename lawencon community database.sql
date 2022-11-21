@@ -587,3 +587,23 @@ ALTER TABLE tb_payment_activity_detail
 --('Un','Unsubscribe');
 --
 --select * from tb_status_subscribe; 
+   
+   
+   --- INSERT INDUSTRIAL
+INSERT INTO tb_industry(id,industry_code,industry_name,created_by,versions) VALUES
+('start-up-123','SU','Start Up','e53b7bb7-663d-4140-ba1f-6eaf6472f286',0),
+('corporate-123','C','Corporated','e53b7bb7-663d-4140-ba1f-6eaf6472f286',0);
+
+select * from tb_industry;
+
+--- INSERT FILE 
+--INSERT INTO tb_file(id,file,ext,created_by,versions) VALUES
+--('wedsfvgfd','SHP','Shoppee',1,0),('sWRFEGF5','TP','Tokopedia',1,0);
+
+select * from tb_file;
+
+--- INSERT POSITION
+INSERT INTO tb_position(id,position_code,position_name,created_by,versions) VALUES
+('administrator-123','ADM','Administrator','e53b7bb7-663d-4140-ba1f-6eaf6472f286',0),
+('programmer-123','PG','Programmer','e53b7bb7-663d-4140-ba1f-6eaf6472f286',0),
+('trainer-123','TR','Trainer','e53b7bb7-663d-4140-ba1f-6eaf6472f286',0);
