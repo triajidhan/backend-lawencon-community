@@ -27,7 +27,7 @@ public class LikesController {
 	
 	@GetMapping
 	public ResponseEntity<List<Like>> getAll(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limitPage){
-		final List<Like> likes = likeService.getAll(startPosition, limitPage);
+		final List<Like> likes = likeService.getByIsActive(startPosition, limitPage);
 		
 		return new ResponseEntity<>(likes,HttpStatus.OK);
 	}
@@ -59,6 +59,13 @@ public class LikesController {
 		final int total = likeService.getTotalByUser(userId);
 		
 		return new ResponseEntity<>(total,HttpStatus.OK);
+	}
+	
+	@GetMapping("user-like")
+	public ResponseEntity<Like> getUserLikePost(@RequestParam("postId") String postId,@RequestParam("userId") String userId){
+		final Like like = likeService.getUserLikePost(userId,postId);
+		
+		return new ResponseEntity<>(like,HttpStatus.OK);
 	}
 	
 	@PostMapping

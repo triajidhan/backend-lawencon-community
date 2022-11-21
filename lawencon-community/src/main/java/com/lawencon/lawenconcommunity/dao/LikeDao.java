@@ -110,7 +110,7 @@ public class LikeDao extends AbstractJpaDao{
 	public Optional<Like> userLikePost(String userId,String postId){
 		StringBuilder sql = new StringBuilder();
 		
-		sql.append("Select count(*) ")
+		sql.append("Select count(*),")
 		.append("(SELECT count(*) from tb_like where user_id = :userId AND post_id = :postId) as user_id ")
 		.append("FROM tb_like WHERE post_id = :postId");
 		
