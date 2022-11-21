@@ -30,7 +30,7 @@ public class PostsController {
 	
 	@GetMapping()
 	public ResponseEntity<List<Post>> getAll(@RequestParam("startPostion") int startPosition, @RequestParam("limit") int limit){
-		final List<Post> posts = postService.getAll(startPosition, limit);
+		final List<Post> posts = postService.getByIsActive(startPosition, limit);
 		
 		return new ResponseEntity<>(posts,HttpStatus.OK);
 	}
@@ -53,6 +53,26 @@ public class PostsController {
 	public ResponseEntity<Post> getById(@PathVariable("id") String id){
 		final Post post = postService.getById(id);
 		return new ResponseEntity<>(post,HttpStatus.OK);
+	}
+	
+	@GetMapping("total-post-user")
+	public ResponseEntity<Integer> getTotalByUser(@RequestParam String userId){
+		final int totalPost = postService.getTotalByUser(userId);
+		return new ResponseEntity<>(totalPost,HttpStatus.OK);
+	}
+	
+	@GetMapping("total-post-type")
+	public ResponseEntity<Integer> getTotalByPostType(@RequestParam String postTypeId){
+		final int totalPost = postService.getTotalByPostType(postTypeId);
+		
+		return new ResponseEntity<>(totalPost,HttpStatus.OK);
+	}
+	
+	@GetMapping("total-post")
+	public ResponseEntity<Long> getTotalPost(){
+		final Long totalPost = postService.getTotal();
+		
+		return new ResponseEntity<>(totalPost,HttpStatus.OK);
 	}
 	
 	@PostMapping()

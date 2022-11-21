@@ -1,5 +1,7 @@
 package com.lawencon.lawenconcommunity.model;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -29,7 +31,7 @@ public class PaymentSubscribe extends BaseEntity {
 	private String paymentCode;
 	
 	@Column(name = "price")
-	private Double price;
+	private BigDecimal price;
 	
 	@Column(name = "approve")
 	private Boolean approve;

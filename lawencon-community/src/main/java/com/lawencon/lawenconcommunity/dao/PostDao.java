@@ -78,6 +78,66 @@ public class PostDao extends AbstractJpaDao{
 		return objResultPosts;
 	}
 	
+	public int getTotalByUser(final String userId) {
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT count(tp.id) ")
+		.append("FROM tb_post tp ")
+		.append("INNER JOIN tb_post_type tpt ON tp.post_type_id = tpt.id ")
+		.append("WHERE tp.created_by = :userId AND tp.is_active = true");
+		
+		Object objUser = null;
+		
+		int userTotal = 0;
+		
+		
+		try {
+			objUser = ConnHandler.getManager().createNativeQuery(sql.toString())
+					.setParameter("userId", userId)
+					.getSingleResult();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objUser != null) {
+			Object obj = (Object) objUser;
+			
+			userTotal = Integer.parseInt(obj.toString());
+		}
+		
+		return userTotal;
+	}
+	
+	
+	public int getTotalByPostType(final String postTypeId) {
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT count(tp.id) ")
+		.append("FROM tb_post tp ")
+		.append("INNER JOIN tb_post_type tpt ON tp.post_type_id = tpt.id ")
+		.append("WHERE post_type_id = :postTypeId AND tp.is_active = true");
+		
+		Object objUser = null;
+		
+		int userTotal = 0;
+		
+		try {
+			objUser = ConnHandler.getManager().createNativeQuery(sql.toString())
+					.setParameter("postTypeId", postTypeId)
+					.getSingleResult();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objUser != null) {
+			Object obj = (Object) objUser;
+			
+			userTotal = Integer.parseInt(obj.toString());
+		}
+		
+		return userTotal;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Post> getByIsActive(int startPosition,int limit){
 		final StringBuilder sql = new StringBuilder();
