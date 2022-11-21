@@ -42,8 +42,8 @@ public class UsersController {
 	}
 	
 	@GetMapping("role")
-	public ResponseEntity<List<User>> getByRole(@RequestParam("roleCode") String roleCode){
-		final List<User> users = userSevice.getByRoleCode(roleCode);
+	public ResponseEntity<List<User>> getByRole(@RequestParam("roleCode") String roleCode,@RequestParam int startPosition,@RequestParam int limit){
+		final List<User> users = userSevice.getByRoleCode(roleCode,startPosition,limit);
 		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
 	

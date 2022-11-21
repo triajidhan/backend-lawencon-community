@@ -60,6 +60,10 @@ public class LikeService extends BaseCoreService{
 		return likes;
 	}
 	
+	public Like getUserLikePost(String userId,String postId) {
+		return likeDao.userLikePost(userId, postId).get();
+	}
+	
 	public ResponseMessageDto insert(Like data) {
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
 		responseMessageDto.setMessage("Like Failed!");

@@ -63,8 +63,8 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 		return userDao.getByEmail(email).get();
 	}
 	
-	public List<User> getByRoleCode(String roleCode){
-		return userDao.getByRole(roleCode);
+	public List<User> getByRoleCode(String roleCode,int startPosition,int limit){
+		return userDao.getByRole(roleCode,startPosition,limit);
 	}
 	
 	public int getTotalUser() {

@@ -6,6 +6,5 @@ import com.lawencon.base.AbstractJpaDao;
 
 @Repository
 public class RoleDao extends AbstractJpaDao{
-
 	
 }
