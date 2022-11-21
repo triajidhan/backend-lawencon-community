@@ -1,6 +1,7 @@
 package com.lawencon.lawenconcommunity.dao;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
@@ -36,7 +37,7 @@ public class ArticleDao extends AbstractJpaDao{
 		if(articleObjs != null) {
 			Object[] objArr = (Object[]) articleObjs;
 			
-			// id, article_code, title, file_id, created_by, created_at, versions
+			
 			final Article article = new Article();
 			final File file = new File();
 			
@@ -57,5 +58,22 @@ public class ArticleDao extends AbstractJpaDao{
 		}
 		
 		return articleOpt;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Article> getByIsActive(int startPosition,int limit){
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT * ")
+		.append("FROM tb_article ")
+		.append("WHERE is_active = true ")
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		final List<Article> objResultArticles = ConnHandler.getManager().createNativeQuery(sql.toString(),Article.class)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
+				.getResultList();
+		
+		return objResultArticles;
 	}
 }

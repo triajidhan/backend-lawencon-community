@@ -24,8 +24,7 @@ public class ActivityDao extends AbstractJpaDao{
 		.append("tat.id as tat_id,tat.activity_type_code,tat.activity_type_name, ")
 		.append("ta.created_by,ta.created_at,ta.versions, ta.is_active ")
 		.append("FROM tb_activity ta ")
-		.append("INNER JOIN  ")
-		.append("tb_activity_type tat ON ta.activity_type_id = tat.id ")
+		.append("INNER JOIN tb_activity_type tat ON ta.activity_type_id = tat.id ")
 		.append("WHERE activity_code = :activityCode AND ta.is_active = true");
 		
 		Object activityObjs = null;
@@ -33,8 +32,9 @@ public class ActivityDao extends AbstractJpaDao{
 		Optional<Activity> activityOpt = Optional.ofNullable(null);
 		
 		try {
-			activityObjs = ConnHandler.getManager().createNativeQuery(sql.toString(),Activity.class)
-					.setParameter("articleCode",activityCode).getSingleResult();
+			activityObjs = ConnHandler.getManager().createNativeQuery(sql.toString())
+					.setParameter("activityCode",activityCode)
+					.getSingleResult();
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -63,14 +63,16 @@ public class ActivityDao extends AbstractJpaDao{
 			
 			// tat.id as tat_id,tat.activity_type_code,tat.activity_type_name,
 			activityType.setId(objArr[9].toString());
-			activityType.setId(objArr[10].toString());
-			activityType.setId(objArr[11].toString());
+			activityType.setActivityTypeCode(objArr[10].toString());
+			activityType.setActivityTypeName(objArr[11].toString());
 			
-			// ta.created_by,ta.created_at,ta.versions
 			activity.setCreatedBy(objArr[12].toString());
 			activity.setCreatedAt(Timestamp.valueOf(objArr[13].toString()).toLocalDateTime());
 			activity.setVersion(Integer.parseInt(objArr[14].toString()));
+			activity.setIsActive(Boolean.valueOf(objArr[15].toString()));
 			
+			activity.setActivityType(activityType);
+			activity.setFile(file);
 			
 			activityOpt = Optional.ofNullable(activity);
 		}
@@ -89,6 +91,24 @@ public class ActivityDao extends AbstractJpaDao{
 		
 		final List<Activity> objResultActivities = ConnHandler.getManager().createNativeQuery(sql.toString(),Activity.class)
 				.setParameter("activityTypeId", activityId)
+				.getResultList();
+		
+		return objResultActivities;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Activity> getByIsActive(int startPosition,int limit){
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT * ")
+		.append("FROM tb_activity ta ")
+		.append("INNER JOIN tb_activity_type tat  ON ta.activity_type_id = tat.id ")
+		.append("WHERE ta.is_active = true ")
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		final List<Activity> objResultActivities = ConnHandler.getManager().createNativeQuery(sql.toString(),Activity.class)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
 				.getResultList();
 		
 		return objResultActivities;
