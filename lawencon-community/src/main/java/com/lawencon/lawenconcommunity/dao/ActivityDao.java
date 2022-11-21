@@ -45,7 +45,7 @@ public class ActivityDao extends AbstractJpaDao{
 			final ActivityType activityType = new ActivityType();
 			final File file = new File();
 
-			
+
 			activity.setId(objArr[0].toString());
 			activity.setActivityCode(objArr[1].toString());
 			activity.setTitle(objArr[2].toString());
@@ -55,12 +55,12 @@ public class ActivityDao extends AbstractJpaDao{
 			activity.setFinishSchedule(Timestamp.valueOf(objArr[6].toString()).toLocalDateTime());
 			activity.setPrice(Float.valueOf(objArr[7].toString()));
 			
-			
+
 			if(objArr[8] != null) {
 				file.setId(objArr[8].toString());
 			}
 			
-			
+
 			activityType.setId(objArr[9].toString());
 			activityType.setActivityTypeCode(objArr[10].toString());
 			activityType.setActivityTypeName(objArr[11].toString());
@@ -80,16 +80,19 @@ public class ActivityDao extends AbstractJpaDao{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Activity> getByActivityType(final String activityId){
+	public List<Activity> getByActivityType(final String activityId,int startPosition,int limit){
 		final StringBuilder sql = new StringBuilder();
 		
 		sql.append("SELECT * ")
 		.append("FROM tb_activity ta ")
 		.append("INNER JOIN tb_activity_type tat  ON ta.activity_type_id = tat.id ")
-		.append("WHERE tat.id = :activityTypeId AND ta.is_active = true");
+		.append("WHERE tat.id = :activityTypeId AND ta.is_active = true ")
+		.append("LIMIT :limit OFFSET :startPosition");
 		
 		final List<Activity> objResultActivities = ConnHandler.getManager().createNativeQuery(sql.toString(),Activity.class)
 				.setParameter("activityTypeId", activityId)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
 				.getResultList();
 		
 		return objResultActivities;

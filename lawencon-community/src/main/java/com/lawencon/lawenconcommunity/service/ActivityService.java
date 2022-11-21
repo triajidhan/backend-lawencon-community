@@ -32,10 +32,20 @@ public class ActivityService extends BaseCoreService{
 		return activityDao.getByActivityCode(activityCode).get();
 	}
 	
-	public List<Activity> getByActivityType(final String activityId){
-		final List<Activity> activities = activityDao.getByActivityType(activityId);
+	public List<Activity> getByActivityType(final String activityId,int startPosition,int limit){
+		final List<Activity> activities = activityDao.getByActivityType(activityId,startPosition,limit);
 		
 		return activities;
+	}
+	
+	public List<Activity> getByIsActive(int startPosition,int limit){
+		final List<Activity> activities = activityDao.getByIsActive(startPosition, limit);
+		
+		return activities;
+	}
+	
+	public int getTotalByActivityCode(final String activityCode) {
+		return activityDao.getTotalByActivityCode(activityCode);
 	}
 	
 	public ResponseMessageDto insert(Activity data) {

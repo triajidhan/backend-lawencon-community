@@ -59,7 +59,8 @@ public class ArticleDao extends AbstractJpaDao{
 		return articleOpt;
 	}
 	
-	public int totalArticle() {
+
+	public int getTotalArticle() {
 		final StringBuilder sql = new StringBuilder();
 		
 		sql.append("SELECT count(*) from tb_article ")

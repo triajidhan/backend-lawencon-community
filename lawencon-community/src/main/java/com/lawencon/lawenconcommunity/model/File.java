@@ -20,7 +20,7 @@ public class File extends BaseEntity {
 	private static final long serialVersionUID = 2193244827181488175L;
 	
 	@Column(name = "file")
-	private String file;
+	private String files;
 	
 	@Column(name = "ext", length = 5)
 	private String ext;

@@ -29,6 +29,36 @@ public class BookmarkDao extends AbstractJpaDao{
 		return bookmarks;
 	}
 	
+	public int getTotalByUser(String userId){
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT count(*) ")
+		.append("FROM tb_bookmark tb ")
+		.append("INNER JOIN tb_user tu ON tu.id = tb.user_id ")
+		.append("INNER JOIN tb_post tp ON tp.id = tb.post_id ")
+		.append("WHERE tb.user_id  = :userId AND tb.is_active = true");
+		
+		Object objBookmark = null;
+		int total = 0;
+		
+		try {			
+			objBookmark = ConnHandler.getManager().createNativeQuery(sql.toString())
+					.setParameter("userId", userId)
+					.getSingleResult();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		if(objBookmark != null) {
+			Object obj = (Object) objBookmark;
+			
+			total = Integer.parseInt(obj.toString());
+		}
+		
+		return total;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Bookmark> getByPost(String postId){
 		final StringBuilder sql = new StringBuilder();
@@ -46,7 +76,38 @@ public class BookmarkDao extends AbstractJpaDao{
 		return bookmarks;
 	}
 	
-	public Optional<Bookmark> userBookmarkPost(String userId,String postId){
+
+	public int getTotalByPost(String postId){
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT count(*) ")
+		.append("FROM tb_bookmark tb ")
+		.append("INNER JOIN tb_user tu ON tu.id = tb.user_id ")
+		.append("INNER JOIN tb_post tp ON tp.id = tb.post_id ")
+		.append("WHERE tb.post_id = :postId AND tb.is_active = true");
+		
+		Object objBookmark = null;
+		int total = 0;
+		
+		try {			
+			objBookmark = ConnHandler.getManager().createNativeQuery(sql.toString())
+					.setParameter("postId", postId)
+					.getSingleResult();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		if(objBookmark != null) {
+			Object obj = (Object) objBookmark;
+			
+			total = Integer.parseInt(obj.toString());
+		}
+		
+		return total;
+	}
+	
+	public Optional<Bookmark> getUserBookmarkPost(String userId,String postId){
 		StringBuilder sql = new StringBuilder();
 		
 		sql.append("Select count(*) ")
@@ -55,7 +116,9 @@ public class BookmarkDao extends AbstractJpaDao{
 		
 		
 		Object objBookmark = null;
-		Optional<Bookmark> optLike = Optional.ofNullable(null);
+
+		Optional<Bookmark> opt = Optional.ofNullable(null);
+
 		
 		try {
 			objBookmark = ConnHandler.getManager().createNativeQuery(sql.toString())
@@ -73,9 +136,10 @@ public class BookmarkDao extends AbstractJpaDao{
 			bookmark.setCountOfBookmark(Integer.parseInt(objArr[0].toString()));
 			bookmark.setUserBookmarkPost(Integer.parseInt(objArr[1].toString()));
 			
-			optLike = Optional.ofNullable(bookmark);
+
+			opt = Optional.ofNullable(bookmark);
 		}
-		return optLike;
+		return opt;
 	}
 	
 	@SuppressWarnings("unchecked")
