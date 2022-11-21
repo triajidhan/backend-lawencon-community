@@ -1,5 +1,7 @@
 package com.lawencon.lawenconcommunity.service;
 
+import java.math.BigDecimal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,34 +10,36 @@ import com.lawencon.lawenconcommunity.dao.FileDao;
 import com.lawencon.lawenconcommunity.dao.PaymentSubscribeDao;
 import com.lawencon.lawenconcommunity.dao.UserDao;
 import com.lawencon.lawenconcommunity.dto.ResponseMessageDto;
+import com.lawencon.lawenconcommunity.model.Balance;
 import com.lawencon.lawenconcommunity.model.File;
 import com.lawencon.lawenconcommunity.model.PaymentSubscribe;
 import com.lawencon.lawenconcommunity.model.User;
 import com.lawencon.security.principal.PrincipalService;
 
 @Service
-public class PaymentSubscribeService extends BaseCoreService{
+public class PaymentSubscribeService extends BaseCoreService {
 	@Autowired
 	private PaymentSubscribeDao paymentSubscribeDao;
-	
+
 	@Autowired
 	private UserDao userDao;
-	
+
 	@Autowired
-	private FileDao fileDao; 
-	
+	private FileDao fileDao;
+
 	@Autowired
 	private PrincipalService principalService;
-	
+
 	public ResponseMessageDto insert(PaymentSubscribe data) {
 		valInsert(data);
 		File fileInsert = new File();
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
 		responseMessageDto.setMessage("Payment is Failed!");
+		begin();
 		try {
 			begin();
-			if(data.getFile() != null) {
-				fileInsert = fileDao.save(data.getFile());	
+			if (data.getFile() != null) {
+				fileInsert = fileDao.save(data.getFile());
 				data.setFile(fileInsert);
 			}
 			User user = new User();
@@ -47,51 +51,61 @@ public class PaymentSubscribeService extends BaseCoreService{
 			responseMessageDto.setMessage("Payment is Failed!");
 			e.printStackTrace();
 		}
+		commit();
 		return responseMessageDto;
 	}
-	
+
 	public void valInsert(PaymentSubscribe data) {
 		valIdFk(data);
 		valIdNull(data);
 	}
-	
+
 	public void valIdFk(PaymentSubscribe data) {
 		try {
-			if(userDao.getByIdAndDetach(User.class, principalService.getAuthPrincipal()) == null) {
+			if (userDao.getByIdAndDetach(User.class, principalService.getAuthPrincipal()) == null) {
 				throw new RuntimeException("Please Login First!");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void valIdNull(PaymentSubscribe data) {
-		if(data.getId() != null) {
+		if (data.getId() != null) {
 			throw new RuntimeException("This Field Must Be Empty!");
 		}
 	}
-	
-	public void valUpdate (PaymentSubscribe data) {
-		if(paymentSubscribeDao.getByIdAndDetach(PaymentSubscribe.class, data.getId()) == null) {
+
+	public void valUpdate(PaymentSubscribe data) {
+		if (paymentSubscribeDao.getByIdAndDetach(PaymentSubscribe.class, data.getId()) == null) {
 			throw new RuntimeException("Cant Found the payment!");
 		}
 	}
-	
+
 	public ResponseMessageDto update(PaymentSubscribe data) {
 		valUpdate(data);
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
 		responseMessageDto.setMessage("Approving Failed!");
-		PaymentSubscribe paymentSubscribe = paymentSubscribeDao.getById(PaymentSubscribe.class,data.getId());
+		User user = userDao.getById(User.class, data.getCreatedBy());
+		PaymentSubscribe paymentSubscribe = paymentSubscribeDao.getById(PaymentSubscribe.class, data.getId());
 		PaymentSubscribe paymentApproving = paymentSubscribe;
+		begin();
 		try {
 			paymentApproving.setApprove(true);
 			paymentSubscribeDao.saveAndFlush(paymentApproving);
 			responseMessageDto.setMessage("Approving Success!");
+			BigDecimal totalBalance = data.getPrice().add(user.getBalance().getTotalBalance());
+			Balance balance = new Balance();
+			balance = user.getBalance();
+			balance.setTotalBalance(totalBalance);
+			user.setBalance(balance);
+			userDao.save(user);
+
 		} catch (Exception e) {
 			responseMessageDto.setMessage("Approving Failed!");
 			e.printStackTrace();
 		}
-		
+		commit();
 		return responseMessageDto;
 	}
 }
