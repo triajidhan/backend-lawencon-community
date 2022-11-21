@@ -12,6 +12,8 @@ import com.lawencon.lawenconcommunity.dao.PostDao;
 import com.lawencon.lawenconcommunity.dto.ResponseMessageDto;
 import com.lawencon.lawenconcommunity.model.Comment;
 import com.lawencon.lawenconcommunity.model.Post;
+import com.lawencon.lawenconcommunity.model.User;
+import com.lawencon.security.principal.PrincipalService;
 
 @Service
 public class CommentService extends BaseCoreService{
@@ -20,6 +22,8 @@ public class CommentService extends BaseCoreService{
 	private CommentDao commentDao;
 	@Autowired 
 	private PostDao postingDao;
+	@Autowired
+	private PrincipalService principalService;
 	public List<Comment> getAll(Integer startPosition, Integer limitPage){
 		List<Comment> bookmarks = commentDao.getAll(Comment.class, startPosition, limitPage);
 		
@@ -48,6 +52,9 @@ public class CommentService extends BaseCoreService{
 		valInsert(data);
 		begin();
 		try {
+			User user = new User();
+			user.setId(principalService.getAuthPrincipal());
+			data.setUser(user);
 			commentDao.save(data);
 			responseMessageDto.setMessage("Comment Success");
 		} catch (Exception e) {

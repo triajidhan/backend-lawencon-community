@@ -11,9 +11,9 @@ import com.lawencon.lawenconcommunity.dao.PostDao;
 import com.lawencon.lawenconcommunity.dao.UserDao;
 import com.lawencon.lawenconcommunity.dto.ResponseMessageDto;
 import com.lawencon.lawenconcommunity.model.Bookmark;
-import com.lawencon.lawenconcommunity.model.Like;
 import com.lawencon.lawenconcommunity.model.Post;
 import com.lawencon.lawenconcommunity.model.User;
+import com.lawencon.security.principal.PrincipalService;
 
 @Service
 public class BookmarkService extends BaseCoreService{
@@ -26,6 +26,9 @@ public class BookmarkService extends BaseCoreService{
 	
 	@Autowired
 	private UserDao userDao;
+	
+	@Autowired
+	private PrincipalService principalService;
 	
 	public List<Bookmark> getAll(Integer startPosition, Integer limitPage){
 		List<Bookmark> bookmarks = bookmarkDao.getAll(Bookmark.class, startPosition, limitPage);
@@ -47,22 +50,47 @@ public class BookmarkService extends BaseCoreService{
 	
 	public ResponseMessageDto insert(Bookmark data) {
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
-		responseMessageDto.setMessage("Like Failed!");
+		responseMessageDto.setMessage("Bookmark Failed!");
 		try {
+			User user = new User();
+			user.setId(principalService.getAuthPrincipal());
+			data.setUser(user);
 			bookmarkDao.save(data);
-			responseMessageDto.setMessage("Like Success!");
+			responseMessageDto.setMessage("Bookmark Success!");
 		} catch (Exception e) {
-			responseMessageDto.setMessage("Like Failed!");
+			responseMessageDto.setMessage("Bookmark Failed!");
 			e.printStackTrace();
 		}
 		return responseMessageDto;
 	}
 	
-	public void valInsert(Like data) {
+	public ResponseMessageDto update(Bookmark data) {
+		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
+		responseMessageDto.setMessage("Unbookmark Failed!");
+		valId(data);
+		Bookmark Bookmark = bookmarkDao.getById(Bookmark.class, data.getId());
+		Bookmark BookmarkUpdate = Bookmark;
+		try {
+			BookmarkUpdate.setIsActive(false);
+			responseMessageDto.setMessage("Unbookmark Success!");
+		} catch (Exception e) {
+			responseMessageDto.setMessage("Unbookmark Failed!");
+			e.printStackTrace();
+		}
+		return responseMessageDto;
+	}
+	
+	public void valId(Bookmark data) {
+		if(bookmarkDao.getById(Bookmark.class, data.getId()) == null) {
+			throw new RuntimeException("Id not found!");
+		}
+	}
+	
+	public void valInsert(Bookmark data) {
 		valFk(data);
 	}
 	
-	public void valFk(Like data) {
+	public void valFk(Bookmark data) {
 		if(userDao.getByIdAndDetach(User.class, data.getUser().getId()) == null) {
 			throw new RuntimeException("Incompatible users!");
 		}
@@ -72,7 +100,7 @@ public class BookmarkService extends BaseCoreService{
 		}
 	}
 	
-	public void valIdNull(Like data) {
+	public void valIdNull(Bookmark data) {
 		if (data.getId() != null) {
 			throw new RuntimeException("Id must be null!");
 		}
