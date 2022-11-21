@@ -86,20 +86,23 @@ public class PaymentSubscribeService extends BaseCoreService {
 		valUpdate(data);
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
 		responseMessageDto.setMessage("Approving Failed!");
-		User user = userDao.getById(User.class, data.getCreatedBy());
 		PaymentSubscribe paymentSubscribe = paymentSubscribeDao.getById(PaymentSubscribe.class, data.getId());
+		User userSystem = userDao.getById(User.class,userDao.getSystem("SYS").get().getId());
+		User member = userDao.getById(User.class, data.getCreatedBy());
 		PaymentSubscribe paymentApproving = paymentSubscribe;
 		begin();
 		try {
 			paymentApproving.setApprove(true);
 			paymentSubscribeDao.saveAndFlush(paymentApproving);
 			responseMessageDto.setMessage("Approving Success!");
-			BigDecimal totalBalance = data.getPrice().add(user.getBalance().getTotalBalance());
+			BigDecimal totalBalance = data.getPrice().add(userSystem.getBalance().getTotalBalance());
 			Balance balance = new Balance();
-			balance = user.getBalance();
+			balance = userSystem.getBalance();
 			balance.setTotalBalance(totalBalance);
-			user.setBalance(balance);
-			userDao.save(user);
+			userSystem.setBalance(balance);
+			userDao.save(userSystem);
+			member.setStatusSubscribe(true);
+			userDao.save(member);
 
 		} catch (Exception e) {
 			responseMessageDto.setMessage("Approving Failed!");
