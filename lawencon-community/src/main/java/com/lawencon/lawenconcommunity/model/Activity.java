@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -40,11 +41,9 @@ public class Activity extends BaseEntity{
 	@Column(name="locations",length=100)
 	private String location;
 	
-	@JsonFormat(pattern="yyyy-mm-dd hh:mm:ss. fffffffff")
 	@Column(name="begin_schedule")
 	private LocalDateTime beginSchedule;
 
-	@JsonFormat(pattern="yyyy-mm-dd hh:mm:ss. fffffffff")
 	@Column(name="finish_schedule")
 	private LocalDateTime finishSchedule;
 	
@@ -58,7 +57,4 @@ public class Activity extends BaseEntity{
 	@OneToOne
 	@JoinColumn(name="file_id")
 	private File file;
-	
-	
-	
 }

@@ -120,7 +120,7 @@ public class LikeDao extends AbstractJpaDao{
 		Optional<Like> optLike = Optional.ofNullable(null);
 		
 		try {
-			objLike = ConnHandler.getManager().createNativeQuery(sql.toString(), Like.class)
+			objLike = ConnHandler.getManager().createNativeQuery(sql.toString())
 					.setParameter("userId", userId)
 					.setParameter("postId", postId)
 					.getSingleResult();

@@ -46,6 +46,30 @@ public class IndustryDao extends AbstractJpaDao{
 		return objOpt;
 	}
 	
+	public int totalIndustry() {
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT count(*) from tb_industry ")
+		.append("WHERE is_active = true");
+		
+		
+		Object objIndustry = null;
+		int totalIndustry = 0;
+		try {
+			objIndustry = ConnHandler.getManager().createNativeQuery(sql.toString())
+					.getSingleResult();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objIndustry != null) {
+			Object obj = (Object) objIndustry;
+			
+			totalIndustry = Integer.parseInt(obj.toString());
+		}
+		
+		return totalIndustry;
+	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Industry> getByIsActive(int startPosition,int limit){
