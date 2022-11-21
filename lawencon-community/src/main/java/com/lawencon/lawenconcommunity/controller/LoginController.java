@@ -51,6 +51,13 @@ public class LoginController {
         res.setFullName(user.getFullname());
         res.setRole(user.getRole());
         res.setToken(jwtUtil.generateToken(claims, Duration.ofHours(1)));
+        res.setBalance(user.getBalance());
+        res.setEmail(user.getEmail());
+        res.setFile(user.getFile());
+        res.setPosition(user.getPosition());
+        res.setIndustry(user.getIndustry());
+        res.setCompany(user.getCompany());
+        
         return new ResponseEntity<LoginResDto>(res, HttpStatus.OK);
     }
 }
