@@ -13,6 +13,7 @@ import com.lawencon.lawenconcommunity.dto.ResponseMessageDto;
 import com.lawencon.lawenconcommunity.model.Like;
 import com.lawencon.lawenconcommunity.model.Post;
 import com.lawencon.lawenconcommunity.model.User;
+import com.lawencon.security.principal.PrincipalService;
 
 @Service
 public class LikeService extends BaseCoreService{
@@ -25,6 +26,9 @@ public class LikeService extends BaseCoreService{
 	
 	@Autowired
 	private UserDao userDao;
+	
+	@Autowired
+	private PrincipalService principalService;
 	
 	public List<Like> getAll(Integer startPosition, Integer limitPage){
 		List<Like> likes = likeDao.getAll(Like.class, startPosition, limitPage);
@@ -60,6 +64,9 @@ public class LikeService extends BaseCoreService{
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
 		responseMessageDto.setMessage("Like Failed!");
 		try {
+			User user = new User();
+			user.setId(principalService.getAuthPrincipal());
+			data.setUser(user);
 			likeDao.save(data);
 			responseMessageDto.setMessage("Like Success!");
 		} catch (Exception e) {
@@ -69,10 +76,32 @@ public class LikeService extends BaseCoreService{
 		return responseMessageDto;
 	}
 	
+	public ResponseMessageDto update(Like data) {
+		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
+		responseMessageDto.setMessage("Unlike Failed!");
+		valId(data);
+		Like like = likeDao.getById(Like.class, data.getId());
+		Like likeUpdate = like;
+		try {
+			likeUpdate.setIsActive(false);
+			responseMessageDto.setMessage("Unlike Success!");
+		} catch (Exception e) {
+			responseMessageDto.setMessage("Unlike Failed!");
+			e.printStackTrace();
+		}
+		return responseMessageDto;
+	}
+	
 	public void valInsert(Like data) {
 		valFk(data);
 	}
 	
+	
+	public void valId(Like data) {
+		if(likeDao.getById(Like.class, data.getId()) == null) {
+			throw new RuntimeException("Id not found!");
+		}
+	}
 	public void valFk(Like data) {
 		if(userDao.getByIdAndDetach(User.class, data.getUser().getId()) == null) {
 			throw new RuntimeException("Incompatible users!");
