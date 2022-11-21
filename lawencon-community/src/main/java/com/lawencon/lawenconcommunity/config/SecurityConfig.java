@@ -13,25 +13,23 @@ import io.swagger.v3.oas.models.PathItem.HttpMethod;
 @Configuration
 public class SecurityConfig {
 
+	@Bean
+	public String[] getAllowedOrigins() {
+		final String[] allowedOrigins = new String[] {"http://localhost:4200"};
+		return allowedOrigins;
+	}
+	
 	@Bean(name = "webIgnoring")
 	public List<RequestMatcher> Matchers() {
 
 		final List<RequestMatcher> requestMatchers = new ArrayList<>();
 		requestMatchers.add(new AntPathRequestMatcher("/users/register", HttpMethod.POST.name()));
-//		requestMatchers.add(new AntPathRequestMatcher("/users/**", HttpMethod.POST.name()));
-//		requestMatchers.add(new AntPathRequestMatcher("/users/**", HttpMethod.PUT.name()));
-		
 		requestMatchers.add(new AntPathRequestMatcher("/verification-code/**", HttpMethod.POST.name()));
 		
 		requestMatchers.add(new AntPathRequestMatcher("/files/**", HttpMethod.GET.name()));
 		requestMatchers.add(new AntPathRequestMatcher("/swagger-ui/**", HttpMethod.GET.name()));
 		requestMatchers.add(new AntPathRequestMatcher("/v3/**", HttpMethod.GET.name()));
-		requestMatchers.add(new AntPathRequestMatcher("/login/**", HttpMethod.POST.name()));
-		
-		requestMatchers.add(new AntPathRequestMatcher("/posts/**", HttpMethod.GET.name()));
-		requestMatchers.add(new AntPathRequestMatcher("/articles/**", HttpMethod.GET.name()));
-		requestMatchers.add(new AntPathRequestMatcher("/activities/**", HttpMethod.GET.name()));
-		
+		requestMatchers.add(new AntPathRequestMatcher("/login/**", HttpMethod.POST.name()));		
 		return requestMatchers;
 	}
 }

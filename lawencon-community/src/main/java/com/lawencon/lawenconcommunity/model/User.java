@@ -60,4 +60,5 @@ public class User extends BaseEntity{
 	
 	@Column(name = "status_subscribe")
 	private Boolean statusSubscribe;
+	
 }
