@@ -5,10 +5,11 @@ import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
-import io.swagger.v3.oas.models.PathItem.HttpMethod;
+
 
 @Configuration
 public class SecurityConfig {
@@ -25,6 +26,8 @@ public class SecurityConfig {
 		final List<RequestMatcher> requestMatchers = new ArrayList<>();
 		requestMatchers.add(new AntPathRequestMatcher("/users/register", HttpMethod.POST.name()));
 		requestMatchers.add(new AntPathRequestMatcher("/verification-code/**", HttpMethod.POST.name()));
+		requestMatchers.add(new AntPathRequestMatcher("/industries/**", HttpMethod.GET.name()));
+		requestMatchers.add(new AntPathRequestMatcher("/positions/**", HttpMethod.GET.name()));
 		
 		requestMatchers.add(new AntPathRequestMatcher("/files/**", HttpMethod.GET.name()));
 		requestMatchers.add(new AntPathRequestMatcher("/swagger-ui/**", HttpMethod.GET.name()));
