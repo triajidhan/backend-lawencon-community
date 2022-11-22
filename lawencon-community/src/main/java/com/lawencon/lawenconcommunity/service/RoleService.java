@@ -20,4 +20,8 @@ public class RoleService extends BaseCoreService{
 	}
 	
 	
+	public Role getByRoleCode(String roleCode) {
+		return roleDao.getByRoleCode(roleCode);
+	}
+	
 }
