@@ -25,8 +25,22 @@ public class PaymentActivityDetailController {
 
 	private PaymentActivityDetailService paymentActivityDetailService;
 	
+	@GetMapping("activity")
+	public ResponseEntity<List<PaymentActivityDetail>> getByActivity(@RequestParam("activityId") String activityId,@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit){
+		List<PaymentActivityDetail> paymentActivityDetails = paymentActivityDetailService.getByActivity(activityId,startPosition, limit);
+		
+		return new ResponseEntity<>(paymentActivityDetails,HttpStatus.OK);
+	}
+	
+	@GetMapping("total-activity")
+	public ResponseEntity<PaymentActivityDetail> getTotalByActivity(@RequestParam("activityId") String activityId){
+		PaymentActivityDetail paymentActivityDetail = paymentActivityDetailService.getTotalByActivity(activityId);
+		
+		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
+	}
+	
 	@GetMapping("is-active")
-	public ResponseEntity<List<PaymentActivityDetail>> getAllByIsActive(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit){
+	public ResponseEntity<List<PaymentActivityDetail>> getByIsActive(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit){
 		List<PaymentActivityDetail> paymentActivityDetail = paymentActivityDetailService.getByIsActive(startPosition, limit);
 		
 		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);

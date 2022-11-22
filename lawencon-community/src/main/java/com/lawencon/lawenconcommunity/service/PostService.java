@@ -40,14 +40,26 @@ public class PostService extends BaseCoreService {
 		return posts;
 	}
 
+	public List<Post> getAll() {
+		final List<Post> posts = postDao.getAll(Post.class);
+
+		return posts;
+	}
+	
 	public List<Post> getByUser(String userId) {
 		final List<Post> posts = postDao.getByUser(userId);
 
 		return posts;
 	}
 	
-	public Long getTotal() {
-		return postDao.countAll(Post.class);
+	public List<Post> getByPostType(String postTypeId) {
+		final List<Post> posts = postDao.getByPostType(postTypeId);
+
+		return posts;
+	}
+	
+	public Post getTotal() {
+		return postDao.getTotalPost();
 	}
 	
 	public Post getTotalByUser(String userId) {
@@ -68,6 +80,10 @@ public class PostService extends BaseCoreService {
 	
 	public List<Post> getByIsActive(Integer startPosition, Integer limitPage){
 		return postDao.getByIsActive(startPosition, limitPage);
+	}
+	
+	public List<Post> getByIsActive(){
+		return postDao.getByIsActive();
 	}
 
 	public ResponseMessageDto insert(Post data) {

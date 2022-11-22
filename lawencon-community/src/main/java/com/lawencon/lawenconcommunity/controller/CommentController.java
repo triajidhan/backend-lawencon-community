@@ -43,11 +43,25 @@ public class CommentController {
 		return new ResponseEntity<>(comments,HttpStatus.OK);
 	}
 	
+	@GetMapping("total-user")
+	public ResponseEntity<Comment> getTotalByUser(@RequestParam String userId){
+		Comment comment = commentService.getTotalByUser(userId);
+		
+		return new ResponseEntity<>(comment,HttpStatus.OK);
+	}
+	
 	@GetMapping("posts")
 	public ResponseEntity<List<Comment>> getByPost(@RequestParam String postId){
 		List<Comment> comments = commentService.getByPost(postId);
 		
 		return new ResponseEntity<>(comments,HttpStatus.OK);
+	}
+	
+	@GetMapping("total-post")
+	public ResponseEntity<Comment> getTotalByPost(@RequestParam String postId){
+		Comment comment = commentService.getTotalByPost(postId);
+		
+		return new ResponseEntity<>(comment,HttpStatus.OK);
 	}
 	
 	@PostMapping()

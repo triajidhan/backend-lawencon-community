@@ -28,7 +28,7 @@ public class BookmarkController {
 	
 	@GetMapping
 	public ResponseEntity<List<Bookmark>> getAll(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limitPage){
-		final List<Bookmark> bookmarks = bookmarkService.getByIsActive(startPosition, limitPage);
+		final List<Bookmark> bookmarks = bookmarkService.getAll(startPosition, limitPage);
 		
 		return new ResponseEntity<>(bookmarks,HttpStatus.OK);
 	}
@@ -69,7 +69,13 @@ public class BookmarkController {
 		return new ResponseEntity<>(bookmark,HttpStatus.OK);
 	}
 	
-
+	@GetMapping("is-active")
+	public ResponseEntity<List<Bookmark>> getByIsActive(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limitPage){
+		final List<Bookmark> bookmarks = bookmarkService.getByIsActive(startPosition, limitPage);
+		
+		return new ResponseEntity<>(bookmarks,HttpStatus.OK);
+	}
+	
 	@PostMapping
 	public ResponseEntity<ResponseMessageDto> insert(@RequestBody Bookmark data){
 		final ResponseMessageDto responseMessageDto = bookmarkService.insert(data);

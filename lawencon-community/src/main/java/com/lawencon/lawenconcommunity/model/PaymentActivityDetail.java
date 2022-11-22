@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.lawencon.base.BaseEntity;
 
@@ -40,5 +41,8 @@ public class PaymentActivityDetail extends BaseEntity {
 	@OneToOne
 	@JoinColumn(name="file_id")
 	private File file;
+	
+	@Transient
+	private Integer countOfPaymentActivity;
 	
 }

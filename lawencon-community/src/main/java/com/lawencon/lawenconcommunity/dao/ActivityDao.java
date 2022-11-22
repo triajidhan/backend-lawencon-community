@@ -15,7 +15,7 @@ import com.lawencon.lawenconcommunity.model.File;
 @Repository
 public class ActivityDao extends AbstractJpaDao{
 
-	public Optional<Activity> getByActivityCode(final String activityCode){
+	public Optional<Activity> getByActivityCode(String activityCode){
 		final StringBuilder sql = new StringBuilder();
 
 		sql.append("SELECT ")
@@ -60,7 +60,6 @@ public class ActivityDao extends AbstractJpaDao{
 				file.setId(objArr[8].toString());
 			}
 			
-
 			activityType.setId(objArr[9].toString());
 			activityType.setActivityTypeCode(objArr[10].toString());
 			activityType.setActivityTypeName(objArr[11].toString());
@@ -79,8 +78,36 @@ public class ActivityDao extends AbstractJpaDao{
 		return activityOpt;
 	}
 	
+	public Activity getTotalActivity() {
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("select count(ta.id) as total from tb_activity ta ")
+		.append("INNER JOIN tb_activity_type tat ON ta.activity_type_id = tat.id ")
+		.append("WHERE ta.is_active = true");
+		
+		Object objActivity = null; 
+		Activity activity = new Activity();
+		try {
+			objActivity = ConnHandler.getManager().createNativeQuery(sql.toString())
+			.getSingleResult();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objActivity != null) {
+			Object objArr = (Object) objActivity;
+			
+			
+			
+			activity.setCountOfActivity(Integer.parseInt(objArr.toString()));
+		}
+		
+		return activity;
+	}
+	
 	@SuppressWarnings("unchecked")
-	public List<Activity> getByActivityType(final String activityId,int startPosition,int limit){
+	public List<Activity> getByActivityType(String activityTypeId,int startPosition,int limit){
 		final StringBuilder sql = new StringBuilder();
 		
 		sql.append("SELECT * ")
@@ -90,7 +117,7 @@ public class ActivityDao extends AbstractJpaDao{
 		.append("LIMIT :limit OFFSET :startPosition");
 		
 		final List<Activity> objResultActivities = ConnHandler.getManager().createNativeQuery(sql.toString(),Activity.class)
-				.setParameter("activityTypeId", activityId)
+				.setParameter("activityTypeId", activityTypeId)
 				.setParameter("startPosition", startPosition)
 				.setParameter("limit", limit)
 				.getResultList();
@@ -98,7 +125,54 @@ public class ActivityDao extends AbstractJpaDao{
 		return objResultActivities;
 	}
 	
-	public Activity getTotalByActivityTypeCode(final String activityTypeCode) {
+	public Activity getTotalByActivityType(String activityTypeId) {
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("select count(ta.id) as total from tb_activity ta ")
+		.append("INNER JOIN tb_activity_type tat ON ta.activity_type_id = tat.id ")
+		.append("WHERE tat.id iLike :activityTypeId AND ta.is_active = true");
+		
+		Object objActivity = null; 
+		Activity activity = new Activity();
+		
+		try {
+			objActivity = ConnHandler.getManager().createNativeQuery(sql.toString())
+			.setParameter("activityTypeId", activityTypeId)
+			.getSingleResult();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objActivity != null) {
+			Object objArr = (Object) objActivity;
+			
+			activity.setCountOfActivity(Integer.parseInt(objArr.toString()));
+		}
+		
+		return activity;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Activity> getByActivityTypeCode(String activityTypeCode,int startPosition,int limit){
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT * ")
+		.append("FROM tb_activity ta ")
+		.append("INNER JOIN tb_activity_type tat  ON ta.activity_type_id = tat.id ")
+		.append("WHERE tat.activity_type_code = :activityTypeId AND ta.is_active = true ")
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		final List<Activity> objResultActivities = ConnHandler.getManager().createNativeQuery(sql.toString(),Activity.class)
+				.setParameter("activityTypeId", activityTypeCode)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
+				.getResultList();
+		
+		return objResultActivities;
+	}
+	
+	public Activity getTotalByActivityTypeCode(String activityTypeCode) {
 		final StringBuilder sql = new StringBuilder();
 		
 		sql.append("select count(ta.id) as total from tb_activity ta ")
@@ -106,7 +180,7 @@ public class ActivityDao extends AbstractJpaDao{
 		.append("WHERE tat.activity_type_code iLike :activityTypeCode AND ta.is_active = true");
 		
 		Object objActivity = null; 
-		Activity activity = null;
+		Activity activity = new Activity();
 		try {
 			objActivity = ConnHandler.getManager().createNativeQuery(sql.toString())
 			.setParameter("activityTypeCode", activityTypeCode)
@@ -119,12 +193,25 @@ public class ActivityDao extends AbstractJpaDao{
 		if(objActivity != null) {
 			Object objArr = (Object) objActivity;
 			
-			activity = new Activity();
-			
 			activity.setCountOfActivity(Integer.parseInt(objArr.toString()));
 		}
 		
 		return activity;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Activity> getByIsActive(){
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT * ")
+		.append("FROM tb_activity ta ")
+		.append("INNER JOIN tb_activity_type tat  ON ta.activity_type_id = tat.id ")
+		.append("WHERE ta.is_active = true ");
+		
+		final List<Activity> objResultActivities = ConnHandler.getManager().createNativeQuery(sql.toString(),Activity.class)
+				.getResultList();
+		
+		return objResultActivities;
 	}
 	
 	@SuppressWarnings("unchecked")

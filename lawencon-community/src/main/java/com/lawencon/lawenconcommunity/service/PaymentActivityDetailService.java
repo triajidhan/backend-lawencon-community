@@ -31,8 +31,28 @@ public class PaymentActivityDetailService extends BaseCoreService {
 	@Autowired
 	private PrincipalService principalService;
 	
+	public List<PaymentActivityDetail> getAll(int startPosition,int limit){
+		return paymentActivityDetailDao.getAll(PaymentActivityDetail.class,startPosition, limit);
+	}
+	
+	public List<PaymentActivityDetail> getByActivity(String activityId,int startPosition,int limit){
+		return paymentActivityDetailDao.getByActivity(activityId,startPosition, limit);
+	}
+	
+	public List<PaymentActivityDetail> getByActivity(String activityId){
+		return paymentActivityDetailDao.getByActivity(activityId);
+	}
+	
+	public PaymentActivityDetail getTotalByActivity(String activityId){
+		return paymentActivityDetailDao.getTotalByActivity(activityId);
+	}
+	
 	public List<PaymentActivityDetail> getByIsActive(int startPosition,int limit){
 		return paymentActivityDetailDao.getByIsActive(startPosition, limit);
+	}
+	
+	public List<PaymentActivityDetail> getByIsActive(){
+		return paymentActivityDetailDao.getByIsActive();
 	}
 
 	public ResponseMessageDto insert(PaymentActivityDetail data) {

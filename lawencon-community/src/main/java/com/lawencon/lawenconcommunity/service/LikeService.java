@@ -36,6 +36,12 @@ public class LikeService extends BaseCoreService{
 		return likes;
 	}
 	
+	public List<Like> getAll(){
+		List<Like> likes = likeDao.getAll(Like.class);
+		
+		return likes;
+	}
+	
 	public List<Like> getByUser(String userId){
 		List<Like> likes = likeDao.getByUser(userId);
 		
@@ -66,6 +72,12 @@ public class LikeService extends BaseCoreService{
 	
 	public List<Like> getByIsActive(Integer startPosition, Integer limitPage){
 		List<Like> likes = likeDao.getByIsActive(startPosition, limitPage);
+		
+		return likes;
+	}
+	
+	public List<Like> getByIsActive(){
+		List<Like> likes = likeDao.getByIsActive();
 		
 		return likes;
 	}

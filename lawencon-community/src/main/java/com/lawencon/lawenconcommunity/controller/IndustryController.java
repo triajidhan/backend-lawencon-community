@@ -45,7 +45,7 @@ public class IndustryController {
 	}
 	
 	@GetMapping("is-active")
-	public ResponseEntity<List<Industry>> getAllByIsActive(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit){
+	public ResponseEntity<List<Industry>> getByIsActive(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit){
 		List<Industry> industries = industryService.getByIsActive(startPosition, limit);
 		
 		return new ResponseEntity<>(industries,HttpStatus.OK);
