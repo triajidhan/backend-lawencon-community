@@ -78,7 +78,7 @@ public class PostDao extends AbstractJpaDao{
 		return objResultPosts;
 	}
 	
-	public int getTotalByUser(final String userId) {
+	public Post getTotalByUser(final String userId) {
 		final StringBuilder sql = new StringBuilder();
 		
 		sql.append("SELECT count(tp.id) ")
@@ -87,9 +87,7 @@ public class PostDao extends AbstractJpaDao{
 		.append("WHERE tp.created_by = :userId AND tp.is_active = true");
 		
 		Object objUser = null;
-		
-		int userTotal = 0;
-		
+		Post post = new Post();
 		
 		try {
 			objUser = ConnHandler.getManager().createNativeQuery(sql.toString())
@@ -102,14 +100,14 @@ public class PostDao extends AbstractJpaDao{
 		if(objUser != null) {
 			Object obj = (Object) objUser;
 			
-			userTotal = Integer.parseInt(obj.toString());
+			post.setCountOfPost(Integer.parseInt(obj.toString()));
 		}
 		
-		return userTotal;
+		return post;
 	}
 	
 	
-	public int getTotalByPostType(final String postTypeId) {
+	public Post getTotalByPostType(final String postTypeId) {
 		final StringBuilder sql = new StringBuilder();
 		
 		sql.append("SELECT count(tp.id) ")
@@ -119,7 +117,7 @@ public class PostDao extends AbstractJpaDao{
 		
 		Object objUser = null;
 		
-		int userTotal = 0;
+		Post post = new Post();
 		
 		try {
 			objUser = ConnHandler.getManager().createNativeQuery(sql.toString())
@@ -132,10 +130,10 @@ public class PostDao extends AbstractJpaDao{
 		if(objUser != null) {
 			Object obj = (Object) objUser;
 			
-			userTotal = Integer.parseInt(obj.toString());
+			post.setCountOfPost(Integer.parseInt(obj.toString()));
 		}
 		
-		return userTotal;
+		return post;
 	}
 	
 	@SuppressWarnings("unchecked")

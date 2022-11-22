@@ -60,16 +60,16 @@ public class BookmarkService extends BaseCoreService{
 		return bookmarks;
 	}
 	
-	public int getTotalByUser(String userId){
-		int totalBookmarks = bookmarkDao.getTotalByUser(userId);
+	public Bookmark getTotalByUser(String userId){
+		Bookmark bookmark = bookmarkDao.getTotalByUser(userId);
 		
-		return totalBookmarks;
+		return bookmark;
 	}
 	
-	public int getTotalByPost(String postId){
-		int totalBookmarks = bookmarkDao.getTotalByPost(postId);
+	public Bookmark getTotalByPost(String postId){
+		Bookmark bookmark = bookmarkDao.getTotalByPost(postId);
 		
-		return totalBookmarks;
+		return bookmark;
 	}
 	
 	public Bookmark getUserBookmarkPost(String userId,String postId) {

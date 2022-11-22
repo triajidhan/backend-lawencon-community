@@ -3,6 +3,7 @@ package com.lawencon.lawenconcommunity.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import com.lawencon.base.BaseEntity;
@@ -28,4 +29,7 @@ public class Position extends BaseEntity{
 	
 	@Column(name ="position_name",length=50)
 	private String positionName;
+	
+	@Transient
+	private Integer countOfPosition;
 }

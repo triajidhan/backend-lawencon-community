@@ -67,5 +67,8 @@ public class User extends BaseEntity{
 	
 	@Transient
 	private String positionId;
+
+	@Transient
+	private Integer countOfUser;
 	
 }

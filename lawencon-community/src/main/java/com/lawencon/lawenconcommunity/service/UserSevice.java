@@ -77,11 +77,11 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 		return userDao.getByRole(roleCode,startPosition,limit);
 	}
 	
-	public int getTotalUser() {
+	public User getTotalUser() {
 		return userDao.getTotalUser();
 	}
 	
-	public int getTotalUserByRole(String role) {
+	public User getTotalUserByRole(String role) {
 		return userDao.getTotalByRoleCode(role);
 	}
 	

@@ -16,7 +16,7 @@ public class PositionService extends BaseCoreService{
 	@Autowired
 	private PositionDao positionDao;
 	
-	public int getTotalPosition() {
+	public Position getTotalPosition() {
 		return positionDao.getTotalPosition();
 	}
 	

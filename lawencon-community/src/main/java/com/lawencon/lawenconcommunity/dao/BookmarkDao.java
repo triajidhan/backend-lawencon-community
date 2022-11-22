@@ -29,7 +29,7 @@ public class BookmarkDao extends AbstractJpaDao{
 		return bookmarks;
 	}
 	
-	public int getTotalByUser(String userId){
+	public Bookmark getTotalByUser(String userId){
 		final StringBuilder sql = new StringBuilder();
 		
 		sql.append("SELECT count(*) ")
@@ -39,7 +39,7 @@ public class BookmarkDao extends AbstractJpaDao{
 		.append("WHERE tb.user_id  = :userId AND tb.is_active = true");
 		
 		Object objBookmark = null;
-		int total = 0;
+		Bookmark bookmark = null;
 		
 		try {			
 			objBookmark = ConnHandler.getManager().createNativeQuery(sql.toString())
@@ -53,10 +53,11 @@ public class BookmarkDao extends AbstractJpaDao{
 		if(objBookmark != null) {
 			Object obj = (Object) objBookmark;
 			
-			total = Integer.parseInt(obj.toString());
+			bookmark = new Bookmark();
+			bookmark.setCountOfBookmark(Integer.parseInt(obj.toString()));
 		}
 		
-		return total;
+		return bookmark;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -77,7 +78,7 @@ public class BookmarkDao extends AbstractJpaDao{
 	}
 	
 
-	public int getTotalByPost(String postId){
+	public Bookmark getTotalByPost(String postId){
 		final StringBuilder sql = new StringBuilder();
 		
 		sql.append("SELECT count(*) ")
@@ -87,7 +88,7 @@ public class BookmarkDao extends AbstractJpaDao{
 		.append("WHERE tb.post_id = :postId AND tb.is_active = true");
 		
 		Object objBookmark = null;
-		int total = 0;
+		Bookmark bookmark = new Bookmark();
 		
 		try {			
 			objBookmark = ConnHandler.getManager().createNativeQuery(sql.toString())
@@ -101,10 +102,10 @@ public class BookmarkDao extends AbstractJpaDao{
 		if(objBookmark != null) {
 			Object obj = (Object) objBookmark;
 			
-			total = Integer.parseInt(obj.toString());
+			bookmark.setCountOfBookmark(Integer.parseInt(obj.toString()));
 		}
 		
-		return total;
+		return bookmark;
 	}
 	
 	public Optional<Bookmark> getUserBookmarkPost(String userId,String postId){
