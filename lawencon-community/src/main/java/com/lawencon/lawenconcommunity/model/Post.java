@@ -50,7 +50,9 @@ public class Post extends BaseEntity{
 	@Transient
 	private List<String> pollContent;
 	
-	
 	@Transient
 	private Integer countOfPost;
+	
+	@Transient
+	private String postTypeId;
 }

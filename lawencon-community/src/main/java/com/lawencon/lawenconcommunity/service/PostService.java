@@ -76,8 +76,7 @@ public class PostService extends BaseCoreService {
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
 		responseMessageDto.setMessage("Failed to create the Post!");
 		com.lawencon.lawenconcommunity.model.PostType postType = postTypeDao
-				.getByIdAndDetach(com.lawencon.lawenconcommunity.model.PostType.class, data.getPostType().getId());
-
+				.getByIdAndDetach(com.lawencon.lawenconcommunity.model.PostType.class, data.getPostTypeId());
 		begin();
 		try {
 
