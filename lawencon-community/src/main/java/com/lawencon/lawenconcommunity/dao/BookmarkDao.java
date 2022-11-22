@@ -134,7 +134,7 @@ public class BookmarkDao extends AbstractJpaDao{
 			
 			Bookmark bookmark = new Bookmark();
 			bookmark.setCountOfBookmark(Integer.parseInt(objArr[0].toString()));
-			bookmark.setUserBookmarkPost(Integer.parseInt(objArr[1].toString()));
+			bookmark.setBookmarkId(objArr[1].toString());
 			
 
 			opt = Optional.ofNullable(bookmark);

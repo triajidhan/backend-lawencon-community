@@ -17,11 +17,23 @@ public class PositionService extends BaseCoreService{
 	private PositionDao positionDao;
 	
 	public int getTotalPosition() {
-		return positionDao.totalPosition();
+		return positionDao.getTotalPosition();
 	}
 	
-	public List<Position> getIsActive(int startPosition,int limit){
+	public List<Position> getAll(){
+		return positionDao.getAll(Position.class);
+	}
+	
+	public Position getById(String id){
+		return positionDao.getByIdAndDetach(Position.class,id);
+	}
+	
+	public List<Position> getByIsActive(int startPosition,int limit){
 		return positionDao.getByIsActive(startPosition, limit);
+	}
+	
+	public List<Position> getByIsActive(){
+		return positionDao.getByIsActive();
 	}
 	
 	public void valIdNull(Position data) {

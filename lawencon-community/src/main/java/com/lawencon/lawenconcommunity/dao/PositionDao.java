@@ -47,7 +47,7 @@ public class PositionDao extends AbstractJpaDao
 		return objOpt;
 	}
 	
-	public int totalPosition() {
+	public int getTotalPosition() {
 		final StringBuilder sql = new StringBuilder();
 		
 		sql.append("SELECT count(*) from tb_position ")
@@ -78,11 +78,26 @@ public class PositionDao extends AbstractJpaDao
 		
 		sql.append("SELECT * ")
 		.append("FROM tb_position tp ")
+		.append("WHERE is_active = true ")
 		.append("LIMIT :limit OFFSET :startPosition");
 		
 		final List<Position> objResultPositions = ConnHandler.getManager().createNativeQuery(sql.toString(),Position.class)
 				.setParameter("startPosition", startPosition)
 				.setParameter("limit", limit)
+				.getResultList();
+		
+		return objResultPositions;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Position> getByIsActive(){
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT * ")
+		.append("FROM tb_position tp ")
+		.append("WHERE is_active = true ");
+		
+		final List<Position> objResultPositions = ConnHandler.getManager().createNativeQuery(sql.toString(),Position.class)
 				.getResultList();
 		
 		return objResultPositions;

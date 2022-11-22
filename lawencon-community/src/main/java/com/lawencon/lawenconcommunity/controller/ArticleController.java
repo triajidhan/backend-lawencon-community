@@ -61,7 +61,7 @@ public class ArticleController {
 		return new ResponseEntity<>(responseMessageDto,HttpStatus.OK);
 	}
 	
-	@GetMapping("{id}")
+	@GetMapping("{id}/get")
 	public ResponseEntity<Article> getById(@PathVariable("id") String id){
 		final Article article = articleService.getById(id);
 		return new ResponseEntity<>(article,HttpStatus.OK);

@@ -17,11 +17,23 @@ public class IndustryService extends BaseCoreService{
 	private IndustryDao industryDao;
 	
 	public int getTotalIndustry() {
-		return industryDao.totalIndustry();
+		return industryDao.getTotalIndustry();
 	}
 	
-	public List<Industry> getIsActive(int startPosition,int limit){
+	public List<Industry> getAll(){
+		return industryDao.getAll(Industry.class);
+	}
+	
+	public Industry getById(String id){
+		return industryDao.getByIdAndDetach(Industry.class,id);
+	}
+	
+	public List<Industry> getByIsActive(int startPosition,int limit){
 		return industryDao.getByIsActive(startPosition, limit);
+	}
+	
+	public List<Industry> getByIsActive(){
+		return industryDao.getByIsActive();
 	}
 	
 	public void valIdNull(Industry data) {
