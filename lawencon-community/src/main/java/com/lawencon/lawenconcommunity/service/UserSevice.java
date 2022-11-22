@@ -15,11 +15,15 @@ import org.springframework.stereotype.Service;
 import com.lawencon.base.BaseCoreService;
 import com.lawencon.lawenconcommunity.dao.BalanceDao;
 import com.lawencon.lawenconcommunity.dao.FileDao;
+import com.lawencon.lawenconcommunity.dao.IndustryDao;
+import com.lawencon.lawenconcommunity.dao.PositionDao;
 import com.lawencon.lawenconcommunity.dao.RoleDao;
 import com.lawencon.lawenconcommunity.dao.UserDao;
 import com.lawencon.lawenconcommunity.dto.ResponseMessageDto;
 import com.lawencon.lawenconcommunity.model.Balance;
 import com.lawencon.lawenconcommunity.model.File;
+import com.lawencon.lawenconcommunity.model.Industry;
+import com.lawencon.lawenconcommunity.model.Position;
 import com.lawencon.lawenconcommunity.model.Role;
 import com.lawencon.lawenconcommunity.model.User;
 
@@ -40,6 +44,11 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	@Autowired
+	private IndustryDao industryDao;
+	
+	@Autowired
+	private PositionDao positionDao;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -96,6 +105,9 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 			data.setPass(hashPassword);
 			data.setBalance(balanceInsert);
 			data.setStatusSubscribe(true);
+			data.setIndustry(industryDao.getByIdAndDetach(Industry.class, data.getIndustry().getId()));
+			data.setPosition(positionDao.getByIdAndDetach(Position.class, data.getPosition().getId()));
+			data.setRole(roleDao.getByIdAndDetach(Role.class, data.getRole().getId()));
 			userDao.save(data);
 			userInsertResDto.setMessage("Registration is successful");
 			commit();
@@ -124,6 +136,8 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 			data.setPass(hashPassword);		
 			data.setBalance(balanceInsert);
 			data.setStatusSubscribe(false);
+			data.setIndustry(industryDao.getByIdAndDetach(Industry.class, data.getIndustry().getId()));
+			data.setPosition(positionDao.getByIdAndDetach(Position.class, data.getPosition().getId()));
 			data.setRole(roleDao.getByRoleCode(com.lawencon.lawenconcommunity.constant.Role.M.toString()));
 			userDao.saveNoLogin(data, ()->userDao.getSystem("SYS").get().getId());
 			userInsertResDto.setMessage("Registration is successful");
@@ -208,10 +222,12 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 			
 			if(data.getIndustry() != null) {
 				userUpdate.setIndustry(data.getIndustry());
+				userUpdate.setIndustry(industryDao.getByIdAndDetach(Industry.class, data.getIndustry().getId()));
 			}
 			
 			if(data.getPosition()!=null) {
 				userUpdate.setPosition(data.getPosition());
+				userUpdate.setPosition(positionDao.getByIdAndDetach(Position.class, data.getPosition().getId()));
 			}
 			
 			if(data.getStatusSubscribe()!=null) {
