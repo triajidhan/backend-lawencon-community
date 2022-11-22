@@ -49,7 +49,6 @@ public class IndustryController {
 		List<Industry> industries = industryService.getByIsActive(startPosition, limit);
 		
 		return new ResponseEntity<>(industries,HttpStatus.OK);
-		
 	}
 	
 	@GetMapping("{id}/get")
@@ -57,14 +56,13 @@ public class IndustryController {
 		Industry industry = industryService.getById(id);
 		
 		return new ResponseEntity<>(industry,HttpStatus.OK);
-		
 	}
 	
 	@GetMapping("total-industry")
-	public ResponseEntity<Integer> getTotalIndustry(){
-		int totalIndustry = industryService.getTotalIndustry();
+	public ResponseEntity<Industry> getTotalIndustry(){
+		Industry industry = industryService.getTotalIndustry();
 		
-		return new ResponseEntity<>(totalIndustry,HttpStatus.OK);
+		return new ResponseEntity<>(industry,HttpStatus.OK);
 		
 	}
 	

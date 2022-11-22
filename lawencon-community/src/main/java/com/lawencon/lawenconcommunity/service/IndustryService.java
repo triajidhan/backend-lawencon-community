@@ -16,7 +16,7 @@ public class IndustryService extends BaseCoreService{
 	@Autowired
 	private IndustryDao industryDao;
 	
-	public int getTotalIndustry() {
+	public Industry getTotalIndustry() {
 		return industryDao.getTotalIndustry();
 	}
 	

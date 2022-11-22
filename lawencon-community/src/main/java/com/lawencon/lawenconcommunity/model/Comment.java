@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.lawencon.base.BaseEntity;
 
@@ -33,4 +34,7 @@ public class Comment extends BaseEntity{
 	@JoinColumn(name = "user_id")
 	private User user;
  
+	@Transient
+	private Integer countOfComment;
+	
 }

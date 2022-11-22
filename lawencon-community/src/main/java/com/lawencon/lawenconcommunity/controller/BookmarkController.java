@@ -48,17 +48,17 @@ public class BookmarkController {
 	}
 	
 	@GetMapping("total-user")
-	public ResponseEntity<Integer> getTotalByUser(@RequestParam("userId") String userId){
-		int totalBookmarks = bookmarkService.getTotalByUser(userId);
+	public ResponseEntity<Bookmark> getTotalByUser(@RequestParam("userId") String userId){
+		Bookmark bookmark = bookmarkService.getTotalByUser(userId);
 		
-		return new ResponseEntity<>(totalBookmarks,HttpStatus.OK);
+		return new ResponseEntity<>(bookmark,HttpStatus.OK);
 	}
 	
 	@GetMapping("total-post")
-	public ResponseEntity<Integer> getTotalByPost(@RequestParam("postId") String postId){
-		int totalBookmarks = bookmarkService.getTotalByPost(postId);
+	public ResponseEntity<Bookmark> getTotalByPost(@RequestParam("postId") String postId){
+		Bookmark bookmark = bookmarkService.getTotalByPost(postId);
 		
-		return new ResponseEntity<>(totalBookmarks,HttpStatus.OK);
+		return new ResponseEntity<>(bookmark,HttpStatus.OK);
 	}
 	
 	
