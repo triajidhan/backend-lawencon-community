@@ -98,18 +98,18 @@ public class ActivityDao extends AbstractJpaDao{
 		return objResultActivities;
 	}
 	
-	public int getTotalByActivityCode(final String activityCode) {
+	public Activity getTotalByActivityTypeCode(final String activityTypeCode) {
 		final StringBuilder sql = new StringBuilder();
 		
-		sql.append("select count(ta.id) as total_user from tb_activity ta ")
+		sql.append("select count(ta.id) as total from tb_activity ta ")
 		.append("INNER JOIN tb_activity_type tat ON ta.activity_type_id = tat.id ")
-		.append("WHERE activity_code iLike :activityCode AND ta.is_active = true");
+		.append("WHERE tat.activity_type_code iLike :activityTypeCode AND ta.is_active = true");
 		
 		Object objActivity = null; 
-		int totalActivity = 0;
+		Activity activity = null;
 		try {
 			objActivity = ConnHandler.getManager().createNativeQuery(sql.toString())
-			.setParameter("activityCode", activityCode)
+			.setParameter("activityTypeCode", activityTypeCode)
 			.getSingleResult();
 			
 		}catch(Exception e) {
@@ -118,10 +118,13 @@ public class ActivityDao extends AbstractJpaDao{
 		
 		if(objActivity != null) {
 			Object objArr = (Object) objActivity;
-			totalActivity =  Integer.parseInt(objArr.toString());
+			
+			activity = new Activity();
+			
+			activity.setCountOfActivity(Integer.parseInt(objArr.toString()));
 		}
 		
-		return totalActivity;
+		return activity;
 	}
 	
 	@SuppressWarnings("unchecked")

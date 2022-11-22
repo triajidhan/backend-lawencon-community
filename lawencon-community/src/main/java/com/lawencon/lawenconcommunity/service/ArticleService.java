@@ -42,8 +42,8 @@ public class ArticleService extends BaseCoreService {
 		return articleDao.getByIdAndDetach(Article.class, id);	
 	}
 	
-	public int getTotalArticle() {
-		return articleDao.getTotalArticle();
+	public Article getByTotalArticle() {
+		return articleDao.getByTotalArticle();
 	}
 	
 	public List<Article> getByIsActive(int startPosition,int limit){
