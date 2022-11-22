@@ -47,9 +47,9 @@ public class ActivityController {
 		return new ResponseEntity<>(activities,HttpStatus.OK);
 	}
 	
-	@GetMapping("total-activity-code")
-	public ResponseEntity<Integer> getTotalByActivityCode(@RequestParam("activityCode") String activityCode){
-		int activity = activityService.getTotalByActivityCode(activityCode);
+	@GetMapping("total-activity-type-code")
+	public ResponseEntity<Activity> getTotalByActivityCode(@RequestParam("activityTypeCode") String activityTypeCode){
+		Activity activity = activityService.getTotalByActivityTypeCode(activityTypeCode);
 		
 		return new ResponseEntity<>(activity,HttpStatus.OK);
 	}

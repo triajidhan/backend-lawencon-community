@@ -51,8 +51,8 @@ public class ActivityService extends BaseCoreService{
 		return activities;
 	}
 	
-	public int getTotalByActivityCode(final String activityCode) {
-		return activityDao.getTotalByActivityCode(activityCode);
+	public Activity getTotalByActivityTypeCode(final String activityCode) {
+		return activityDao.getTotalByActivityTypeCode(activityCode);
 	}
 	
 	public ResponseMessageDto insert(Activity data) {

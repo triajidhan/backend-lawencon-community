@@ -60,7 +60,7 @@ public class ArticleDao extends AbstractJpaDao{
 	}
 	
 
-	public int getTotalArticle() {
+	public Article getByTotalArticle() {
 		final StringBuilder sql = new StringBuilder();
 		
 		sql.append("SELECT count(*) from tb_article ")
@@ -68,7 +68,7 @@ public class ArticleDao extends AbstractJpaDao{
 		
 		
 		Object objArticle = null;
-		int totalArticle = 0;
+		Article article = null;
 		try {
 			objArticle = ConnHandler.getManager().createNativeQuery(sql.toString())
 					.getSingleResult();
@@ -79,10 +79,12 @@ public class ArticleDao extends AbstractJpaDao{
 		if(objArticle != null) {
 			Object obj = (Object) objArticle;
 			
-			totalArticle = Integer.parseInt(obj.toString());
+			article = new Article();
+			
+			article.setCountOfArticle(Integer.parseInt(obj.toString()));
 		}
 		
-		return totalArticle;
+		return article;
 	}
 	
 	@SuppressWarnings("unchecked")

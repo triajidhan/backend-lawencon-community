@@ -36,10 +36,10 @@ public class ArticleController {
 	}
 	
 	@GetMapping("total-article")
-	public ResponseEntity<Integer> getTotalByArticle(){
-		int activity = articleService.getTotalArticle();
+	public ResponseEntity<Article> getTotalByArticle(){
+		Article article = articleService.getByTotalArticle();
 		
-		return new ResponseEntity<>(activity,HttpStatus.OK);
+		return new ResponseEntity<>(article,HttpStatus.OK);
 	}
 	
 	@GetMapping("article-code")
