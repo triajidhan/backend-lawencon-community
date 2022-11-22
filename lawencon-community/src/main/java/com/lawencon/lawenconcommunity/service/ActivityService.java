@@ -22,6 +22,13 @@ public class ActivityService extends BaseCoreService{
 	@Autowired
 	private ActivityTypeDao activityTypeDao;
 	@Autowired FileDao fileDao;
+	
+	public List<Activity> getAll(){
+		final List<Activity> activities = activityDao.getAll(Activity.class);
+		
+		return activities;
+	}
+	
 	public List<Activity> getAll(Integer startPosition, Integer limitPage){
 		final List<Activity> activities = activityDao.getAll(Activity.class, startPosition, limitPage);
 		

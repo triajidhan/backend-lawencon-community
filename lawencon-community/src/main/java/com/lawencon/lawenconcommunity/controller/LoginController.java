@@ -48,7 +48,7 @@ public class LoginController {
 
         LoginResDto res = new LoginResDto();
         res.setId(user.getId());
-        res.setFullName(user.getFullname());
+        res.setFullName(user.getFullName());
         res.setRole(user.getRole());
         res.setToken(jwtUtil.generateToken(claims, Duration.ofHours(1)));
         res.setBalance(user.getBalance());

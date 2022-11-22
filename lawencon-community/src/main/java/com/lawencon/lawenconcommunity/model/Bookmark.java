@@ -35,5 +35,5 @@ public class Bookmark extends BaseEntity{
 	private Integer countOfBookmark;
 	
 	@Transient
-	private Integer userBookmarkPost;
+	private String bookmarkId;
 }

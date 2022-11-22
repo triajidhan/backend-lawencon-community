@@ -30,6 +30,12 @@ public class BookmarkService extends BaseCoreService{
 	@Autowired
 	private PrincipalService principalService;
 	
+	public List<Bookmark> getAll(){
+		List<Bookmark> bookmarks = bookmarkDao.getAll(Bookmark.class);
+		
+		return bookmarks;
+	}
+	
 	public List<Bookmark> getAll(Integer startPosition, Integer limitPage){
 		List<Bookmark> bookmarks = bookmarkDao.getAll(Bookmark.class, startPosition, limitPage);
 		
