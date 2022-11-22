@@ -34,6 +34,6 @@ public class Like extends BaseEntity {
 	private Integer countOfLike;
 	
 	@Transient
-	private Integer userLikePost;
+	private String likeId;
 	
 }

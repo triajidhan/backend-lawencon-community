@@ -21,6 +21,13 @@ public class ArticleService extends BaseCoreService {
 	private FileDao fileDao;
 	@Autowired
 	private GenerateService generateService;
+	
+	public List<Article> getAll() {
+		final List<Article> articles = articleDao.getAll(Article.class);
+
+		return articles;
+	}
+	
 	public List<Article> getAll(Integer startPosition, Integer limitPage) {
 		final List<Article> articles = articleDao.getAll(Article.class, startPosition, limitPage);
 

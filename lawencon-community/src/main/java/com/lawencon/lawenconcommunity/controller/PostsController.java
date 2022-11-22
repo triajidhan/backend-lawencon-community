@@ -49,7 +49,7 @@ public class PostsController {
 		return new ResponseEntity<>(post,HttpStatus.OK);
 	}
 	
-	@GetMapping("{id}")
+	@GetMapping("{id}/get")
 	public ResponseEntity<Post> getById(@PathVariable("id") String id){
 		final Post post = postService.getById(id);
 		return new ResponseEntity<>(post,HttpStatus.OK);

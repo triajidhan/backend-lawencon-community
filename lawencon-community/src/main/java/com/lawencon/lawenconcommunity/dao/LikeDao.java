@@ -107,13 +107,17 @@ public class LikeDao extends AbstractJpaDao{
 		return total;
 	}
 	
+	/**
+	 *  Select count(*), 
+	 *  (SELECT id  from tb_like where user_id = :userId AND post_id = :postId) as like_id  
+	 *  FROM tb_like WHERE post_id = :postId
+	 */
 	public Optional<Like> userLikePost(String userId,String postId){
 		StringBuilder sql = new StringBuilder();
 		
 		sql.append("Select count(*),")
-		.append("(SELECT count(*) from tb_like where user_id = :userId AND post_id = :postId) as user_id ")
+		.append(" (SELECT id  from tb_like where user_id = :userId AND post_id = :postId) as like_id ")
 		.append("FROM tb_like WHERE post_id = :postId");
-		
 		
 		Object objLike = null;
 		Optional<Like> optLike = Optional.ofNullable(null);
@@ -132,7 +136,7 @@ public class LikeDao extends AbstractJpaDao{
 			
 			Like like = new Like();
 			like.setCountOfLike(Integer.parseInt(objArr[0].toString()));
-			like.setUserLikePost(Integer.parseInt(objArr[1].toString()));
+			like.setLikeId(objArr[1].toString());
 			
 			optLike = Optional.ofNullable(like);
 		}
@@ -142,6 +146,8 @@ public class LikeDao extends AbstractJpaDao{
 	@SuppressWarnings("unchecked")
 	public List<Like> getByIsActive(int startPosition,int limit){
 		final StringBuilder sql = new StringBuilder();
+		
+		
 		
 		sql.append("SELECT * FROM tb_like tl ")
 		.append("INNER JOIN tb_user tu ON tu.id = tl.user_id ")

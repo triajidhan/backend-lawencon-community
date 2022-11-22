@@ -29,7 +29,7 @@ public class CommentController {
 	@Autowired
 	private CommentService commentService;
 	
-	@GetMapping("{id}")
+	@GetMapping("{id}/get")
 	public ResponseEntity<Comment> getById(@PathVariable("id") String id){
 		Comment comment = commentService.getById(id);
 		

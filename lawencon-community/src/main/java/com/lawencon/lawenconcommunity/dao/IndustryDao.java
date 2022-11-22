@@ -46,7 +46,7 @@ public class IndustryDao extends AbstractJpaDao{
 		return objOpt;
 	}
 	
-	public int totalIndustry() {
+	public int getTotalIndustry() {
 		final StringBuilder sql = new StringBuilder();
 		
 		sql.append("SELECT count(*) from tb_industry ")
@@ -77,11 +77,26 @@ public class IndustryDao extends AbstractJpaDao{
 		
 		sql.append("SELECT * ")
 		.append("FROM tb_industry tp ")
+		.append("WHERE is_active = true ")
 		.append("LIMIT :limit OFFSET :startPosition");
 		
 		final List<Industry> objResultIndustries = ConnHandler.getManager().createNativeQuery(sql.toString(),Industry.class)
 				.setParameter("startPosition", startPosition)
 				.setParameter("limit", limit)
+				.getResultList();
+		
+		return objResultIndustries;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Industry> getByIsActive(){
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT * ")
+		.append("FROM tb_industry tp ")
+		.append("WHERE is_active = true ");
+		
+		final List<Industry> objResultIndustries = ConnHandler.getManager().createNativeQuery(sql.toString(),Industry.class)
 				.getResultList();
 		
 		return objResultIndustries;
