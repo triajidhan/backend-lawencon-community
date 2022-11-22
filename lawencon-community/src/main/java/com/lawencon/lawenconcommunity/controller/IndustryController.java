@@ -36,7 +36,7 @@ public class IndustryController {
 		
 	}
 	
-	@GetMapping("is-active")
+	@GetMapping("is-active-all")
 	public ResponseEntity<List<Industry>> getAllByIsActive(){
 		List<Industry> industries = industryService.getByIsActive();
 		

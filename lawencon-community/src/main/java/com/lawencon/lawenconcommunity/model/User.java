@@ -27,7 +27,7 @@ public class User extends BaseEntity{
 	private static final long serialVersionUID = -3790180587767255458L;
 
 	@Column(name="full_name",length=30)
-	private String fullname;
+	private String fullName;
 	
 	@Column(name="email",length=50)
 	private String email;

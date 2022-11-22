@@ -58,7 +58,7 @@ public class UserDao extends AbstractJpaDao{
 			final Balance balance = new Balance();
 			
 			user.setId(objArr[0].toString());
-			user.setFullname(objArr[1].toString());
+			user.setFullName(objArr[1].toString());
 			user.setEmail(objArr[2].toString());
 			user.setPass(objArr[3].toString());
 			
@@ -226,7 +226,7 @@ public class UserDao extends AbstractJpaDao{
 			final Balance balance = new Balance();
 			
 			user.setId(objArr[0].toString());
-			user.setFullname(objArr[1].toString());
+			user.setFullName(objArr[1].toString());
 			user.setEmail(objArr[2].toString());
 			user.setPass(objArr[3].toString());
 			

@@ -178,7 +178,7 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 			throw new RuntimeException("Password Required!");
 		}
 		
-		if(data.getFullname() == null) {
+		if(data.getFullName() == null) {
 			throw new RuntimeException("Full Name Required!");
 		}
 	}
@@ -193,8 +193,8 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 		if(user != null) {
 			userUpdate = user;
 			
-			if(data.getFullname() != null) {
-				userUpdate.setFullname(data.getFullname());
+			if(data.getFullName() != null) {
+				userUpdate.setFullName(data.getFullName());
 			}
 			
 			if(data.getRole() != null) {
