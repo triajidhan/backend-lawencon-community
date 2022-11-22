@@ -62,7 +62,12 @@ public class User extends BaseEntity{
 	@Column(name = "status_subscribe")
 	private Boolean statusSubscribe;
 	
+	@Transient
+	private String industryId;
 	
+	@Transient
+	private String positionId;
+
 	@Transient
 	private Integer countOfUser;
 	

@@ -662,3 +662,25 @@ select * from tb_like tl;
 
 */
 
+
+--- INSERT FILE 
+--INSERT INTO tb_file(id,file,ext,created_by,versions) VALUES
+--('wedsfvgfd','SHP','Shoppee',1,0),('sWRFEGF5','TP','Tokopedia',1,0);
+
+select * from tb_file;
+
+--- INSERT POSITION
+INSERT INTO tb_position(id,position_code,position_name,created_by,versions) VALUES
+('administrator-123','ADM','Administrator','e53b7bb7-663d-4140-ba1f-6eaf6472f286',0),
+('programmer-123','PG','Programmer','e53b7bb7-663d-4140-ba1f-6eaf6472f286',0),
+('trainer-123','TR','Trainer','e53b7bb7-663d-4140-ba1f-6eaf6472f286',0);
+
+select * from tb_position tp;
+
+-- INSERT ACTIVITY
+INSERT INTO tb_activity_type(id,activity_type_code,activity_type_name,created_by,versions) VALUES
+('event-123','E','Event',1,0),('course-123','C','Course',1,0);
+
+
+
+
