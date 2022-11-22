@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import com.lawencon.base.BaseEntity;
@@ -60,5 +61,11 @@ public class User extends BaseEntity{
 	
 	@Column(name = "status_subscribe")
 	private Boolean statusSubscribe;
+	
+	@Transient
+	private String industryId;
+	
+	@Transient
+	private String positionId;
 	
 }

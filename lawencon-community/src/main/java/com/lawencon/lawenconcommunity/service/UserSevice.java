@@ -136,8 +136,8 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 			data.setPass(hashPassword);		
 			data.setBalance(balanceInsert);
 			data.setStatusSubscribe(false);
-			data.setIndustry(industryDao.getByIdAndDetach(Industry.class, data.getIndustry().getId()));
-			data.setPosition(positionDao.getByIdAndDetach(Position.class, data.getPosition().getId()));
+			data.setIndustry(industryDao.getByIdAndDetach(Industry.class, data.getIndustryId()));
+			data.setPosition(positionDao.getByIdAndDetach(Position.class, data.getPositionId()));
 			data.setRole(roleDao.getByRoleCode(com.lawencon.lawenconcommunity.constant.Role.M.toString()));
 			userDao.saveNoLogin(data, ()->userDao.getSystem("SYS").get().getId());
 			userInsertResDto.setMessage("Registration is successful");
