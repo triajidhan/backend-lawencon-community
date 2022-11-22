@@ -56,13 +56,13 @@ public class PostsController {
 	}
 	
 	@GetMapping("total-post-user")
-	public ResponseEntity<Integer> getTotalByUser(@RequestParam String userId){
+	public ResponseEntity<Integer> getTotalByUser(@RequestParam("userId") String userId){
 		final int totalPost = postService.getTotalByUser(userId);
 		return new ResponseEntity<>(totalPost,HttpStatus.OK);
 	}
 	
 	@GetMapping("total-post-type")
-	public ResponseEntity<Integer> getTotalByPostType(@RequestParam String postTypeId){
+	public ResponseEntity<Integer> getTotalByPostType(@RequestParam("postTypeId") String postTypeId){
 		final int totalPost = postService.getTotalByPostType(postTypeId);
 		
 		return new ResponseEntity<>(totalPost,HttpStatus.OK);
