@@ -124,6 +124,7 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 			data.setPass(hashPassword);		
 			data.setBalance(balanceInsert);
 			data.setStatusSubscribe(false);
+			data.setRole(roleDao.getByRoleCode(com.lawencon.lawenconcommunity.constant.Role.M.toString()));
 			userDao.saveNoLogin(data, ()->userDao.getSystem("SYS").get().getId());
 			userInsertResDto.setMessage("Registration is successful");
 			commit();

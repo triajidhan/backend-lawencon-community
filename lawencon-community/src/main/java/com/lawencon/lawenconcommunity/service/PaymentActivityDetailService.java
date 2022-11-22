@@ -1,6 +1,7 @@
 package com.lawencon.lawenconcommunity.service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,9 @@ public class PaymentActivityDetailService extends BaseCoreService {
 	@Autowired
 	private PrincipalService principalService;
 	
-	
+	public List<PaymentActivityDetail> getByIsActive(int startPosition,int limit){
+		return paymentActivityDetailDao.getByIsActive(startPosition, limit);
+	}
 
 	public ResponseMessageDto insert(PaymentActivityDetail data) {
 		valInsert(data);
