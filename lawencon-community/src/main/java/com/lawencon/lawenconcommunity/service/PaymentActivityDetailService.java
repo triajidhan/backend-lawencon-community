@@ -39,6 +39,8 @@ public class PaymentActivityDetailService extends BaseCoreService {
 		try {
 			if (data.getFile() != null) {
 				fileInsert = fileDao.save(data.getFile());
+				BigDecimal administrativeCosts = new BigDecimal("5000");
+				data.setNet(data.getNet().subtract(administrativeCosts));
 				data.setFile(fileInsert);
 			}
 			paymentActivityDetailDao.save(data);
