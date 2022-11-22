@@ -75,26 +75,6 @@ ALTER TABLE tb_activity_type
 ALTER TABLE tb_activity_type 
 	ADD CONSTRAINT tb_activity_type_activity_type_code_bk UNIQUE(activity_type_code);
 
--- tabel status subcsribe (sub, unsub)
-CREATE TABLE tb_status_subscribe(
-	id varchar(36),
-	status_subscribe_code varchar(5) not null unique,
-	status_subscribe_name varchar(50) not null,
-	
-	created_by varchar(36) not null,
-	created_at timestamp without time zone not null default now(),
-	updated_by varchar(36),
-	updated_at timestamp without time zone,
-	versions int not null,
-	is_active bool not null default true
-);
-
-ALTER TABLE tb_status_subscribe
-	ADD CONSTRAINT tb_status_subscribe_pk PRIMARY KEY(id);
-
-ALTER TABLE tb_status_subscribe 
-	ADD CONSTRAINT tb_status_subscribe_status_subscribe_code_bk UNIQUE(status_subscribe_code);
-
 
 -- tabel industry
 CREATE TABLE tb_industry(
@@ -144,27 +124,22 @@ ALTER TABLE tb_position
 ALTER TABLE tb_position 
 	ADD CONSTRAINT tb_position_code_position_name_ck UNIQUE(position_code,position_name);
 
+-- table balance
+CREATE TABLE tb_balance(
+    id varchar(36),
 
--- tabel verifikasi
-CREATE TABLE tb_verification(
-	id varchar(36),
-	verification_code varchar(5) not null unique,
-	verification_status boolean not null,
-	
-	created_by varchar(36) not null,
-	created_at timestamp without time zone not null default now(),
-	updated_by varchar(36),
-	updated_at timestamp without time zone,
-	versions int not null,
-	is_active bool not null default true
+    total_balance double precision default 0,
+    
+    created_by varchar(36) not null ,
+    created_at timestamp without time zone not null default now(),
+    updated_by varchar(36),
+    updated_at timestamp without time zone,
+    versions int not null ,
+    is_active bool not null default true
 );
 
-ALTER TABLE tb_verification
-	ADD CONSTRAINT tb_verification_pk PRIMARY KEY(id);
-
-ALTER TABLE tb_verification 
-	ADD CONSTRAINT tb_verification_code_bk UNIQUE(verification_code);
-
+ALTER TABLE tb_balance
+	ADD CONSTRAINT tb_balance_activity_pk PRIMARY KEY(id);
 
 -- tabel user
 CREATE TABLE tb_user(
@@ -175,15 +150,14 @@ CREATE TABLE tb_user(
 	pass text not null,
 	
 	company varchar(100) null,
-	total_balance double precision null,
+	status_subscribe boolean null,
 	
 	industry_id varchar(36) null,
 	position_id varchar(36) null,
 	
+	balance_id varchar(36) null,
 	role_id varchar(36) not null,
 	file_id varchar(36) null,
-	status_subscribe_id varchar(36) null,
-	verification_id varchar(36) null,
 	
 	created_by varchar(36) not null,
 	created_at timestamp without time zone not null default now(),
@@ -200,6 +174,10 @@ ALTER TABLE tb_user
 	ADD CONSTRAINT tb_user_email_bk UNIQUE(email);
 
 ALTER TABLE tb_user 
+	ADD CONSTRAINT tb_user_tb_balance_fk FOREIGN KEY(balance_id)
+	REFERENCES tb_balance(id);
+
+ALTER TABLE tb_user 
 	ADD CONSTRAINT tb_user_tb_file_fk FOREIGN KEY(file_id)
 	REFERENCES tb_file(id);
 
@@ -208,20 +186,12 @@ ALTER TABLE tb_user
 	REFERENCES tb_role(id);
 
 ALTER TABLE tb_user 
-	ADD CONSTRAINT tb_user_tb_status_subscribe_fk FOREIGN KEY(status_subscribe_id)
-	REFERENCES tb_status_subscribe(id);
-
-ALTER TABLE tb_user 
 	ADD CONSTRAINT tb_user_tb_industry_fk FOREIGN KEY(industry_id)
 	REFERENCES tb_industry(id);
 
 ALTER TABLE tb_user 
 	ADD CONSTRAINT tb_user_tb_position_fk FOREIGN KEY(position_id)
 	REFERENCES tb_position(id);
-
-ALTER TABLE tb_user 
-	ADD CONSTRAINT tb_user_tb_verification_fk FOREIGN KEY(verification_id)
-	REFERENCES tb_verification(id);
 
 
 ALTER TABLE tb_user 
@@ -265,7 +235,6 @@ CREATE TABLE tb_post(
 	
 	title_poll text null,
 	post_type_id varchar(36) not null,
-	status_subscribe_id varchar(36) not null,
 	
 	created_by varchar(36) not null ,
 	created_at timestamp without time zone not null default now(),
@@ -280,10 +249,6 @@ ALTER TABLE tb_post
 
 ALTER TABLE tb_post 
 	ADD CONSTRAINT tb_post_tb_post_bk UNIQUE(post_code);
-
-ALTER TABLE tb_post 
-	ADD CONSTRAINT tb_post_tb_subscribe_fk FOREIGN KEY(status_subscribe_id)
-	REFERENCES tb_status_subscribe(id);
 
 ALTER TABLE tb_post 
 	ADD CONSTRAINT tb_post_tb_post_type_id_fk FOREIGN KEY(post_type_id)
@@ -461,7 +426,7 @@ CREATE TABLE tb_activity(
 	activity_type_id varchar(36) not null,
 	file_id varchar(36) null,
 	
-	created_by varchar(36) not null ,
+	created_by varchar(36) not null,
 	created_at timestamp without time zone not null default now(),
 	updated_by varchar(36),
 	updated_at timestamp without time zone,
@@ -493,6 +458,7 @@ CREATE TABLE tb_payment_subscribe(
 	approve boolean default false,
 	
 	user_id varchar(36) not null,
+	file_id varchar(36) null,
 	
 	created_by varchar(36) not null ,
 	created_at timestamp without time zone not null default now(),
@@ -512,28 +478,9 @@ ALTER TABLE tb_payment_subscribe
 	ADD CONSTRAINT tb_payment_subscribe_tb_user_fk FOREIGN KEY(user_id)
 	REFERENCES tb_user(id);
 
-
--- table balance
-CREATE TABLE tb_balance(
-    id varchar(36),
-
-    total_balance double precision null,
- 	user_id varchar(36) not null,
-    
-    created_by varchar(36) not null ,
-    created_at timestamp without time zone not null default now(),
-    updated_by varchar(36),
-    updated_at timestamp without time zone,
-    versions int not null ,
-    is_active bool not null default true
-);
-
-ALTER TABLE tb_balance
-	ADD CONSTRAINT tb_balance_activity_pk PRIMARY KEY(id);
-
-ALTER TABLE tb_balance 
-    ADD CONSTRAINT tb_balance_activity_tb_activity_fk FOREIGN KEY(user_id)
-    REFERENCES tb_user(id);
+ALTER TABLE tb_payment_subscribe 
+	ADD CONSTRAINT tb_payment_subscribe_tb_file_fk FOREIGN KEY(file_id)
+	REFERENCES tb_file(id);
 
 -- table payment activity detail 
 CREATE TABLE tb_payment_activity_detail(
@@ -544,6 +491,7 @@ CREATE TABLE tb_payment_activity_detail(
     approve boolean default false,
 
     activity_id varchar(36) not null,
+    file_id varchar(36) null,
 
     created_by varchar(36) not null,
     created_at timestamp without time zone not null default now(),
@@ -562,34 +510,51 @@ ALTER TABLE tb_payment_activity_detail
 ALTER TABLE tb_payment_activity_detail 
     ADD CONSTRAINT tb_activity_detail_tb_activity_fk FOREIGN KEY(activity_id)
     REFERENCES tb_activity(id);
-    
---- DML 
---INSERT INTO tb_role(role_code,role_name) VALUES
---('SYS','System'),('SA','Super Admin'),('L','Lecturer'),('S','Student');
---
---select * from tb_role;
---
---INSERT INTO tb_post_type (post_type_code,post_type_name) VALUES
---('Po','Polling'),
---('N','Normal'),
---('Pr','Premium');
---
---select * from tb_post_type;
---
---INSERT INTO tb_activity_type (activity_type_code,activity_type_name) VALUES
---('E','Event'),
---('C','Course');
---
---select * from tb_activity_type;
---
---INSERT INTO tb_status_subscribe (status_subscribe_code,status_subscribe_name) VALUES
---('S','Subscribe'),
---('Un','Unsubscribe');
---
---select * from tb_status_subscribe; 
+
+ALTER TABLE tb_payment_activity_detail 
+	ADD CONSTRAINT tb_activity_detail_tb_file_fk FOREIGN KEY(file_id)
+	REFERENCES tb_file(id);
    
+
+--- DATA MANIPULATION LANGUAGE
    
-   --- INSERT INDUSTRIAL
+---- INSERT ROLE
+INSERT INTO tb_role(id,role_code,role_name,created_by,versions) VALUES
+('system-123','SYS','System','system-123',0);
+
+
+INSERT INTO tb_role(id,role_code,role_name,created_by,versions) VALUES
+('super-admin-123','SA','Super Admin','system-123',0),
+('admin-123','A','Admin','system-123',0),
+('member-123','M','Member','system-123',0);
+
+--
+select * from tb_role;
+
+delete from tb_role;
+--
+
+-- INSERT USER SUPER ADMIN
+INSERT INTO tb_user(id,full_name,email,pass,role_id ,created_by,versions) VALUES
+('system','system','system@mail.com',12345,'system-123','system-user',0);
+
+select * from tb_user;
+
+--- INSERT POST TYPE
+INSERT INTO tb_post_type(id,post_type_code,post_type_name,created_by,versions) values
+('normal-type-123','N','Normal','37e1be28-5d03-48fa-9a73-8bb00c4c67c4',0),('polling-type-123','PO','Polling','37e1be28-5d03-48fa-9a73-8bb00c4c67c4',0),('premium-type-123','PRE','Premium','37e1be28-5d03-48fa-9a73-8bb00c4c67c4',0);
+
+--
+/**
+select * from tb_post_type tpt;
+--
+
+INSERT INTO tb_user(id,full_name,email,pass,role_id ,created_by,versions) VALUES
+('admin-user','admin','admin@mail.com','$2a$10$CWMOKeU2KBJE0lUTEkM5zebDrFj7dFe3fHNGavmFiIcKLBnlHAU5S','admin-123','system-user',0);
+
+SELECT * FROM tb_user;
+
+--- INSERT INDUSTRIAL
 INSERT INTO tb_industry(id,industry_code,industry_name,created_by,versions) VALUES
 ('start-up-123','SU','Start Up','e53b7bb7-663d-4140-ba1f-6eaf6472f286',0),
 ('corporate-123','C','Corporated','e53b7bb7-663d-4140-ba1f-6eaf6472f286',0);
@@ -607,3 +572,93 @@ INSERT INTO tb_position(id,position_code,position_name,created_by,versions) VALU
 ('administrator-123','ADM','Administrator','e53b7bb7-663d-4140-ba1f-6eaf6472f286',0),
 ('programmer-123','PG','Programmer','e53b7bb7-663d-4140-ba1f-6eaf6472f286',0),
 ('trainer-123','TR','Trainer','e53b7bb7-663d-4140-ba1f-6eaf6472f286',0);
+
+select * from tb_position tp;
+
+-- INSERT ACTIVITY
+INSERT INTO tb_activity_type(id,activity_type_code,activity_type_name,created_by,versions) VALUES
+('event-123','E','Event',1,0),('course-123','C','Course',1,0);
+
+select * from tb_activity_type tat;
+
+
+-- INSERT BALANCE
+select * from tb_balance tb;
+
+-- INSERT USER
+INSERT INTO tb_user(id,full_name,email,pass,company, status_subscribe,industry_id, position_id, balance_id, role_id ,created_by,versions) VALUES
+('sdfc','gangan','gan@mail.com',12345,'CCN',false,'sWRFEGF5','sfdghxghfub','sssss','bvsdngmjnhgv',1,0);
+
+INSERT INTO tb_user(id,full_name,email,pass,company, status_subscribe,industry_id, position_id, balance_id, role_id ,created_by,versions) VALUES
+('buggj','wanwan','wan@mail.com',12345,'CCN',false,'sWRFEGF5','sfdghxghfub','sssss','bvsdngmjnhgv',1,0);
+
+INSERT INTO tb_user(id,full_name,email,pass,company, status_subscribe,industry_id, position_id, balance_id, role_id ,created_by,versions) VALUES
+('huggj','sansan','san@mail.com',12345,'CCN',false,'sWRFEGF5','sfdghxghfub','sssss','nmjkgyi',1,0);
+
+select * from tb_user;
+
+-- INSERT tb_activity
+insert into tb_activity(id,activity_code,title,provider,locations,begin_schedule,finish_schedule,price,activity_type_id,created_by,versions) values
+('course-01','c1','Bootcamp java','lawencon','Jakarta','2022-11-01 08:00:00','2022-11-05 15:00:00',200000,'course-123','admin-user',0),
+('event-02','c2','Jobfair','visited','Jakarta','2022-11-01 08:00:00','2022-11-05 15:00:00',200000,'event-123','admin-user',0);
+
+select * from tb_activity ta
+inner join tb_activity_type tat on ta.activity_type_id  = tat.id;
+
+-- tb_artikel
+insert into tb_article(id,article_code,title,contents,created_by,versions) VALUES
+('sdfsd','VC','Kerbau','Kerbau adalah hewan berkaki 4',1,0);
+
+
+select * from tb_article ta;
+
+
+-- INSERT post
+---(post biasa/premium)
+insert into tb_post(id,post_code,title,contents,post_type_id,created_by,versions) values
+('kjhghh','KC','Kucing','Kucing adalah hewan berkaki 4','normal-type-123','admin-user',0);
+
+insert into tb_post(id,post_code,title,contents,title_poll,post_type_id,created_by,versions) values
+('cbvc','PR','Event','','Apakah ada yang ingin mengikuti event','polling-type-123','admin-user',0);
+
+insert into tb_post(id,post_code,title,contents,title_poll,post_type_id,created_by,versions) values
+('cbv','RR','Event','','Apakah ada yang ingin mengikuti course','polling-type-123','admin-user',0);
+
+insert into tb_post(id,post_code,title,contents,post_type_id,created_by,versions) values
+('kfdd','AY','Ayam','Ayam adalah hewan berkaki 2','normal-type-123','admin-user',0);
+
+select * from tb_post;
+
+
+-- INSERT polling tp 
+INSERT INTO tb_polling(id,poll_content,total_poll,post_id,created_by,versions) values
+('pol-4','A',23,'cbv','admin-user',0),
+('pol-5','B',23,'cbv','admin-user',0),
+('pol-6','C',23,'cbv','admin-user',0);
+
+select * from tb_polling tp;
+
+-- INSERT BOOKMARK
+select * from tb_post tp;
+
+select * from tb_user;
+
+INSERT INTO tb_bookmark (id,user_id,post_id,created_by,versions) values
+('qw1','1dd4ad4e-bec9-48fb-9e60-21b9025b3299','kjhghh','1dd4ad4e-bec9-48fb-9e60-21b9025b3299',0),
+('q2','1dd4ad4e-bec9-48fb-9e60-21b9025b3299','kfdd','1dd4ad4e-bec9-48fb-9e60-21b9025b3299',0),
+('qw3','1dd4ad4e-bec9-48fb-9e60-21b9025b3299','cbvc','1dd4ad4e-bec9-48fb-9e60-21b9025b3299',0),
+('qw4','3cd88ebf-6130-4f6f-8ac5-4b1913a5716d','kfdd','3cd88ebf-6130-4f6f-8ac5-4b1913a5716d',0);
+
+select * from tb_bookmark tb;
+
+-- INSERT LIKES
+INSERT INTO tb_like  (id,user_id,post_id,created_by,versions) values
+('qw1','1dd4ad4e-bec9-48fb-9e60-21b9025b3299','kjhghh','1dd4ad4e-bec9-48fb-9e60-21b9025b3299',0),
+('q2','1dd4ad4e-bec9-48fb-9e60-21b9025b3299','kfdd','1dd4ad4e-bec9-48fb-9e60-21b9025b3299',0),
+('qw3','1dd4ad4e-bec9-48fb-9e60-21b9025b3299','cbvc','1dd4ad4e-bec9-48fb-9e60-21b9025b3299',0),
+('qw4','3cd88ebf-6130-4f6f-8ac5-4b1913a5716d','kfdd','3cd88ebf-6130-4f6f-8ac5-4b1913a5716d',0);
+
+select * from tb_like tl;
+
+*/
+

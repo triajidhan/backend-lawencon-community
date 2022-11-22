@@ -24,7 +24,7 @@ public class SecurityConfig {
 	public List<RequestMatcher> Matchers() {
 
 		final List<RequestMatcher> requestMatchers = new ArrayList<>();
-		requestMatchers.add(new AntPathRequestMatcher("/users/register", HttpMethod.POST.name()));
+		requestMatchers.add(new AntPathRequestMatcher("/users/register/**", HttpMethod.POST.name()));
 		requestMatchers.add(new AntPathRequestMatcher("/verification-code/**", HttpMethod.POST.name()));
 		requestMatchers.add(new AntPathRequestMatcher("/industries/**", HttpMethod.GET.name()));
 		requestMatchers.add(new AntPathRequestMatcher("/positions/**", HttpMethod.GET.name()));
