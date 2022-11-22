@@ -24,7 +24,7 @@ public class VerificationCodeController {
 
 	@PostMapping("/generate")
 	public ResponseEntity<ResponseMessageDto> generateCode(@RequestBody User data) {
-		final ResponseMessageDto responseDto =verificationCodeService.generateVerificationCode(data.getFullname(),data.getEmail());
+		final ResponseMessageDto responseDto =verificationCodeService.generateVerificationCode(data.getFullName(),data.getEmail());
 		return new ResponseEntity<ResponseMessageDto>(responseDto, HttpStatus.OK);
 	}
 	@PostMapping("/validate")

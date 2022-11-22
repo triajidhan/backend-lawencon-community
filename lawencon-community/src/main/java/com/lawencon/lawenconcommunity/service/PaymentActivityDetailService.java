@@ -29,6 +29,8 @@ public class PaymentActivityDetailService extends BaseCoreService {
 
 	@Autowired
 	private PrincipalService principalService;
+	
+	
 
 	public ResponseMessageDto insert(PaymentActivityDetail data) {
 		valInsert(data);
