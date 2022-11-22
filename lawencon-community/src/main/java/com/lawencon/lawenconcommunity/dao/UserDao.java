@@ -135,7 +135,7 @@ public class UserDao extends AbstractJpaDao{
 		return objUsers;
 	}
 	
-	public int getTotalUser() {
+	public User getTotalUser() {
 		final StringBuilder sql = new StringBuilder();
 		
 		sql.append("SELECT count(tb_user.id) as total_user from tb_user ")
@@ -143,7 +143,7 @@ public class UserDao extends AbstractJpaDao{
 		.append("WHERE tb_user.is_active = true");
 		
 		Object objUser = null; 
-		int totalUser = 0;
+		User user = new User();
 		try {
 			objUser = ConnHandler.getManager().createNativeQuery(sql.toString())
 			.getSingleResult();
@@ -155,13 +155,13 @@ public class UserDao extends AbstractJpaDao{
 		if(objUser != null) {
 			Object objArr = (Object) objUser;
 			
-			totalUser =  Integer.parseInt(objArr.toString());
+			user.setCountOfUser(Integer.parseInt(objArr.toString()));
 		}
 		
-		return totalUser;
+		return user;
 	}
 	
-	public int getTotalByRoleCode(final String roleCode) {
+	public User getTotalByRoleCode(final String roleCode) {
 		final StringBuilder sql = new StringBuilder();
 		
 		sql.append("select count(tu.id) as total_user from tb_user tu ")
@@ -169,7 +169,7 @@ public class UserDao extends AbstractJpaDao{
 		.append("WHERE role_code iLike :roleCode AND tu.is_active = true");
 		
 		Object objUser = null; 
-		int totalUser = 0;
+		User user = new User();
 		try {
 			objUser = ConnHandler.getManager().createNativeQuery(sql.toString())
 			.setParameter("roleCode", roleCode)
@@ -181,10 +181,10 @@ public class UserDao extends AbstractJpaDao{
 		
 		if(objUser != null) {
 			Object objArr = (Object) objUser;
-			totalUser =  Integer.parseInt(objArr.toString());
+			user.setCountOfUser(Integer.parseInt(objArr.toString()));
 		}
 		
-		return totalUser;
+		return user;
 	}
 	
 	public Optional<User> getSystem(final String roleCode){
