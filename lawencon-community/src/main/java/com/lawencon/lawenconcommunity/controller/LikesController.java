@@ -47,17 +47,17 @@ public class LikesController {
 	}
 	
 	@GetMapping("total-posts")
-	public ResponseEntity<Integer> getTotalByPost(@RequestParam("postId") String postId){
-		final int total = likeService.getTotalByPost(postId);
+	public ResponseEntity<Like> getTotalByPost(@RequestParam("postId") String postId){
+		Like Like = likeService.getTotalByPost(postId);
 		
-		return new ResponseEntity<>(total,HttpStatus.OK);
+		return new ResponseEntity<>(Like,HttpStatus.OK);
 	}
 	
 	@GetMapping("total-users")
-	public ResponseEntity<Integer> getTotalByUser(@RequestParam("userId") String userId){
-		final int total = likeService.getTotalByUser(userId);
+	public ResponseEntity<Like> getTotalByUser(@RequestParam("userId") String userId){
+		Like Like = likeService.getTotalByUser(userId);
 		
-		return new ResponseEntity<>(total,HttpStatus.OK);
+		return new ResponseEntity<>(Like,HttpStatus.OK);
 	}
 	
 	@GetMapping("user-like")

@@ -26,14 +26,13 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 public class PositionController {
 
 	@Autowired
-	private PositionService positionService; 
+	private PositionService positionService;
 	
 	@GetMapping
 	public ResponseEntity<List<Position>> getAll(){
 		List<Position> positions = positionService.getAll();
 		
 		return new ResponseEntity<>(positions,HttpStatus.OK);
-		
 	}
 	
 	@GetMapping("is-active-all")
@@ -60,10 +59,10 @@ public class PositionController {
 	}
 	
 	@GetMapping("total-position")
-	public ResponseEntity<Integer> getTotalPosition(){
-		int totalIndustry = positionService.getTotalPosition();
+	public ResponseEntity<Position> getTotalPosition(){
+		Position position = positionService.getTotalPosition();
 		
-		return new ResponseEntity<>(totalIndustry,HttpStatus.OK);
+		return new ResponseEntity<>(position,HttpStatus.OK);
 	}
 	
 	@PostMapping()

@@ -29,7 +29,7 @@ public class LikeDao extends AbstractJpaDao{
 		return likes;
 	}
 	
-	public int getTotalByUser(String userId){
+	public Like getTotalByUser(String userId){
 		final StringBuilder sql = new StringBuilder();
 		
 		
@@ -40,7 +40,7 @@ public class LikeDao extends AbstractJpaDao{
 		.append("WHERE tl.user_id  = :userId AND tl.is_active = true");
 		
 		Object objLike = null;
-		int total = 0;
+		Like like = new Like();
 		
 		try {			
 			objLike = ConnHandler.getManager().createNativeQuery(sql.toString())
@@ -54,10 +54,10 @@ public class LikeDao extends AbstractJpaDao{
 		if(objLike != null) {
 			Object obj = (Object) objLike;
 			
-			total = Integer.parseInt(obj.toString());
+			like.setCountOfLike(Integer.parseInt(obj.toString()));
 		}
 		
-		return total;
+		return like;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -77,7 +77,7 @@ public class LikeDao extends AbstractJpaDao{
 		return likes;
 	}
 	
-	public int getTotalByPost(String postId){
+	public Like getTotalByPost(String postId){
 		final StringBuilder sql = new StringBuilder();
 		
 		sql.append("SELECT count(*) ")
@@ -87,7 +87,7 @@ public class LikeDao extends AbstractJpaDao{
 		.append("WHERE post_id = :postId AND tl.is_active = true");
 		
 		Object objLike = null;
-		int total = 0;
+		Like like = new Like();
 		
 		try {			
 			objLike = ConnHandler.getManager().createNativeQuery(sql.toString())
@@ -101,17 +101,14 @@ public class LikeDao extends AbstractJpaDao{
 		if(objLike != null) {
 			Object obj = (Object) objLike;
 			
-			total = Integer.parseInt(obj.toString());
+			
+			like.setCountOfLike(Integer.parseInt(obj.toString()));
 		}
 		
-		return total;
+		return like;
 	}
 	
-	/**
-	 *  Select count(*), 
-	 *  (SELECT id  from tb_like where user_id = :userId AND post_id = :postId) as like_id  
-	 *  FROM tb_like WHERE post_id = :postId
-	 */
+	
 	public Optional<Like> userLikePost(String userId,String postId){
 		StringBuilder sql = new StringBuilder();
 		

@@ -48,14 +48,14 @@ public class LikeService extends BaseCoreService{
 		return likes;
 	}
 	
-	public int getTotalByUser(String userId){
-		int likes = likeDao.getTotalByUser(userId);
+	public Like getTotalByUser(String userId){
+		Like likes = likeDao.getTotalByUser(userId);
 		
 		return likes;
 	}
 	
-	public int getTotalByPost(String postId){
-		int likes = likeDao.getTotalByPost(postId);
+	public Like getTotalByPost(String postId){
+		Like likes = likeDao.getTotalByPost(postId);
 		
 		return likes;
 	}

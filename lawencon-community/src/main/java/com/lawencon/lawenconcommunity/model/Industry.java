@@ -3,6 +3,7 @@ package com.lawencon.lawenconcommunity.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import com.lawencon.base.BaseEntity;
@@ -28,4 +29,7 @@ public class Industry extends BaseEntity{
 	
 	@Column(name ="industry_name",length=50)
 	private String industryName;
+	
+	@Transient
+	private Integer countOfIndustry;
 }

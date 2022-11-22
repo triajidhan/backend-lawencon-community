@@ -21,7 +21,7 @@ public class PositionDao extends AbstractJpaDao
 		.append("WHERE position_code = :code AND is_active = true");
 		
 		Object objPosition = null; 
-		Optional<Position> objOpt = null;
+		Optional<Position> objOpt = Optional.ofNullable(null);
 		try {
 			objPosition = this.createNativeQuery(sql.toString())
 			.setParameter("code", code)
@@ -47,7 +47,7 @@ public class PositionDao extends AbstractJpaDao
 		return objOpt;
 	}
 	
-	public int getTotalPosition() {
+	public Position getTotalPosition() {
 		final StringBuilder sql = new StringBuilder();
 		
 		sql.append("SELECT count(*) from tb_position ")
@@ -55,7 +55,7 @@ public class PositionDao extends AbstractJpaDao
 		
 		
 		Object objPosition = null;
-		int totalPosition = 0;
+		Position position = new Position();
 		try {
 			objPosition = ConnHandler.getManager().createNativeQuery(sql.toString())
 					.getSingleResult();
@@ -66,10 +66,10 @@ public class PositionDao extends AbstractJpaDao
 		if(objPosition != null) {
 			Object obj = (Object) objPosition;
 			
-			totalPosition = Integer.parseInt(obj.toString());
+			position.setCountOfPosition(Integer.parseInt(obj.toString()));
 		}
 		
-		return totalPosition;
+		return position;
 	}
 	
 	@SuppressWarnings("unchecked")

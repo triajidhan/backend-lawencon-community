@@ -20,7 +20,7 @@ public class IndustryDao extends AbstractJpaDao{
 		.append("WHERE industry_code = :code is_active = true");
 		
 		Object objIndustry = null; 
-		Optional<Industry> objOpt = null;
+		Optional<Industry> objOpt = Optional.ofNullable(null);
 		try {
 			objIndustry = this.createNativeQuery(sql.toString())
 			.setParameter("code", code)
@@ -46,7 +46,7 @@ public class IndustryDao extends AbstractJpaDao{
 		return objOpt;
 	}
 	
-	public int getTotalIndustry() {
+	public Industry getTotalIndustry() {
 		final StringBuilder sql = new StringBuilder();
 		
 		sql.append("SELECT count(*) from tb_industry ")
@@ -54,7 +54,7 @@ public class IndustryDao extends AbstractJpaDao{
 		
 		
 		Object objIndustry = null;
-		int totalIndustry = 0;
+		Industry industry = new Industry();
 		try {
 			objIndustry = ConnHandler.getManager().createNativeQuery(sql.toString())
 					.getSingleResult();
@@ -65,10 +65,10 @@ public class IndustryDao extends AbstractJpaDao{
 		if(objIndustry != null) {
 			Object obj = (Object) objIndustry;
 			
-			totalIndustry = Integer.parseInt(obj.toString());
+			industry.setCountOfIndustry(Integer.parseInt(obj.toString()));
 		}
 		
-		return totalIndustry;
+		return industry;
 	}
 	
 	@SuppressWarnings("unchecked")
