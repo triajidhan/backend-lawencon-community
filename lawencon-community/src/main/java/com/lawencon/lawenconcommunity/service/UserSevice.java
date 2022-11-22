@@ -138,7 +138,6 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 	public void valInsert(User data) {
 		idNullInsert(data);
 		bkNotDuplicate(data);
-		fkFound(data);
 	}
 	
 
@@ -160,16 +159,8 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 		}
 	}
 	
-	public void fkFound(User data) {		
-		if(roleDao.getByIdAndDetach(Role.class, data.getRole().getId())==null) {
-			throw new RuntimeException("Role not found!");
-		}
-	}
 	
 	public void bkNotNull(User data) {
-		if(data.getRole()==null) {
-			throw new RuntimeException("Role Required!");
-		}
 		
 		if(data.getEmail()==null) {
 			throw new RuntimeException("Email Required!");
