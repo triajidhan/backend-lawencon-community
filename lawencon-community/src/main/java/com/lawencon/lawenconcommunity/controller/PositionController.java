@@ -36,7 +36,7 @@ public class PositionController {
 		
 	}
 	
-	@GetMapping("is-active")
+	@GetMapping("is-active-all")
 	public ResponseEntity<List<Position>> getAllByIsActive(){
 		List<Position> positions = positionService.getByIsActive();
 		
