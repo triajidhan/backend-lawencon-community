@@ -54,15 +54,15 @@ public class UsersController {
 	}
 	
 	@GetMapping("total-user")
-	public ResponseEntity<Integer> getTotalUser(){
-		final int users = userSevice.getTotalUser();
-		return new ResponseEntity<>(users, HttpStatus.OK);
+	public ResponseEntity<User> getTotalUser(){
+		User user = userSevice.getTotalUser();
+		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 	
 	@GetMapping("total-user/role-code")
-	public ResponseEntity<Integer> getTotalUserByRole(@RequestParam("role-code") String roleCode){
-		final int users = userSevice.getTotalUserByRole(roleCode);
-		return new ResponseEntity<>(users, HttpStatus.OK);
+	public ResponseEntity<User> getTotalUserByRole(@RequestParam("role-code") String roleCode){
+		final User user = userSevice.getTotalUserByRole(roleCode);
+		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 	
 	@PostMapping()

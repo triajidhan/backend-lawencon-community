@@ -50,7 +50,7 @@ public class PostService extends BaseCoreService {
 		return postDao.countAll(Post.class);
 	}
 	
-	public int getTotalByUser(String userId) {
+	public Post getTotalByUser(String userId) {
 		return postDao.getTotalByUser(userId);
 	}
 
@@ -58,7 +58,7 @@ public class PostService extends BaseCoreService {
 		return postDao.getByPostCode(postCode).get();
 	}
 	
-	public int getTotalByPostType(String postTypeId) {
+	public Post getTotalByPostType(String postTypeId) {
 		return postDao.getTotalByPostType(postTypeId);
 	}
 	
