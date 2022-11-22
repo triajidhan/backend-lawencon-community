@@ -29,9 +29,9 @@ public class PaymentSubscribeController {
 	
 	@GetMapping("is-active")
 	public ResponseEntity<List<PaymentSubscribe>> getAllByIsActive(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit){
-		List<PaymentSubscribe> industries = paymentSubscribeService.getByIsActive(startPosition, limit);
+		List<PaymentSubscribe> paymentSubscribe = paymentSubscribeService.getByIsActive(startPosition, limit);
 		
-		return new ResponseEntity<>(industries,HttpStatus.OK);
+		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
 	}
 	
 	@PostMapping()
