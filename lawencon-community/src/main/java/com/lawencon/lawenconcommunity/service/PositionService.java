@@ -79,9 +79,9 @@ public class PositionService extends BaseCoreService{
 			}
 
 			positionDao.save(PositionUpdate);
-			responseMessageDto.setMessage("Success Add Position!");
+			responseMessageDto.setMessage("Success!");
 		} catch (Exception e) {
-			responseMessageDto.setMessage("Failed Add Position!");
+			responseMessageDto.setMessage("Failed!");
 			e.printStackTrace();
 		}
 		commit();
