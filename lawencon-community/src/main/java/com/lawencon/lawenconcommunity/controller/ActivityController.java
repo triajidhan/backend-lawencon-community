@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +29,14 @@ public class ActivityController {
 	
 	@GetMapping
 	public ResponseEntity<List<Activity>> getAll(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limitPage){
-		final List<Activity> activities = activityService.getByIsActive(startPosition, limitPage);
+		final List<Activity> activities = activityService.getAll(startPosition, limitPage);
+		
+		return new ResponseEntity<>(activities,HttpStatus.OK);
+	}
+	
+	@GetMapping("{id}/get")
+	public ResponseEntity<Activity> getById(@PathVariable("id") String activityId){
+		final Activity activities = activityService.getById(activityId);
 		
 		return new ResponseEntity<>(activities,HttpStatus.OK);
 	}
@@ -73,6 +81,20 @@ public class ActivityController {
 		Activity activity = activityService.getTotalByActivityTypeCode(activityTypeCode);
 		
 		return new ResponseEntity<>(activity,HttpStatus.OK);
+	}
+	
+	@GetMapping("is-active")
+	public ResponseEntity<List<Activity>> getByIsActive(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limitPage){
+		final List<Activity> activities = activityService.getByIsActive(startPosition, limitPage);
+		
+		return new ResponseEntity<>(activities,HttpStatus.OK);
+	}
+	
+	@GetMapping("is-active-all")
+	public ResponseEntity<List<Activity>> getByIsActive(){
+		final List<Activity> activities = activityService.getByIsActive();
+		
+		return new ResponseEntity<>(activities,HttpStatus.OK);
 	}
 	
 	@PostMapping()

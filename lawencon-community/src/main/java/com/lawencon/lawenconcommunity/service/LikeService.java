@@ -42,6 +42,10 @@ public class LikeService extends BaseCoreService{
 		return likes;
 	}
 	
+	public Like getById(String id) {
+		return likeDao.getByIdAndDetach(Like.class, id);
+	}
+	
 	public List<Like> getByUser(String userId){
 		List<Like> likes = likeDao.getByUser(userId);
 		

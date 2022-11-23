@@ -35,6 +35,12 @@ public class ArticleController {
 		return new ResponseEntity<>(articles,HttpStatus.OK);
 	}
 	
+	@GetMapping("{id}/get")
+	public ResponseEntity<Article> getById(@PathVariable("id") String id){
+		final Article article = articleService.getById(id);
+		return new ResponseEntity<>(article,HttpStatus.OK);
+	}
+	
 	@GetMapping("article-code")
 	public ResponseEntity<Article> getByArticleCode(@RequestParam("articleCode") String articleCode){
 		final Article article = articleService.getByArticleCode(articleCode);
@@ -56,6 +62,13 @@ public class ArticleController {
 		return new ResponseEntity<>(articles,HttpStatus.OK);
 	}
 	
+	@GetMapping("is-active-all")
+	public ResponseEntity<List<Article>> getByIsActive(){
+		final List<Article> articles = articleService.getByIsActive();
+		
+		return new ResponseEntity<>(articles,HttpStatus.OK);
+	}
+	
 	@PostMapping()
 	public ResponseEntity<ResponseMessageDto> insert(@RequestBody Article data){
 		final ResponseMessageDto responseMessageDto = articleService.insert(data);
@@ -68,9 +81,5 @@ public class ArticleController {
 		return new ResponseEntity<>(responseMessageDto,HttpStatus.OK);
 	}
 	
-	@GetMapping("{id}/get")
-	public ResponseEntity<Article> getById(@PathVariable("id") String id){
-		final Article article = articleService.getById(id);
-		return new ResponseEntity<>(article,HttpStatus.OK);
-	}
+	
 }

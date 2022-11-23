@@ -35,7 +35,7 @@ public class PostsController {
 		return new ResponseEntity<>(posts,HttpStatus.OK);
 	}
 	
-	@GetMapping("user")
+	@GetMapping("users")
 	public ResponseEntity<List<Post>> getByUser(@RequestParam("userId") String userId){
 		final List<Post> posts = postService.getByUser(userId);
 		

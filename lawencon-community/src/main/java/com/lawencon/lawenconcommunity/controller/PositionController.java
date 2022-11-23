@@ -35,22 +35,6 @@ public class PositionController {
 		return new ResponseEntity<>(positions,HttpStatus.OK);
 	}
 	
-	@GetMapping("is-active-all")
-	public ResponseEntity<List<Position>> getAllByIsActive(){
-		List<Position> positions = positionService.getByIsActive();
-		
-		return new ResponseEntity<>(positions,HttpStatus.OK);
-		
-	}
-	
-	@GetMapping("is-active")
-	public ResponseEntity<List<Position>> getAllByIsActive(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit){
-		List<Position> positions = positionService.getByIsActive(startPosition, limit);
-		
-		return new ResponseEntity<>(positions,HttpStatus.OK);
-		
-	}
-	
 	@GetMapping("{id}/get")
 	public ResponseEntity<Position> getById(@PathVariable String id){
 		Position position = positionService.getById(id);
@@ -63,6 +47,20 @@ public class PositionController {
 		Position position = positionService.getTotalPosition();
 		
 		return new ResponseEntity<>(position,HttpStatus.OK);
+	}
+	
+	@GetMapping("is-active-all")
+	public ResponseEntity<List<Position>> getAllByIsActive(){
+		List<Position> positions = positionService.getByIsActive();
+		
+		return new ResponseEntity<>(positions,HttpStatus.OK);
+	}
+	
+	@GetMapping("is-active")
+	public ResponseEntity<List<Position>> getAllByIsActive(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit){
+		List<Position> positions = positionService.getByIsActive(startPosition, limit);
+		
+		return new ResponseEntity<>(positions,HttpStatus.OK);
 	}
 	
 	@PostMapping()

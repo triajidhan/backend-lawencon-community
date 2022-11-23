@@ -42,9 +42,9 @@ public class CommentService extends BaseCoreService{
 	}
 	
 	public List<Comment> getByUser(String userId){
-		List<Comment> bookmarks = commentDao.getByUser(userId);
+		List<Comment> comments = commentDao.getByUser(userId);
 		
-		return bookmarks;
+		return comments;
 	}
 	
 	public Comment getTotalByUser(String userId) {
@@ -52,9 +52,9 @@ public class CommentService extends BaseCoreService{
 	}
 	
 	public List<Comment> getByPost(String postId){
-		List<Comment> bookmarks = commentDao.getByPost(postId);
+		List<Comment> comments = commentDao.getByPost(postId);
 		
-		return bookmarks;
+		return comments;
 	}
 	
 	public Comment getTotalByPost(String postId) {

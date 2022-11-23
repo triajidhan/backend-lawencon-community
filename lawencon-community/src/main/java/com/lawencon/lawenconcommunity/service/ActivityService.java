@@ -35,6 +35,10 @@ public class ActivityService extends BaseCoreService{
 		return activities;
 	}
 	
+	public Activity getById(String activityId) {
+		return activityDao.getByIdAndDetach(Activity.class,activityId);
+	}
+	
 	public Activity getByActivityCode(String activityCode) {
 		return activityDao.getByActivityCode(activityCode).get();
 	}
@@ -55,6 +59,12 @@ public class ActivityService extends BaseCoreService{
 	
 	public List<Activity> getByIsActive(int startPosition,int limit){
 		final List<Activity> activities = activityDao.getByIsActive(startPosition, limit);
+		
+		return activities;
+	}
+	
+	public List<Activity> getByIsActive(){
+		final List<Activity> activities = activityDao.getByIsActive();
 		
 		return activities;
 	}

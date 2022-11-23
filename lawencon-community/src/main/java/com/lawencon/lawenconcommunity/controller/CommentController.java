@@ -29,6 +29,13 @@ public class CommentController {
 	@Autowired
 	private CommentService commentService;
 	
+	@GetMapping
+	public ResponseEntity<List<Comment>> getAll(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limitPage){
+		final List<Comment> comments = commentService.getAll(startPosition, limitPage);
+		
+		return new ResponseEntity<>(comments,HttpStatus.OK);
+	}
+	
 	@GetMapping("{id}/get")
 	public ResponseEntity<Comment> getById(@PathVariable("id") String id){
 		Comment comment = commentService.getById(id);
@@ -62,6 +69,13 @@ public class CommentController {
 		Comment comment = commentService.getTotalByPost(postId);
 		
 		return new ResponseEntity<>(comment,HttpStatus.OK);
+	}
+	
+	@GetMapping("is-active")
+	public ResponseEntity<List<Comment>> getByIsActive(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limitPage){
+		final List<Comment> comments = commentService.getByIsActive(startPosition, limitPage);
+		
+		return new ResponseEntity<>(comments,HttpStatus.OK);
 	}
 	
 	@PostMapping()

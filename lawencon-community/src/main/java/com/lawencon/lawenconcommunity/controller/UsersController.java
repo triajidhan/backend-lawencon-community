@@ -60,9 +60,15 @@ public class UsersController {
 	}
 	
 	@GetMapping("total-user/role-code")
-	public ResponseEntity<User> getTotalUserByRole(@RequestParam("role-code") String roleCode){
+	public ResponseEntity<User> getTotalUserByRole(@RequestParam("roleCode") String roleCode){
 		final User user = userSevice.getTotalUserByRole(roleCode);
 		return new ResponseEntity<>(user, HttpStatus.OK);
+	}
+	
+	@GetMapping("is-active")
+	public ResponseEntity<List<User>> getByIsActive(@RequestParam("startPosition") int startPosition, @RequestParam("limit") int limit){
+		final List<User> users = userSevice.getByIsActive(startPosition, limit);
+		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
 	
 	@PostMapping()

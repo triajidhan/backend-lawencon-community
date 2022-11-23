@@ -35,6 +35,16 @@ public class PaymentActivityDetailService extends BaseCoreService {
 		return paymentActivityDetailDao.getAll(PaymentActivityDetail.class,startPosition, limit);
 	}
 	
+	public PaymentActivityDetail getById(String id) {
+		return paymentActivityDetailDao.getByIdAndDetach(PaymentActivityDetail.class, id);
+	}
+	
+	public PaymentActivityDetail getTotalPayment(){
+		//return paymentActivityDetailDao.getTotal;
+		
+		return null;
+	}
+	
 	public List<PaymentActivityDetail> getByActivity(String activityId,int startPosition,int limit){
 		return paymentActivityDetailDao.getByActivity(activityId,startPosition, limit);
 	}

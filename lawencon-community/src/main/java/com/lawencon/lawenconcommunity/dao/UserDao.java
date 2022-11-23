@@ -78,7 +78,6 @@ public class UserDao extends AbstractJpaDao{
 				position.setPositionName(objArr[10].toString());
 			}
 			
-			
 			role.setId(objArr[11].toString());
 			role.setRoleCode(objArr[12].toString());
 			role.setRoleName(objArr[13].toString());
