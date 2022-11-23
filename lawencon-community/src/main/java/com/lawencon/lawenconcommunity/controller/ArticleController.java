@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lawencon.lawenconcommunity.dto.ResponseMessageDto;
-import com.lawencon.lawenconcommunity.model.Activity;
 import com.lawencon.lawenconcommunity.model.Article;
 import com.lawencon.lawenconcommunity.service.ArticleService;
 
@@ -59,6 +58,13 @@ public class ArticleController {
 	@GetMapping("is-active")
 	public ResponseEntity<List<Article>> getByIsActive(@RequestParam("startPosition") int startPosition, @RequestParam("limit") int limit){
 		final List<Article> articles = articleService.getByIsActive(startPosition, limit);
+		
+		return new ResponseEntity<>(articles,HttpStatus.OK);
+	}
+	
+	@GetMapping("is-active-all")
+	public ResponseEntity<List<Article>> getByIsActive(){
+		final List<Article> articles = articleService.getByIsActive();
 		
 		return new ResponseEntity<>(articles,HttpStatus.OK);
 	}

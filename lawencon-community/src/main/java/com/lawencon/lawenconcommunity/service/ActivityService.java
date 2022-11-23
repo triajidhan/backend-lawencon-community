@@ -63,6 +63,12 @@ public class ActivityService extends BaseCoreService{
 		return activities;
 	}
 	
+	public List<Activity> getByIsActive(){
+		final List<Activity> activities = activityDao.getByIsActive();
+		
+		return activities;
+	}
+	
 	public List<Activity> getByActivityTypeCode(String activityTypeCode,int startPosition,int limit){
 		final List<Activity> activities = activityDao.getByActivityTypeCode(activityTypeCode,startPosition,limit);
 		
