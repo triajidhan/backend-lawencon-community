@@ -10,6 +10,7 @@ import com.lawencon.base.BaseCoreService;
 import com.lawencon.lawenconcommunity.dao.CommentDao;
 import com.lawencon.lawenconcommunity.dao.PostDao;
 import com.lawencon.lawenconcommunity.dto.ResponseMessageDto;
+import com.lawencon.lawenconcommunity.model.Bookmark;
 import com.lawencon.lawenconcommunity.model.Comment;
 import com.lawencon.lawenconcommunity.model.Post;
 import com.lawencon.lawenconcommunity.model.User;
@@ -42,9 +43,9 @@ public class CommentService extends BaseCoreService{
 	}
 	
 	public List<Comment> getByUser(String userId){
-		List<Comment> bookmarks = commentDao.getByUser(userId);
+		List<Comment> comments = commentDao.getByUser(userId);
 		
-		return bookmarks;
+		return comments;
 	}
 	
 	public Comment getTotalByUser(String userId) {
@@ -52,9 +53,9 @@ public class CommentService extends BaseCoreService{
 	}
 	
 	public List<Comment> getByPost(String postId){
-		List<Comment> bookmarks = commentDao.getByPost(postId);
+		List<Comment> comments = commentDao.getByPost(postId);
 		
-		return bookmarks;
+		return comments;
 	}
 	
 	public Comment getTotalByPost(String postId) {

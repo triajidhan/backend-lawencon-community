@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lawencon.lawenconcommunity.dto.ResponseMessageDto;
+import com.lawencon.lawenconcommunity.model.Bookmark;
 import com.lawencon.lawenconcommunity.model.Comment;
 import com.lawencon.lawenconcommunity.service.CommentService;
 
@@ -28,6 +29,13 @@ public class CommentController {
 
 	@Autowired
 	private CommentService commentService;
+	
+	@GetMapping
+	public ResponseEntity<List<Comment>> getAll(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limitPage){
+		final List<Comment> comments = commentService.getAll(startPosition, limitPage);
+		
+		return new ResponseEntity<>(comments,HttpStatus.OK);
+	}
 	
 	@GetMapping("{id}/get")
 	public ResponseEntity<Comment> getById(@PathVariable("id") String id){
@@ -62,6 +70,13 @@ public class CommentController {
 		Comment comment = commentService.getTotalByPost(postId);
 		
 		return new ResponseEntity<>(comment,HttpStatus.OK);
+	}
+	
+	@GetMapping("is-active")
+	public ResponseEntity<List<Comment>> getByIsActive(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limitPage){
+		final List<Comment> comments = commentService.getByIsActive(startPosition, limitPage);
+		
+		return new ResponseEntity<>(comments,HttpStatus.OK);
 	}
 	
 	@PostMapping()

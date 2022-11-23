@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +25,20 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 public class PaymentActivityDetailController {
 
 	private PaymentActivityDetailService paymentActivityDetailService;
+	
+	@GetMapping()
+	public ResponseEntity<List<PaymentActivityDetail>> getAll(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit){
+		List<PaymentActivityDetail> paymentActivityDetails = paymentActivityDetailService.getAll(startPosition, limit);
+		
+		return new ResponseEntity<>(paymentActivityDetails,HttpStatus.OK);
+	}
+	
+	@GetMapping("{id}/get")
+	public ResponseEntity<PaymentActivityDetail> getById(@PathVariable("id") String paymentActivityId){
+		final PaymentActivityDetail paymentActivity = paymentActivityDetailService.getById(paymentActivityId);
+		
+		return new ResponseEntity<>(paymentActivity,HttpStatus.OK);
+	}
 	
 	@GetMapping("activity")
 	public ResponseEntity<List<PaymentActivityDetail>> getByActivity(@RequestParam("activityId") String activityId,@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit){
@@ -54,7 +69,7 @@ public class PaymentActivityDetailController {
 	
 	@PutMapping()
 	public ResponseEntity<ResponseMessageDto> update(@RequestBody PaymentActivityDetail data){
-		final ResponseMessageDto paymentSubscribeInsertResDto = paymentActivityDetailService.update(data);
-		return new ResponseEntity<>(paymentSubscribeInsertResDto, HttpStatus.CREATED);
+		final ResponseMessageDto paymentSubscribeUpdatetResDto = paymentActivityDetailService.update(data);
+		return new ResponseEntity<>(paymentSubscribeUpdatetResDto, HttpStatus.CREATED);
 	}
 }

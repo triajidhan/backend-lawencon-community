@@ -13,6 +13,7 @@ import com.lawencon.lawenconcommunity.dao.UserDao;
 import com.lawencon.lawenconcommunity.dto.ResponseMessageDto;
 import com.lawencon.lawenconcommunity.model.Balance;
 import com.lawencon.lawenconcommunity.model.File;
+import com.lawencon.lawenconcommunity.model.Like;
 import com.lawencon.lawenconcommunity.model.PaymentActivityDetail;
 import com.lawencon.lawenconcommunity.model.User;
 import com.lawencon.security.principal.PrincipalService;
@@ -33,6 +34,16 @@ public class PaymentActivityDetailService extends BaseCoreService {
 	
 	public List<PaymentActivityDetail> getAll(int startPosition,int limit){
 		return paymentActivityDetailDao.getAll(PaymentActivityDetail.class,startPosition, limit);
+	}
+	
+	public PaymentActivityDetail getById(String id) {
+		return paymentActivityDetailDao.getByIdAndDetach(PaymentActivityDetail.class, id);
+	}
+	
+	public PaymentActivityDetail getTotalPayment(){
+		//return paymentActivityDetailDao.getTotal;
+		
+		return null;
 	}
 	
 	public List<PaymentActivityDetail> getByActivity(String activityId,int startPosition,int limit){

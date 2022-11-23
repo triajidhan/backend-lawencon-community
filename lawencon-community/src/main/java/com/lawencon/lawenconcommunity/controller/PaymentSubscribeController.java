@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +31,13 @@ public class PaymentSubscribeController {
 	@GetMapping()
 	public ResponseEntity<List<PaymentSubscribe>> getAll(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit){
 		List<PaymentSubscribe> paymentSubscribe = paymentSubscribeService.getAll(startPosition, limit);
+		
+		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
+	}
+	
+	@GetMapping("{id}/get")
+	public ResponseEntity<PaymentSubscribe> getById(@PathVariable("id") String paymentSubscribeId){
+		final PaymentSubscribe paymentSubscribe = paymentSubscribeService.getById(paymentSubscribeId);
 		
 		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
 	}

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +32,13 @@ public class PollingController {
 		final List<Polling> pollings = pollingService.getAll(startPosition, limitPage);
 		
 		return new ResponseEntity<>(pollings,HttpStatus.OK);
+	}
+	
+	@GetMapping("{id}/get")
+	public ResponseEntity<Polling> getById(@PathVariable("id") String pollingId){
+		final Polling polling = pollingService.getById(pollingId);
+		
+		return new ResponseEntity<>(polling,HttpStatus.OK);
 	}
 	
 	@GetMapping("post")

@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,6 +33,13 @@ public class BookmarkController {
 		final List<Bookmark> bookmarks = bookmarkService.getAll(startPosition, limitPage);
 		
 		return new ResponseEntity<>(bookmarks,HttpStatus.OK);
+	}
+	
+	@GetMapping("{id}/get")
+	public ResponseEntity<Bookmark> getById(@PathVariable("id") String bookmarkId){
+		final Bookmark bookmark = bookmarkService.getById(bookmarkId);
+		
+		return new ResponseEntity<>(bookmark,HttpStatus.OK);
 	}
 	
 	@GetMapping("users")
@@ -80,6 +89,12 @@ public class BookmarkController {
 	public ResponseEntity<ResponseMessageDto> insert(@RequestBody Bookmark data){
 		final ResponseMessageDto responseMessageDto = bookmarkService.insert(data);
 		return new ResponseEntity<ResponseMessageDto>(responseMessageDto, HttpStatus.CREATED);
+	}
+	
+	@PutMapping
+	public ResponseEntity<ResponseMessageDto> update(@RequestBody Bookmark data){
+		final ResponseMessageDto responseMessageDto = bookmarkService.update(data);
+		return new ResponseEntity<ResponseMessageDto>(responseMessageDto, HttpStatus.OK);
 	}
 }
 

@@ -33,6 +33,20 @@ public class IndustryController {
 		List<Industry> industries = industryService.getAll();
 		
 		return new ResponseEntity<>(industries,HttpStatus.OK);
+	}
+	
+	@GetMapping("{id}/get")
+	public ResponseEntity<Industry> getById(@PathVariable String id){
+		Industry industry = industryService.getById(id);
+		
+		return new ResponseEntity<>(industry,HttpStatus.OK);
+	}
+	
+	@GetMapping("total-industry")
+	public ResponseEntity<Industry> getTotalIndustry(){
+		Industry industry = industryService.getTotalIndustry();
+		
+		return new ResponseEntity<>(industry,HttpStatus.OK);
 		
 	}
 	
@@ -49,21 +63,6 @@ public class IndustryController {
 		List<Industry> industries = industryService.getByIsActive(startPosition, limit);
 		
 		return new ResponseEntity<>(industries,HttpStatus.OK);
-	}
-	
-	@GetMapping("{id}/get")
-	public ResponseEntity<Industry> getById(@PathVariable String id){
-		Industry industry = industryService.getById(id);
-		
-		return new ResponseEntity<>(industry,HttpStatus.OK);
-	}
-	
-	@GetMapping("total-industry")
-	public ResponseEntity<Industry> getTotalIndustry(){
-		Industry industry = industryService.getTotalIndustry();
-		
-		return new ResponseEntity<>(industry,HttpStatus.OK);
-		
 	}
 	
 	@PostMapping()
