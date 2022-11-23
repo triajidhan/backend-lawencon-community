@@ -27,4 +27,19 @@ public class PaymentSubscribeDao extends AbstractJpaDao{
 		
 		return paymentSubscribes;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<PaymentSubscribe> getByIsActive(){
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT * FROM tb_payment_subscribe ")
+		.append("WHERE is_active = true ")
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		List<PaymentSubscribe> paymentSubscribes = ConnHandler.getManager()
+				.createNativeQuery(sql.toString())
+				.getResultList();
+		
+		return paymentSubscribes;
+	}
 }

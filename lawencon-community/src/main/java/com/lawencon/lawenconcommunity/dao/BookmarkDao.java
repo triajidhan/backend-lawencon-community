@@ -14,7 +14,7 @@ public class BookmarkDao extends AbstractJpaDao{
 
 	@SuppressWarnings("unchecked")
 	public List<Bookmark> getByUser(String userId){
-		final StringBuilder sql = new StringBuilder();
+		StringBuilder sql = new StringBuilder();
 		
 		sql.append("SELECT * ")
 		.append("FROM tb_bookmark tb ")
@@ -30,7 +30,7 @@ public class BookmarkDao extends AbstractJpaDao{
 	}
 	
 	public Bookmark getTotalByUser(String userId){
-		final StringBuilder sql = new StringBuilder();
+		StringBuilder sql = new StringBuilder();
 		
 		sql.append("SELECT count(*) ")
 		.append("FROM tb_bookmark tb ")
@@ -77,7 +77,6 @@ public class BookmarkDao extends AbstractJpaDao{
 		return bookmarks;
 	}
 	
-
 	public Bookmark getTotalByPost(String postId){
 		final StringBuilder sql = new StringBuilder();
 		
@@ -156,6 +155,22 @@ public class BookmarkDao extends AbstractJpaDao{
 		final List<Bookmark> objResultBookmarks = ConnHandler.getManager().createNativeQuery(sql.toString(),Bookmark.class)
 				.setParameter("startPosition", startPosition)
 				.setParameter("limit", limit)
+				.getResultList();
+		
+		return objResultBookmarks;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Bookmark> getByIsActive(){
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT * FROM tb_bookmark tb ")
+		.append("INNER JOIN tb_user tu ON tu.id = tb.user_id ")
+		.append("INNER JOIN tb_post tp ON tp.id = tb.post_id ")
+		.append("WHERE tb.is_active = true ");
+		
+		final List<Bookmark> objResultBookmarks = ConnHandler.getManager().createNativeQuery(sql.toString(),Bookmark.class)
+
 				.getResultList();
 		
 		return objResultBookmarks;

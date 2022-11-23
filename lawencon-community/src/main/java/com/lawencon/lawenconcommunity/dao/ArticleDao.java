@@ -14,8 +14,8 @@ import com.lawencon.lawenconcommunity.model.File;
 @Repository
 public class ArticleDao extends AbstractJpaDao{
 
-	public Optional<Article> getByArticleCode(final String articleCode){
-		final StringBuilder sql = new StringBuilder();
+	public Optional<Article> getByArticleCode(String articleCode){
+		StringBuilder sql = new StringBuilder();
 		
 		sql.append("SELECT ")
 		.append("id, article_code, title, file_id, created_by, created_at, versions, is_active ")
@@ -37,8 +37,8 @@ public class ArticleDao extends AbstractJpaDao{
 			Object[] objArr = (Object[]) articleObjs;
 			
 			
-			final Article article = new Article();
-			final File file = new File();
+			Article article = new Article();
+			File file = new File();
 			
 			article.setId(objArr[0].toString());
 			article.setArticleCode(objArr[1].toString());
@@ -59,9 +59,8 @@ public class ArticleDao extends AbstractJpaDao{
 		return articleOpt;
 	}
 	
-
-	public Article getByTotalArticle() {
-		final StringBuilder sql = new StringBuilder();
+	public Article getTotalArticle() {
+		StringBuilder sql = new StringBuilder();
 		
 		sql.append("SELECT count(*) from tb_article ")
 		.append("WHERE is_active = true");
@@ -99,6 +98,20 @@ public class ArticleDao extends AbstractJpaDao{
 		final List<Article> objResultArticles = ConnHandler.getManager().createNativeQuery(sql.toString(),Article.class)
 				.setParameter("startPosition", startPosition)
 				.setParameter("limit", limit)
+				.getResultList();
+		
+		return objResultArticles;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Article> getByIsActive(){
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT * ")
+		.append("FROM tb_article ")
+		.append("WHERE is_active = true ");
+		
+		final List<Article> objResultArticles = ConnHandler.getManager().createNativeQuery(sql.toString(),Article.class)
 				.getResultList();
 		
 		return objResultArticles;

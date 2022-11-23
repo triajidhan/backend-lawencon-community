@@ -54,12 +54,6 @@ public class BookmarkService extends BaseCoreService{
 		return bookmarks;
 	}
 	
-	public List<Bookmark> getByIsActive(Integer startPosition, Integer limitPage){
-		List<Bookmark> bookmarks = bookmarkDao.getByIsActive(startPosition, limitPage);
-		
-		return bookmarks;
-	}
-	
 	public Bookmark getTotalByUser(String userId){
 		Bookmark bookmark = bookmarkDao.getTotalByUser(userId);
 		
@@ -74,6 +68,18 @@ public class BookmarkService extends BaseCoreService{
 	
 	public Bookmark getUserBookmarkPost(String userId,String postId) {
 		return bookmarkDao.getUserBookmarkPost(userId, postId).get();
+	}
+	
+	public List<Bookmark> getByIsActive(Integer startPosition, Integer limitPage){
+		List<Bookmark> bookmarks = bookmarkDao.getByIsActive(startPosition, limitPage);
+		
+		return bookmarks;
+	}
+	
+	public List<Bookmark> getByIsActive(){
+		List<Bookmark> bookmarks = bookmarkDao.getByIsActive();
+		
+		return bookmarks;
 	}
 	
 	public ResponseMessageDto insert(Bookmark data) {

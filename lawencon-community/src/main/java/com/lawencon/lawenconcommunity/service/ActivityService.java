@@ -35,18 +35,32 @@ public class ActivityService extends BaseCoreService{
 		return activities;
 	}
 	
-	public Activity getByActivityCode(final String activityCode) {
+	public Activity getByActivityCode(String activityCode) {
 		return activityDao.getByActivityCode(activityCode).get();
 	}
 	
-	public List<Activity> getByActivityType(final String activityId,int startPosition,int limit){
-		final List<Activity> activities = activityDao.getByActivityType(activityId,startPosition,limit);
+	public Activity getTotalActivity() {
+		return activityDao.getTotalActivity();
+	}
+	
+	public List<Activity> getByActivityType(String activityTypeId,int startPosition,int limit){
+		final List<Activity> activities = activityDao.getByActivityType(activityTypeId,startPosition,limit);
 		
 		return activities;
 	}
 	
+	public Activity getTotalByActivityType(String activityTypeId){
+		return activityDao.getTotalByActivityType(activityTypeId);
+	}
+	
 	public List<Activity> getByIsActive(int startPosition,int limit){
 		final List<Activity> activities = activityDao.getByIsActive(startPosition, limit);
+		
+		return activities;
+	}
+	
+	public List<Activity> getByActivityTypeCode(String activityTypeCode,int startPosition,int limit){
+		final List<Activity> activities = activityDao.getByActivityTypeCode(activityTypeCode,startPosition,limit);
 		
 		return activities;
 	}
