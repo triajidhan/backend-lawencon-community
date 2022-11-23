@@ -10,7 +10,6 @@ import com.lawencon.base.BaseCoreService;
 import com.lawencon.lawenconcommunity.dao.CommentDao;
 import com.lawencon.lawenconcommunity.dao.PostDao;
 import com.lawencon.lawenconcommunity.dto.ResponseMessageDto;
-import com.lawencon.lawenconcommunity.model.Bookmark;
 import com.lawencon.lawenconcommunity.model.Comment;
 import com.lawencon.lawenconcommunity.model.Post;
 import com.lawencon.lawenconcommunity.model.User;
