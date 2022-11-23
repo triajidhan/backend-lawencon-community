@@ -40,9 +40,30 @@ public class ActivityController {
 		return new ResponseEntity<>(activity,HttpStatus.OK);
 	}
 	
+	@GetMapping("total-activity")
+	public ResponseEntity<Activity> getTotalActivity(){
+		Activity activity = activityService.getTotalActivity();
+		
+		return new ResponseEntity<>(activity,HttpStatus.OK);
+	}
+	
 	@GetMapping("activity-type")
-	public ResponseEntity<List<Activity>> getByActivity(@RequestParam("activityTypeId") String activityTypeId, @RequestParam("startPosition") int startPosition,@RequestParam("limit") int limitPage){
+	public ResponseEntity<List<Activity>> getByActivityType(@RequestParam("activityTypeId") String activityTypeId, @RequestParam("startPosition") int startPosition,@RequestParam("limit") int limitPage){
 		final List<Activity> activities = activityService.getByActivityType(activityTypeId,startPosition,limitPage);
+		
+		return new ResponseEntity<>(activities,HttpStatus.OK);
+	}
+	
+	@GetMapping("total-activity-type")
+	public ResponseEntity<Activity> getTotalByActivityType(@RequestParam("activityTypeId") String activityTypeId){
+		Activity activity = activityService.getTotalByActivityType(activityTypeId);
+		
+		return new ResponseEntity<>(activity,HttpStatus.OK);
+	}
+	
+	@GetMapping("activity-type-code")
+	public ResponseEntity<List<Activity>> getByActivityTypeCode(@RequestParam("activityTypeCode") String activityTypeCode, @RequestParam("startPosition") int startPosition,@RequestParam("limit") int limitPage){
+		final List<Activity> activities = activityService.getByActivityTypeCode(activityTypeCode,startPosition,limitPage);
 		
 		return new ResponseEntity<>(activities,HttpStatus.OK);
 	}
@@ -54,12 +75,9 @@ public class ActivityController {
 		return new ResponseEntity<>(activity,HttpStatus.OK);
 	}
 	
-	
-	
 	@PostMapping()
 	public ResponseEntity<ResponseMessageDto> insert(@RequestBody Activity data){
 		final ResponseMessageDto responseMessageDto = activityService.insert(data);
 		return new ResponseEntity<ResponseMessageDto>(responseMessageDto, HttpStatus.CREATED);
 	}
-	
 }

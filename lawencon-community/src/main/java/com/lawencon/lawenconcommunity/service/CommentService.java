@@ -24,10 +24,21 @@ public class CommentService extends BaseCoreService{
 	private PostDao postingDao;
 	@Autowired
 	private PrincipalService principalService;
+	
 	public List<Comment> getAll(Integer startPosition, Integer limitPage){
-		List<Comment> bookmarks = commentDao.getAll(Comment.class, startPosition, limitPage);
+		List<Comment> comments = commentDao.getAll(Comment.class, startPosition, limitPage);
 		
-		return bookmarks;
+		return comments;
+	}
+	
+	public List<Comment> getAll(){
+		List<Comment> comments = commentDao.getAll(Comment.class);
+		
+		return comments;
+	}
+	
+	public Comment getTotal() {
+		return commentDao.getTotalComment();
 	}
 	
 	public List<Comment> getByUser(String userId){
@@ -36,19 +47,30 @@ public class CommentService extends BaseCoreService{
 		return bookmarks;
 	}
 	
+	public Comment getTotalByUser(String userId) {
+		return commentDao.getTotalByUser(userId);
+	}
+	
 	public List<Comment> getByPost(String postId){
 		List<Comment> bookmarks = commentDao.getByPost(postId);
 		
 		return bookmarks;
 	}
 	
+	public Comment getTotalByPost(String postId) {
+		return commentDao.getTotalByUser(postId);
+	}
+	
 	public Comment getById(String id) {
 		return commentDao.getByIdAndDetach(Comment.class, id);
 	}
 	
-	
 	public List<Comment> getByIsActive(Integer startPosition, Integer limitPage){
 		return commentDao.getByIsActive(startPosition, limitPage);
+	}
+	
+	public List<Comment> getByIsActive(){
+		return commentDao.getByIsActive();
 	}
 	
 	public ResponseMessageDto insert(Comment data) {

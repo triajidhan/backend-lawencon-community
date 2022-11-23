@@ -12,6 +12,34 @@ import com.lawencon.lawenconcommunity.model.Comment;
 @Repository
 public class CommentDao extends AbstractJpaDao{
 
+	
+	public Comment getTotalComment() {
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT count(*) from tb_comment ")
+		.append("WHERE is_active = true");
+		
+		
+		Object objComment = null;
+		Comment comment = null;
+		try {
+			objComment = ConnHandler.getManager().createNativeQuery(sql.toString())
+					.getSingleResult();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objComment != null) {
+			Object obj = (Object) objComment;
+			
+			comment = new Comment();
+			
+			comment.setCountOfComment(Integer.parseInt(obj.toString()));
+		}
+		
+		return comment;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Comment> getByUser(String userId){
 		final StringBuilder sql = new StringBuilder();
@@ -27,6 +55,35 @@ public class CommentDao extends AbstractJpaDao{
 				.getResultList();
 		
 		return comments;
+	}
+	
+	public Comment getTotalByUser(String userId) {
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT count(*) from tb_comment ")
+		.append("WHERE user_id  = :userId AND is_active = true");
+		
+		
+		Object objComment = null;
+		Comment comment = null;
+		
+		try {
+			objComment = ConnHandler.getManager().createNativeQuery(sql.toString())
+					.setParameter("userId", userId)
+					.getSingleResult();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objComment != null) {
+			Object obj = (Object) objComment;
+			
+			comment = new Comment();
+			
+			comment.setCountOfComment(Integer.parseInt(obj.toString()));
+		}
+		
+		return comment;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -46,6 +103,35 @@ public class CommentDao extends AbstractJpaDao{
 		return comments;
 	}
 	
+	public Comment getTotalByPost(String postId) {
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT count(*) from tb_comment ")
+		.append("WHERE post_id  = :postId AND is_active = true");
+		
+		
+		Object objComment = null;
+		Comment comment = null;
+		
+		try {
+			objComment = ConnHandler.getManager().createNativeQuery(sql.toString())
+					.setParameter("postId", postId)
+					.getSingleResult();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objComment != null) {
+			Object obj = (Object) objComment;
+			
+			comment = new Comment();
+			
+			comment.setCountOfComment(Integer.parseInt(obj.toString()));
+		}
+		
+		return comment;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Comment> getByIsActive(int startPosition,int limit){
 		final StringBuilder sql = new StringBuilder();
@@ -59,6 +145,22 @@ public class CommentDao extends AbstractJpaDao{
 		final List<Comment> objResult = ConnHandler.getManager().createNativeQuery(sql.toString(),Bookmark.class)
 				.setParameter("startPosition", startPosition)
 				.setParameter("limit", limit)
+				.getResultList();
+		
+		return objResult;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Comment> getByIsActive(){
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT * ")
+		.append("FROM tb_comment tc ")
+		.append("INNER JOIN tb_user tu ON tu.id = tc.user_id ")
+		.append("INNER JOIN tb_post tp ON tp.id = tc.post_id ")
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		final List<Comment> objResult = ConnHandler.getManager().createNativeQuery(sql.toString(),Bookmark.class)
 				.getResultList();
 		
 		return objResult;

@@ -31,12 +31,18 @@ public class PaymentSubscribeService extends BaseCoreService {
 	@Autowired
 	private PrincipalService principalService;
 	
+	public List<PaymentSubscribe> getAll(int startPosition,int limit){
+		return paymentSubscribeDao.getAll(PaymentSubscribe.class,startPosition, limit);
+	}
 	
 	public List<PaymentSubscribe> getByIsActive(int startPosition,int limit){
 		return paymentSubscribeDao.getByIsActive(startPosition, limit);
 	}
 	
-
+	public List<PaymentSubscribe> getByIsActive(){
+		return paymentSubscribeDao.getByIsActive();
+	}
+	
 	public ResponseMessageDto insert(PaymentSubscribe data) {
 		valInsert(data);
 		File fileInsert = new File();

@@ -34,20 +34,27 @@ public class ArticleService extends BaseCoreService {
 		return articles;
 	}
 
-	public Article getByArticleCode(String articleCode) {
-		return articleDao.getByArticleCode(articleCode).get();
-	}
-	
 	public Article getById(String id) {
 		return articleDao.getByIdAndDetach(Article.class, id);	
 	}
 	
-	public Article getByTotalArticle() {
-		return articleDao.getByTotalArticle();
+	public Article getByArticleCode(String articleCode) {
+		return articleDao.getByArticleCode(articleCode).get();
+	}
+	
+	
+	public Article getTotalArticle() {
+		return articleDao.getTotalArticle();
 	}
 	
 	public List<Article> getByIsActive(int startPosition,int limit){
 		final List<Article> activities = articleDao.getByIsActive(startPosition, limit);
+		
+		return activities;
+	}
+	
+	public List<Article> getByIsActive(){
+		final List<Article> activities = articleDao.getByIsActive();
 		
 		return activities;
 	}

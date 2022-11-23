@@ -78,6 +78,22 @@ public class PostDao extends AbstractJpaDao{
 		return objResultPosts;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Post> getByPostType(final String postTypeId){
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT * ")
+		.append("FROM tb_post tp ")
+		.append("INNER JOIN tb_post_type tpt ON tp.post_type_id = tpt.id ")
+		.append("WHERE tpt.id = :postTypeId AND tp.is_active = true");
+		
+		final List<Post> objResultPosts = ConnHandler.getManager().createNativeQuery(sql.toString(),Post.class)
+				.setParameter("postTypeId", postTypeId)
+				.getResultList();
+		
+		return objResultPosts;
+	}
+	
 	public Post getTotalByUser(final String userId) {
 		final StringBuilder sql = new StringBuilder();
 		
@@ -136,6 +152,34 @@ public class PostDao extends AbstractJpaDao{
 		return post;
 	}
 	
+	public Post getTotalPost() {
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT count(tp.id) ")
+		.append("FROM tb_post tp ")
+		.append("INNER JOIN tb_post_type tpt ON tp.post_type_id = tpt.id ")
+		.append("WHERE tp.is_active = true");
+		
+		Object objUser = null;
+		
+		Post post = new Post();
+		
+		try {
+			objUser = ConnHandler.getManager().createNativeQuery(sql.toString())
+					.getSingleResult();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objUser != null) {
+			Object obj = (Object) objUser;
+			
+			post.setCountOfPost(Integer.parseInt(obj.toString()));
+		}
+		
+		return post;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Post> getByIsActive(int startPosition,int limit){
 		final StringBuilder sql = new StringBuilder();
@@ -149,6 +193,22 @@ public class PostDao extends AbstractJpaDao{
 		final List<Post> objResultPosts = ConnHandler.getManager().createNativeQuery(sql.toString(),Post.class)
 				.setParameter("startPosition", startPosition)
 				.setParameter("limit", limit)
+				.getResultList();
+		
+		return objResultPosts;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Post> getByIsActive(){
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT * ")
+		.append("FROM tb_post tp ")
+		.append("INNER JOIN tb_post_type tpt ON tp.post_type_id = tpt.id ")
+		.append("WHERE tp.is_active = true ")
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		final List<Post> objResultPosts = ConnHandler.getManager().createNativeQuery(sql.toString(),Post.class)
 				.getResultList();
 		
 		return objResultPosts;

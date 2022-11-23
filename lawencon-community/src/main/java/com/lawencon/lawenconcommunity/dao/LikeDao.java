@@ -32,7 +32,6 @@ public class LikeDao extends AbstractJpaDao{
 	public Like getTotalByUser(String userId){
 		final StringBuilder sql = new StringBuilder();
 		
-		
 		sql.append("SELECT count(*) ")
 		.append("FROM tb_like tl ")
 		.append("INNER JOIN tb_user tu ON tu.id = tl.user_id ")
@@ -142,9 +141,7 @@ public class LikeDao extends AbstractJpaDao{
 	
 	@SuppressWarnings("unchecked")
 	public List<Like> getByIsActive(int startPosition,int limit){
-		final StringBuilder sql = new StringBuilder();
-		
-		
+		StringBuilder sql = new StringBuilder();
 		
 		sql.append("SELECT * FROM tb_like tl ")
 		.append("INNER JOIN tb_user tu ON tu.id = tl.user_id ")
@@ -152,9 +149,24 @@ public class LikeDao extends AbstractJpaDao{
 		.append("WHERE tl.is_active = true ")
 		.append("LIMIT :limit OFFSET :startPosition");
 		
-		final List<Like> objResultLikes = ConnHandler.getManager().createNativeQuery(sql.toString(),Like.class)
+		List<Like> objResultLikes = ConnHandler.getManager().createNativeQuery(sql.toString(),Like.class)
 				.setParameter("startPosition", startPosition)
 				.setParameter("limit", limit)
+				.getResultList();
+		
+		return objResultLikes;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Like> getByIsActive(){
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT * FROM tb_like tl ")
+		.append("INNER JOIN tb_user tu ON tu.id = tl.user_id ")
+		.append("INNER JOIN tb_post tp ON tp.id = tl.post_id ")
+		.append("WHERE tl.is_active = true ");
+		
+		List<Like> objResultLikes = ConnHandler.getManager().createNativeQuery(sql.toString(),Like.class)
 				.getResultList();
 		
 		return objResultLikes;

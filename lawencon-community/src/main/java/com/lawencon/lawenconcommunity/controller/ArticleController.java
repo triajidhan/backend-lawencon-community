@@ -29,17 +29,10 @@ public class ArticleController {
 	private ArticleService articleService;
 	
 	@GetMapping()
-	public ResponseEntity<List<Article>> getAll(@RequestParam("startPostion") int startPosition, @RequestParam("limit") int limit){
-		final List<Article> articles = articleService.getByIsActive(startPosition, limit);
+	public ResponseEntity<List<Article>> getAll(@RequestParam("startPosition") int startPosition, @RequestParam("limit") int limit){
+		final List<Article> articles = articleService.getAll(startPosition, limit);
 		
 		return new ResponseEntity<>(articles,HttpStatus.OK);
-	}
-	
-	@GetMapping("total-article")
-	public ResponseEntity<Article> getTotalByArticle(){
-		Article article = articleService.getByTotalArticle();
-		
-		return new ResponseEntity<>(article,HttpStatus.OK);
 	}
 	
 	@GetMapping("article-code")
@@ -47,6 +40,20 @@ public class ArticleController {
 		final Article article = articleService.getByArticleCode(articleCode);
 		
 		return new ResponseEntity<>(article,HttpStatus.OK);
+	}
+	
+	@GetMapping("total-article")
+	public ResponseEntity<Article> getTotalArticle(){
+		Article article = articleService.getTotalArticle();
+		
+		return new ResponseEntity<>(article,HttpStatus.OK);
+	}
+	
+	@GetMapping("is-active")
+	public ResponseEntity<List<Article>> getByIsActive(@RequestParam("startPosition") int startPosition, @RequestParam("limit") int limit){
+		final List<Article> articles = articleService.getByIsActive(startPosition, limit);
+		
+		return new ResponseEntity<>(articles,HttpStatus.OK);
 	}
 	
 	@PostMapping()
