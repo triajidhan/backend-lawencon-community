@@ -16,6 +16,9 @@ public class IndustryService extends BaseCoreService{
 	@Autowired
 	private IndustryDao industryDao;
 	
+	@Autowired
+	private GenerateService generateService;
+	
 	public Industry getTotalIndustry() {
 		return industryDao.getTotalIndustry();
 	}
@@ -48,6 +51,7 @@ public class IndustryService extends BaseCoreService{
 		responseMessageDto.setMessage("Failed Add industry!");
 		begin();
 		try {
+			data.setIndustryCode("I-"+generateService.generate(3));
 			industryDao.save(data);
 			responseMessageDto.setMessage("Success Add industry!");
 		} catch (Exception e) {

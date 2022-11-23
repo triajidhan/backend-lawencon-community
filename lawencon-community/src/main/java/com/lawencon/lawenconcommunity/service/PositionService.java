@@ -16,6 +16,9 @@ public class PositionService extends BaseCoreService{
 	@Autowired
 	private PositionDao positionDao;
 	
+	@Autowired
+	private GenerateService generateService;
+	
 	public Position getTotalPosition() {
 		return positionDao.getTotalPosition();
 	}
@@ -48,6 +51,7 @@ public class PositionService extends BaseCoreService{
 		responseMessageDto.setMessage("Failed Add Position!");
 		begin();
 		try {
+			data.setPositionCode("I-"+generateService.generate(3));
 			positionDao.save(data);
 			responseMessageDto.setMessage("Success Add Position!");
 		} catch (Exception e) {
