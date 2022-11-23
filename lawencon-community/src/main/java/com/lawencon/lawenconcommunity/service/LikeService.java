@@ -10,6 +10,7 @@ import com.lawencon.lawenconcommunity.dao.LikeDao;
 import com.lawencon.lawenconcommunity.dao.PostDao;
 import com.lawencon.lawenconcommunity.dao.UserDao;
 import com.lawencon.lawenconcommunity.dto.ResponseMessageDto;
+import com.lawencon.lawenconcommunity.model.Bookmark;
 import com.lawencon.lawenconcommunity.model.Like;
 import com.lawencon.lawenconcommunity.model.Post;
 import com.lawencon.lawenconcommunity.model.User;
@@ -40,6 +41,10 @@ public class LikeService extends BaseCoreService{
 		List<Like> likes = likeDao.getAll(Like.class);
 		
 		return likes;
+	}
+	
+	public Like getById(String id) {
+		return likeDao.getByIdAndDetach(Like.class, id);
 	}
 	
 	public List<Like> getByUser(String userId){

@@ -35,6 +35,10 @@ public class ActivityService extends BaseCoreService{
 		return activities;
 	}
 	
+	public Activity getById(String activityId) {
+		return activityDao.getByIdAndDetach(Activity.class,activityId);
+	}
+	
 	public Activity getByActivityCode(String activityCode) {
 		return activityDao.getByActivityCode(activityCode).get();
 	}

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lawencon.lawenconcommunity.dto.ResponseMessageDto;
+import com.lawencon.lawenconcommunity.model.Activity;
 import com.lawencon.lawenconcommunity.model.Article;
 import com.lawencon.lawenconcommunity.service.ArticleService;
 
@@ -33,6 +34,12 @@ public class ArticleController {
 		final List<Article> articles = articleService.getAll(startPosition, limit);
 		
 		return new ResponseEntity<>(articles,HttpStatus.OK);
+	}
+	
+	@GetMapping("{id}/get")
+	public ResponseEntity<Article> getById(@PathVariable("id") String id){
+		final Article article = articleService.getById(id);
+		return new ResponseEntity<>(article,HttpStatus.OK);
 	}
 	
 	@GetMapping("article-code")
@@ -68,9 +75,5 @@ public class ArticleController {
 		return new ResponseEntity<>(responseMessageDto,HttpStatus.OK);
 	}
 	
-	@GetMapping("{id}/get")
-	public ResponseEntity<Article> getById(@PathVariable("id") String id){
-		final Article article = articleService.getById(id);
-		return new ResponseEntity<>(article,HttpStatus.OK);
-	}
+	
 }

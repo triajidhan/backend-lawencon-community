@@ -35,6 +35,10 @@ public class PaymentSubscribeService extends BaseCoreService {
 		return paymentSubscribeDao.getAll(PaymentSubscribe.class,startPosition, limit);
 	}
 	
+	public PaymentSubscribe getById(String id) {
+		return paymentSubscribeDao.getByIdAndDetach(PaymentSubscribe.class, id);
+	}
+	
 	public List<PaymentSubscribe> getByIsActive(int startPosition,int limit){
 		return paymentSubscribeDao.getByIsActive(startPosition, limit);
 	}

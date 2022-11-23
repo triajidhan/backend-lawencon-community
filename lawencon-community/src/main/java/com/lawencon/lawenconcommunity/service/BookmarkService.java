@@ -42,6 +42,10 @@ public class BookmarkService extends BaseCoreService{
 		return bookmarks;
 	}
 	
+	public Bookmark getById(String id) {
+		return bookmarkDao.getByIdAndDetach(Bookmark.class, id);
+	}
+	
 	public List<Bookmark> getByUser(String userId){
 		List<Bookmark> bookmarks = bookmarkDao.getByUser(userId);
 		

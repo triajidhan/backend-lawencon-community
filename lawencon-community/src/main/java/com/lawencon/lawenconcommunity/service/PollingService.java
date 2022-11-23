@@ -22,6 +22,8 @@ public class PollingService extends BaseCoreService{
 		return pollings;
 	}
 	
+	
+	
 	public List<Polling> getByUser(String userId){
 		List<Polling> pollings = pollingDao.getByUser(userId);
 		
