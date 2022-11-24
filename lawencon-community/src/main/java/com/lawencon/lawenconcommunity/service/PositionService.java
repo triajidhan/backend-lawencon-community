@@ -65,7 +65,7 @@ public class PositionService extends BaseCoreService{
 	public ResponseMessageDto update(Position data) {
 		valIdFound(data);
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
-		responseMessageDto.setMessage("Failed Add Position!");
+		responseMessageDto.setMessage("Failed Position!");
 		Position Position = positionDao.getById(Position.class, data.getId());
 		Position PositionUpdate = Position;
 		begin();
