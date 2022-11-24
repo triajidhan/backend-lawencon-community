@@ -69,6 +69,12 @@ public class ActivityService extends BaseCoreService{
 		return activities;
 	}
 	
+	public List<Activity> getByIsActiveAndOrder(int startPosition,int limit,boolean ascending){
+		final List<Activity> activities = activityDao.getByIsActiveAndOrder(startPosition, limit,ascending);
+		
+		return activities;
+	}
+	
 	public List<Activity> getByActivityTypeCode(String activityTypeCode,int startPosition,int limit){
 		final List<Activity> activities = activityDao.getByActivityTypeCode(activityTypeCode,startPosition,limit);
 		

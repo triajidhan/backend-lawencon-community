@@ -69,6 +69,13 @@ public class ArticleController {
 		return new ResponseEntity<>(articles,HttpStatus.OK);
 	}
 	
+	@GetMapping("is-active-order")
+	public ResponseEntity<List<Article>> getByIsActiveAndOrder(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limitPage,@RequestParam("asc") boolean ascending){
+		final List<Article> articles = articleService.getByIsActiveAndOrder(startPosition, limitPage,ascending);
+		
+		return new ResponseEntity<>(articles,HttpStatus.OK);
+	}
+	
 	@PostMapping()
 	public ResponseEntity<ResponseMessageDto> insert(@RequestBody Article data){
 		final ResponseMessageDto responseMessageDto = articleService.insert(data);

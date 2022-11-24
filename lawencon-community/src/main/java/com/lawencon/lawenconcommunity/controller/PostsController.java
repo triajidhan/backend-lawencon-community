@@ -82,6 +82,13 @@ public class PostsController {
 		return new ResponseEntity<>(post,HttpStatus.OK);
 	}
 	
+	@GetMapping("is-active-order")
+	public ResponseEntity<List<Post>> getByIsActiveAndOrder(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limitPage,@RequestParam("asc") boolean ascending){
+		final List<Post> posts = postService.getByIsActiveAndOrder(startPosition, limitPage,ascending);
+		
+		return new ResponseEntity<>(posts,HttpStatus.OK);
+	}
+	
 	@PostMapping()
 	public ResponseEntity<ResponseMessageDto> insert(@RequestBody Post data){
 		final ResponseMessageDto responseMessageDto = postService.insert(data);

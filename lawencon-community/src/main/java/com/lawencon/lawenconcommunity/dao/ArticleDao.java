@@ -116,4 +116,26 @@ public class ArticleDao extends AbstractJpaDao{
 		
 		return objResultArticles;
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Article> getByIsActiveAndOrder(int startPosition,int limit,boolean isAscending){
+		final StringBuilder sql = new StringBuilder();
+		
+		String ascending = (isAscending) ? "ASC ":"DESC ";
+		
+		sql.append("SELECT * ")
+		.append("FROM tb_article ")
+		.append("WHERE is_active = true ")
+		.append("ORDER BY created_at ")
+		.append(ascending)
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		final List<Article> objResult = ConnHandler.getManager().createNativeQuery(sql.toString(),Article.class)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
+				.getResultList();
+		
+		return objResult;
+	}
 }

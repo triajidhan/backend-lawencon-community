@@ -48,15 +48,21 @@ public class ArticleService extends BaseCoreService {
 	}
 	
 	public List<Article> getByIsActive(int startPosition,int limit){
-		final List<Article> activities = articleDao.getByIsActive(startPosition, limit);
+		final List<Article> articles = articleDao.getByIsActive(startPosition, limit);
 		
-		return activities;
+		return articles;
 	}
 	
 	public List<Article> getByIsActive(){
-		final List<Article> activities = articleDao.getByIsActive();
+		final List<Article> articles = articleDao.getByIsActive();
 		
-		return activities;
+		return articles;
+	}
+	
+	public List<Article> getByIsActiveAndOrder(int startPosition,int limit,boolean ascending){
+		final List<Article> articles = articleDao.getByIsActiveAndOrder(startPosition, limit,ascending);
+		
+		return articles;
 	}
 
 	public ResponseMessageDto insert(Article data) {

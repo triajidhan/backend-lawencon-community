@@ -205,8 +205,7 @@ public class PostDao extends AbstractJpaDao{
 		sql.append("SELECT * ")
 		.append("FROM tb_post tp ")
 		.append("INNER JOIN tb_post_type tpt ON tp.post_type_id = tpt.id ")
-		.append("WHERE tp.is_active = true ")
-		.append("LIMIT :limit OFFSET :startPosition");
+		.append("WHERE tp.is_active = true ");
 		
 		final List<Post> objResultPosts = ConnHandler.getManager().createNativeQuery(sql.toString(),Post.class)
 				.getResultList();
@@ -214,4 +213,25 @@ public class PostDao extends AbstractJpaDao{
 		return objResultPosts;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Post> getByIsActiveAndOrder(int startPosition,int limit,boolean isAscending){
+		final StringBuilder sql = new StringBuilder();
+		
+		String ascending = (isAscending) ? "ASC ":"DESC ";
+		
+		sql.append("SELECT * ")
+		.append("FROM tb_post tp ")
+		.append("INNER JOIN tb_post_type tpt ON tp.post_type_id = tpt.id ")
+		.append("WHERE tp.is_active = true ")
+		.append("ORDER BY created_at ")
+		.append(ascending)
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		final List<Post> objResult = ConnHandler.getManager().createNativeQuery(sql.toString(),Post.class)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
+				.getResultList();
+		
+		return objResult;
+	}
 }

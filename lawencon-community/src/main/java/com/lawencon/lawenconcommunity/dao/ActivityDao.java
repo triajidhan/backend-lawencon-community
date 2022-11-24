@@ -177,7 +177,7 @@ public class ActivityDao extends AbstractJpaDao{
 		
 		sql.append("select count(ta.id) as total from tb_activity ta ")
 		.append("INNER JOIN tb_activity_type tat ON ta.activity_type_id = tat.id ")
-		.append("WHERE tat.activity_type_code iLike :activityTypeCode AND ta.is_active = true");
+		.append("WHERE tat.activity_type_code iLike :activityTypeCode AND ta.is_active = true ");
 		
 		Object objActivity = null; 
 		Activity activity = new Activity();
@@ -222,6 +222,28 @@ public class ActivityDao extends AbstractJpaDao{
 		.append("FROM tb_activity ta ")
 		.append("INNER JOIN tb_activity_type tat  ON ta.activity_type_id = tat.id ")
 		.append("WHERE ta.is_active = true ")
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		final List<Activity> objResultActivities = ConnHandler.getManager().createNativeQuery(sql.toString(),Activity.class)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
+				.getResultList();
+		
+		return objResultActivities;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Activity> getByIsActiveAndOrder(int startPosition,int limit,boolean isAscending){
+		final StringBuilder sql = new StringBuilder();
+		
+		String ascending = (isAscending) ? "ASC ":"DESC ";
+		
+		sql.append("SELECT * ")
+		.append("FROM tb_activity ta ")
+		.append("INNER JOIN tb_activity_type tat  ON ta.activity_type_id = tat.id ")
+		.append("WHERE ta.is_active = true ")
+		.append("ORDER BY created_at ")
+		.append(ascending)
 		.append("LIMIT :limit OFFSET :startPosition");
 		
 		final List<Activity> objResultActivities = ConnHandler.getManager().createNativeQuery(sql.toString(),Activity.class)

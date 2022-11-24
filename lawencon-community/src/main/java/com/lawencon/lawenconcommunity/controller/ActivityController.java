@@ -97,6 +97,13 @@ public class ActivityController {
 		return new ResponseEntity<>(activities,HttpStatus.OK);
 	}
 	
+	@GetMapping("is-active-order")
+	public ResponseEntity<List<Activity>> getByIsActiveAndOrder(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limitPage,@RequestParam("asc") boolean ascending){
+		final List<Activity> activities = activityService.getByIsActiveAndOrder(startPosition, limitPage,ascending);
+		
+		return new ResponseEntity<>(activities,HttpStatus.OK);
+	}
+	
 	@PostMapping()
 	public ResponseEntity<ResponseMessageDto> insert(@RequestBody Activity data){
 		final ResponseMessageDto responseMessageDto = activityService.insert(data);

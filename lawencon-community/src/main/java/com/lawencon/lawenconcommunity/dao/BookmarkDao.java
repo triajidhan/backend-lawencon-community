@@ -29,6 +29,26 @@ public class BookmarkDao extends AbstractJpaDao{
 		return bookmarks;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Bookmark> getByUser(String userId,int startPosition,int limit){
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT * ")
+		.append("FROM tb_bookmark tb ")
+		.append("INNER JOIN tb_user tu ON tu.id = tb.user_id ")
+		.append("INNER JOIN tb_post tp ON tp.id = tb.post_id ")
+		.append("WHERE user_id  = :userId AND tb.is_active = true")
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		List<Bookmark> bookmarks = ConnHandler.getManager().createNativeQuery(sql.toString(),Bookmark.class)
+				.setParameter("userId", userId)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
+				.getResultList();
+		
+		return bookmarks;
+	}
+	
 	public Bookmark getTotalByUser(String userId){
 		StringBuilder sql = new StringBuilder();
 		
@@ -72,6 +92,26 @@ public class BookmarkDao extends AbstractJpaDao{
 		
 		List<Bookmark> bookmarks = ConnHandler.getManager().createNativeQuery(sql.toString(),Bookmark.class)
 				.setParameter("postId", postId)
+				.getResultList();
+		
+		return bookmarks;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Bookmark> getByPost(String postId,int startPosition,int limit){
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT * ")
+		.append("FROM tb_bookmark tb ")
+		.append("INNER JOIN tb_user tu ON tu.id = tb.user_id ")
+		.append("INNER JOIN tb_post tp ON tp.id = tb.post_id ")
+		.append("WHERE post_id  = :postId AND tb.is_active = true")
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		List<Bookmark> bookmarks = ConnHandler.getManager().createNativeQuery(sql.toString(),Bookmark.class)
+				.setParameter("postId", postId)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
 				.getResultList();
 		
 		return bookmarks;

@@ -85,6 +85,11 @@ public class PostService extends BaseCoreService {
 	public List<Post> getByIsActive(){
 		return postDao.getByIsActive();
 	}
+	
+	public List<Post> getByIsActiveAndOrder(int startPosition,int limit,boolean ascending){
+		
+		return postDao.getByIsActiveAndOrder(startPosition, limit,ascending);
+	}
 
 	public ResponseMessageDto insert(Post data) {
 		Post postInsert = new Post();

@@ -17,7 +17,7 @@ public class PostTypeDao extends AbstractJpaDao{
 		StringBuilder sql = new StringBuilder();
 		
 		sql.append("SELECT ")
-		.append("tp.id as tp_id, post_code, title , contents , title_poll, ")
+		.append("tp.id as tp_id, post_code, title ,contents , title_poll, ")
 		.append("tpt.id as tpt_id,tpt.post_type_code, tpt.post_type_name, ")
 		.append("tp.created_by,tp.created_at, tp.versions ")
 		.append("FROM tb_post tp ")
