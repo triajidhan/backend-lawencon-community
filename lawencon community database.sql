@@ -554,7 +554,7 @@ INSERT INTO tb_user(id,full_name,email,pass,role_id ,created_by,versions) VALUES
 
 SELECT * FROM tb_user;
 
---- INSERT INDUSTRIAL
+INSERT INDUSTRIAL
 INSERT INTO tb_industry(id,industry_code,industry_name,created_by,versions) VALUES
 ('start-up-123','SU','Start Up','e53b7bb7-663d-4140-ba1f-6eaf6472f286',0),
 ('corporate-123','C','Corporated','e53b7bb7-663d-4140-ba1f-6eaf6472f286',0);
@@ -671,15 +671,42 @@ select * from tb_file;
 
 --- INSERT POSITION
 INSERT INTO tb_position(id,position_code,position_name,created_by,versions) VALUES
-('administrator-123','ADM','Administrator','e53b7bb7-663d-4140-ba1f-6eaf6472f286',0),
-('programmer-123','PG','Programmer','e53b7bb7-663d-4140-ba1f-6eaf6472f286',0),
-('trainer-123','TR','Trainer','e53b7bb7-663d-4140-ba1f-6eaf6472f286',0);
+('hr-123','HRD','Human RD','e53b7bb7-663d-4140-ba1f-6e3f6472f286',0),
+('frontend-123','FRT','Frontend','e53b7bb7-663r-4140-ba1f-6eaf6472f286',0),
+('backend-123','BCK','Backend','e53b7bb7-663d-4340-ba1f-6eaf6472f286',0),
+('tester-123','TST','Tester','e53b7bb7-763d-4140-ba1f-6eaf6472f286',0),
+('ui-ux-123','UIX','UI UX Design','e53b7bb7-693d-4140-ba1f-6eaf6472f286',0),
+('devops-123','DEV','Dev-Ops','e53b7bb7-663d-4140-ba1g-6eaf6472f286',0);
 
 select * from tb_position tp;
+
+INSERT INTO tb_industry(id,industry_code,industry_name,created_by,versions) VALUES
+('start-up-123','STU','Start Up','e53b7bb7-663d-4140-ba1f-6eaf6472f286',0),
+('corporate-123','COR','Corporated','e53b7bb7-6637-4140-ba1f-6eaf6472f286',0),
+('technologi-123','TECH','Technologi','e53b7bb8-663d-4140-ba1f-6eaf6472f286',0),
+('food-123','FOO','Food','e53b7bb7-663d-4140-ga1f-6eaf6472f286',0),
+('entertaint-123','ENT','Entertaint','e53b7bb7-i63d-4140-ba1f-6eaf6472f286',0),
+('education-123','EDU','Education','e53b7bb7-663d-6140-ba1f-6eaf6472f286',0),
+('farmation-123','FAR','Farmation','e53b7bb7-663d-4w40-ba1f-6eaf6472f286',0),
+('transportation-123','TRA','Transportation','e53bmbb7-663d-4140-ba1f-6eaf6472f286',0);
+
 
 -- INSERT ACTIVITY
 INSERT INTO tb_activity_type(id,activity_type_code,activity_type_name,created_by,versions) VALUES
 ('event-123','E','Event',1,0),('course-123','C','Course',1,0);
+
+INSERT INTO tb_user(id,full_name,email,pass,role_id ,created_by,versions) VALUES
+('zzz','zzz','zzz@mail.com','zzz','admin-123','system-user',0),
+('xxx','xxx','xxx@mail.com','xxx','admin-123','system-user',0),
+('ccc','ccc','ccc@mail.com','ccc','admin-123','system-user',0),
+('vvv','vvv','vvv@mail.com','vvv','admin-123','system-user',0),
+('bbb','bbb','bbb@mail.com','bbb','admin-123','system-user',0),
+('nnn','nnn','nnn@mail.com','nnn','admin-123','system-user',0),
+('mmm','mmm','mmm@mail.com','mmm','admin-123','system-user',0),
+('fff','fff','fff@mail.com','fff','admin-123','system-user',0),
+('ggg','ggg','ggg@mail.com','ggg','admin-123','system-user',0),
+('hhh','hhh','hhh@mail.com','hhh','admin-123','system-user',0);
+
 
 
 

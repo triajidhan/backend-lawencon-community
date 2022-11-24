@@ -3,6 +3,7 @@ package com.lawencon.lawenconcommunity.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.lawencon.base.BaseEntity;
 
@@ -24,5 +25,8 @@ public class PostType extends BaseEntity{
 	
 	@Column(name ="post_type_name",length=50)
 	private String postTypeName;
+	
+	@Transient
+	private Integer countOfPostType;
 	
 }
