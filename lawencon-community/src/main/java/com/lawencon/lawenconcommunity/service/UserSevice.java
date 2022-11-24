@@ -108,15 +108,13 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 			data.setPass(hashPassword);
 			data.setBalance(balanceInsert);
 			data.setStatusSubscribe(true);
-			data.setIndustry(industryDao.getByIdAndDetach(Industry.class, data.getIndustry().getId()));
-			data.setPosition(positionDao.getByIdAndDetach(Position.class, data.getPosition().getId()));
-			data.setRole(roleDao.getByIdAndDetach(Role.class, data.getRole().getId()));
+			data.setRole(roleDao.getByRoleCode(com.lawencon.lawenconcommunity.constant.Role.A.toString()));
 			userDao.save(data);
 			userInsertResDto.setMessage("Registration is successful");
 			commit();
 		} catch (Exception e) {
-			userInsertResDto.setMessage("Registration is Failed");
 			e.printStackTrace();
+			throw new RuntimeException("Registration is Failed");
 		}
 		return userInsertResDto;
 	}
@@ -139,8 +137,14 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 			data.setPass(hashPassword);		
 			data.setBalance(balanceInsert);
 			data.setStatusSubscribe(false);
-			data.setIndustry(industryDao.getByIdAndDetach(Industry.class, data.getIndustryId()));
-			data.setPosition(positionDao.getByIdAndDetach(Position.class, data.getPositionId()));
+			if(data.getIndustryId()!=null) {				
+				data.setIndustry(industryDao.getByIdAndDetach(Industry.class, data.getIndustryId()));
+			}
+			
+			if(data.getPositionId()!=null) {				
+				data.setPosition(positionDao.getByIdAndDetach(Position.class, data.getPositionId()));
+			}
+			
 			data.setRole(roleDao.getByRoleCode(com.lawencon.lawenconcommunity.constant.Role.M.toString()));
 			userDao.saveNoLogin(data, ()->userDao.getSystem("SYS").get().getId());
 			userInsertResDto.setMessage("Registration is successful");
