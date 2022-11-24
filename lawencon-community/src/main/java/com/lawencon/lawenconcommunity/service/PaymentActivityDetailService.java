@@ -13,7 +13,6 @@ import com.lawencon.lawenconcommunity.dao.UserDao;
 import com.lawencon.lawenconcommunity.dto.ResponseMessageDto;
 import com.lawencon.lawenconcommunity.model.Balance;
 import com.lawencon.lawenconcommunity.model.File;
-import com.lawencon.lawenconcommunity.model.Like;
 import com.lawencon.lawenconcommunity.model.PaymentActivityDetail;
 import com.lawencon.lawenconcommunity.model.User;
 import com.lawencon.security.principal.PrincipalService;

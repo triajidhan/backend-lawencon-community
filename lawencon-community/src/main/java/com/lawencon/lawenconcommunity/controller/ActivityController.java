@@ -90,6 +90,13 @@ public class ActivityController {
 		return new ResponseEntity<>(activities,HttpStatus.OK);
 	}
 	
+	@GetMapping("is-active-all")
+	public ResponseEntity<List<Activity>> getByIsActive(){
+		final List<Activity> activities = activityService.getByIsActive();
+		
+		return new ResponseEntity<>(activities,HttpStatus.OK);
+	}
+	
 	@PostMapping()
 	public ResponseEntity<ResponseMessageDto> insert(@RequestBody Activity data){
 		final ResponseMessageDto responseMessageDto = activityService.insert(data);

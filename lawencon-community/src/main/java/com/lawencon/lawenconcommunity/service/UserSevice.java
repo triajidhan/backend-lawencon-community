@@ -85,6 +85,9 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 		return userDao.getTotalByRoleCode(role);
 	}
 	
+	public List<User> getByIsActive(int startPosition,int limit){
+		return userDao.getByIsActive(startPosition,limit);
+	}
 	
 	public ResponseMessageDto insertWithLogin (User data) {
 		File fileInsert = new File();
@@ -226,12 +229,7 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 			}
 			
 			if(data.getPass()!=null) {
-				final Boolean checkpassword = passwordEncoder.matches(data.getPass(), userUpdate.getPass());
-				if(checkpassword) {
 					userUpdate.setPass(passwordEncoder.encode(data.getPass()));
-				}else {
-					throw new RuntimeException("Wrong Password!");
-				}
 			}
 			try {
 				if (data.getFile() != null) {
