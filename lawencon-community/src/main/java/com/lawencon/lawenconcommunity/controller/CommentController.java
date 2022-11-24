@@ -36,7 +36,7 @@ public class CommentController {
 		return new ResponseEntity<>(comments,HttpStatus.OK);
 	}
 	
-	@GetMapping("{id}/get")
+	@GetMapping("id/{id}")
 	public ResponseEntity<Comment> getById(@PathVariable("id") String id){
 		Comment comment = commentService.getById(id);
 		

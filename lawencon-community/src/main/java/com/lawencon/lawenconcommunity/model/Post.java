@@ -55,4 +55,7 @@ public class Post extends BaseEntity{
 	
 	@Transient
 	private String postTypeId;
+	
+	@Transient
+	private User user;
 }

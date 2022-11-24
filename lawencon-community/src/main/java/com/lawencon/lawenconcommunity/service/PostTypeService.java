@@ -18,4 +18,14 @@ public class PostTypeService extends BaseCoreService{
 	public List<PostType> getAll(){
 		return postTypeDao.getAll(PostType.class);
 	}
+	
+	public PostType getById(String id) {
+		return postTypeDao.getByIdAndDetach(PostType.class, id);
+	}
+	
+	public PostType getByPostTypeCode(String postTypeCode) {
+		return postTypeDao.getByPostTypeCode(postTypeCode);
+	}
+	
+	
 }

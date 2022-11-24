@@ -35,7 +35,7 @@ public class IndustryController {
 		return new ResponseEntity<>(industries,HttpStatus.OK);
 	}
 	
-	@GetMapping("{id}/get")
+	@GetMapping("id/{id}")
 	public ResponseEntity<Industry> getById(@PathVariable String id){
 		Industry industry = industryService.getById(id);
 		

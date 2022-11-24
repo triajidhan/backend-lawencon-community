@@ -33,7 +33,7 @@ public class PaymentActivityDetailController {
 		return new ResponseEntity<>(paymentActivityDetails,HttpStatus.OK);
 	}
 	
-	@GetMapping("{id}/get")
+	@GetMapping("id/{id}")
 	public ResponseEntity<PaymentActivityDetail> getById(@PathVariable("id") String paymentActivityId){
 		final PaymentActivityDetail paymentActivity = paymentActivityDetailService.getById(paymentActivityId);
 		

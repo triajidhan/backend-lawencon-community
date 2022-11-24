@@ -35,7 +35,7 @@ public class PaymentSubscribeController {
 		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
 	}
 	
-	@GetMapping("{id}/get")
+	@GetMapping("id/{id}")
 	public ResponseEntity<PaymentSubscribe> getById(@PathVariable("id") String paymentSubscribeId){
 		final PaymentSubscribe paymentSubscribe = paymentSubscribeService.getById(paymentSubscribeId);
 		

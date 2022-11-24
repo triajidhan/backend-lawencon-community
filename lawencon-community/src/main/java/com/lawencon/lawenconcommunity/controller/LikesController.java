@@ -33,7 +33,7 @@ public class LikesController {
 		return new ResponseEntity<>(likes,HttpStatus.OK);
 	}
 	
-	@GetMapping("{id}/get")
+	@GetMapping("id/{id}")
 	public ResponseEntity<Like> getById(@PathVariable("id") String bookmarkId){
 		final Like like = likeService.getById(bookmarkId);
 		

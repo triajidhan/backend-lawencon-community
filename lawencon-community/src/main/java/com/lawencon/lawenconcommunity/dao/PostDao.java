@@ -10,6 +10,7 @@ import com.lawencon.base.AbstractJpaDao;
 import com.lawencon.base.ConnHandler;
 import com.lawencon.lawenconcommunity.model.Post;
 import com.lawencon.lawenconcommunity.model.PostType;
+import com.lawencon.lawenconcommunity.model.User;
 
 @Repository
 public class PostDao extends AbstractJpaDao{
@@ -20,9 +21,11 @@ public class PostDao extends AbstractJpaDao{
 		sql.append("SELECT ")
 		.append("tp.id as tp_id, post_code, title , contents , title_poll, ")
 		.append("tpt.id as tpt_id,tpt.post_type_code, tpt.post_type_name, ")
+		.append("tu.id as tu_id, tu.full_name, tu.company ")
 		.append("tp.created_by,tp.created_at, tp.versions ")
 		.append("FROM tb_post tp ")
 		.append("INNER JOIN tb_post_type tpt  ON tp.post_type_id = tpt.id ")
+		.append("INNER JOIN tb_user tu ON tp.created_by = tu.id ")
 		.append("WHERE post_code = :postCode AND tp.is_active = true");
 		
 		Object objPost = null;
@@ -41,6 +44,7 @@ public class PostDao extends AbstractJpaDao{
 			
 			final Post post = new Post();
 			final PostType postType = new PostType();
+			final User user = new User();
 			
 			post.setId(objArr[0].toString());
 			post.setPostCode(objArr[1].toString());
@@ -52,9 +56,17 @@ public class PostDao extends AbstractJpaDao{
 			postType.setPostTypeCode(objArr[6].toString());
 			postType.setPostTypeName(objArr[7].toString());
 			
-			post.setCreatedBy(objArr[8].toString());
-			post.setCreatedAt(Timestamp.valueOf(objArr[9].toString()).toLocalDateTime());
-			post.setVersion(Integer.parseInt(objArr[10].toString()));
+			//"tu.id as tu_id, tu.full_name, tu.company "
+			user.setId(objArr[8].toString());
+			user.setFullName(objArr[9].toString());
+			user.setCompany(objArr[10].toString());
+			
+			post.setCreatedBy(objArr[11].toString());
+			post.setCreatedAt(Timestamp.valueOf(objArr[12].toString()).toLocalDateTime());
+			post.setVersion(Integer.parseInt(objArr[13].toString()));
+			
+			post.setPostType(postType);
+			post.setUser(user);
 			
 			optPost = Optional.ofNullable(post);
 		}
@@ -69,6 +81,7 @@ public class PostDao extends AbstractJpaDao{
 		sql.append("SELECT * ")
 		.append("FROM tb_post tp ")
 		.append("INNER JOIN tb_post_type tpt ON tp.post_type_id = tpt.id ")
+		.append("INNER JOIN tb_user tu ON tp.created_by = tu.id ")
 		.append("WHERE tp.created_by = :userId AND tp.is_active = true");
 		
 		final List<Post> objResultPosts = ConnHandler.getManager().createNativeQuery(sql.toString(),Post.class)
@@ -85,6 +98,7 @@ public class PostDao extends AbstractJpaDao{
 		sql.append("SELECT * ")
 		.append("FROM tb_post tp ")
 		.append("INNER JOIN tb_post_type tpt ON tp.post_type_id = tpt.id ")
+		.append("INNER JOIN tb_user tu ON tp.created_by = tu.id ")
 		.append("WHERE tpt.id = :postTypeId AND tp.is_active = true");
 		
 		final List<Post> objResultPosts = ConnHandler.getManager().createNativeQuery(sql.toString(),Post.class)
@@ -187,6 +201,7 @@ public class PostDao extends AbstractJpaDao{
 		sql.append("SELECT * ")
 		.append("FROM tb_post tp ")
 		.append("INNER JOIN tb_post_type tpt ON tp.post_type_id = tpt.id ")
+		.append("INNER JOIN tb_user tu ON tp.created_by = tu.id ")
 		.append("WHERE tp.is_active = true ")
 		.append("LIMIT :limit OFFSET :startPosition");
 		
@@ -205,6 +220,7 @@ public class PostDao extends AbstractJpaDao{
 		sql.append("SELECT * ")
 		.append("FROM tb_post tp ")
 		.append("INNER JOIN tb_post_type tpt ON tp.post_type_id = tpt.id ")
+		.append("INNER JOIN tb_user tu ON tp.created_by = tu.id ")
 		.append("WHERE tp.is_active = true ");
 		
 		final List<Post> objResultPosts = ConnHandler.getManager().createNativeQuery(sql.toString(),Post.class)
@@ -222,6 +238,7 @@ public class PostDao extends AbstractJpaDao{
 		sql.append("SELECT * ")
 		.append("FROM tb_post tp ")
 		.append("INNER JOIN tb_post_type tpt ON tp.post_type_id = tpt.id ")
+		.append("INNER JOIN tb_user tu ON tp.created_by = tu.id ")
 		.append("WHERE tp.is_active = true ")
 		.append("ORDER BY created_at ")
 		.append(ascending)
