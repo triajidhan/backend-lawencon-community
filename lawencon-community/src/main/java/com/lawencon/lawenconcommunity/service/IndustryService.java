@@ -65,7 +65,7 @@ public class IndustryService extends BaseCoreService{
 	public ResponseMessageDto update(Industry data) {
 		valIdFound(data);
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
-		responseMessageDto.setMessage("Failed Add industry!");
+		responseMessageDto.setMessage("Failed!");
 		Industry industry = industryDao.getById(Industry.class, data.getId());
 		Industry industryUpdate = industry;
 		begin();
@@ -79,9 +79,9 @@ public class IndustryService extends BaseCoreService{
 			}
 
 			industryDao.save(industryUpdate);
-			responseMessageDto.setMessage("Success Add industry!");
+			responseMessageDto.setMessage("Success!");
 		} catch (Exception e) {
-			responseMessageDto.setMessage("Failed Add industry!");
+			responseMessageDto.setMessage("Failed!");
 			e.printStackTrace();
 		}
 		commit();
