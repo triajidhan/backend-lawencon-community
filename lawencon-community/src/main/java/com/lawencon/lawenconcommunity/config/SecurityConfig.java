@@ -29,6 +29,7 @@ public class SecurityConfig {
 		requestMatchers.add(new AntPathRequestMatcher("/industries/**", HttpMethod.GET.name()));
 		requestMatchers.add(new AntPathRequestMatcher("/positions/**", HttpMethod.GET.name()));
 		
+		
 		requestMatchers.add(new AntPathRequestMatcher("/files/**", HttpMethod.GET.name()));
 		requestMatchers.add(new AntPathRequestMatcher("/swagger-ui/**", HttpMethod.GET.name()));
 		requestMatchers.add(new AntPathRequestMatcher("/v3/**", HttpMethod.GET.name()));

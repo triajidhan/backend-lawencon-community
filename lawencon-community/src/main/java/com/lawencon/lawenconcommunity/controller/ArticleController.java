@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lawencon.lawenconcommunity.dto.ResponseMessageDto;
-import com.lawencon.lawenconcommunity.model.Activity;
 import com.lawencon.lawenconcommunity.model.Article;
 import com.lawencon.lawenconcommunity.service.ArticleService;
 
