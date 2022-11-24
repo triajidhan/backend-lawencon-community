@@ -3,6 +3,7 @@ package com.lawencon.lawenconcommunity.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import com.lawencon.base.BaseEntity;
@@ -28,4 +29,7 @@ public class Role extends BaseEntity{
 	
 	@Column(name ="role_name",length=50)
 	private String roleName;
+	
+	@Transient
+	private Integer countOfRole;
 }
