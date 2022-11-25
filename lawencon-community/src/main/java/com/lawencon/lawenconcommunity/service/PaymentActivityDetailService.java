@@ -31,6 +31,9 @@ public class PaymentActivityDetailService extends BaseCoreService {
 	@Autowired
 	private PrincipalService principalService;
 	
+	@Autowired
+	private GenerateService generateService;
+	
 	public List<PaymentActivityDetail> getAll(int startPosition,int limit){
 		return paymentActivityDetailDao.getAll(PaymentActivityDetail.class,startPosition, limit);
 	}
@@ -78,6 +81,7 @@ public class PaymentActivityDetailService extends BaseCoreService {
 				data.setNet(data.getNet().subtract(administrativeCosts));
 				data.setFile(fileInsert);
 			}
+			data.setPaymentCode(generateService.generate(5));
 			paymentActivityDetailDao.save(data);
 			responseMessageDto.setMessage("Payment is Success!");
 		} catch (Exception e) {

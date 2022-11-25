@@ -31,6 +31,8 @@ public class PaymentSubscribeService extends BaseCoreService {
 	@Autowired
 	private PrincipalService principalService;
 	
+	@Autowired 
+	private GenerateService generateService;
 	public List<PaymentSubscribe> getAll(int startPosition,int limit){
 		return paymentSubscribeDao.getAll(PaymentSubscribe.class,startPosition, limit);
 	}
@@ -59,9 +61,8 @@ public class PaymentSubscribeService extends BaseCoreService {
 				fileInsert = fileDao.save(data.getFile());
 				data.setFile(fileInsert);
 			}
-			User user = new User();
-			user.setId(principalService.getAuthPrincipal());
-			data.setUser(user);
+			data.setUser(userDao.getById(User.class, principalService.getAuthPrincipal()));
+			data.setPaymentCode(generateService.generate(5));
 			paymentSubscribeDao.save(data);
 			responseMessageDto.setMessage("Payment is Succes!");
 		} catch (Exception e) {
