@@ -13,6 +13,46 @@ import com.lawencon.lawenconcommunity.model.Like;
 public class LikeDao extends AbstractJpaDao{
 	
 	@SuppressWarnings("unchecked")
+	public List<Like> getByUser(String userId,int startPosition,int limit,boolean ascending){
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT * ")
+		.append("FROM tb_like tl ")
+		.append("INNER JOIN tb_user tu ON tu.id = tl.user_id ")
+		.append("INNER JOIN tb_post tp ON tp.id = tl.post_id ")
+		.append("WHERE user_id  = :userId AND tl.is_active = true ")
+		.append("LIMIT :limit OFFSET :startPosition ");
+		
+		List<Like> likes = ConnHandler.getManager().createNativeQuery(sql.toString(),Like.class)
+				.setParameter("userId", userId)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", startPosition)
+				.getResultList();
+		
+		return likes;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Like> getByUser(String userId,int startPosition,int limit){
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT * ")
+		.append("FROM tb_like tl ")
+		.append("INNER JOIN tb_user tu ON tu.id = tl.user_id ")
+		.append("INNER JOIN tb_post tp ON tp.id = tl.post_id ")
+		.append("WHERE user_id  = :userId AND tl.is_active = true ")
+		.append("LIMIT :limit OFFSET :startPosition ");
+		
+		List<Like> likes = ConnHandler.getManager().createNativeQuery(sql.toString(),Like.class)
+				.setParameter("userId", userId)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", startPosition)
+				.getResultList();
+		
+		return likes;
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<Like> getByUser(String userId){
 		final StringBuilder sql = new StringBuilder();
 		
@@ -112,8 +152,8 @@ public class LikeDao extends AbstractJpaDao{
 		StringBuilder sql = new StringBuilder();
 		
 		sql.append("Select count(*),")
-		.append(" (SELECT id  from tb_like where user_id = :userId AND post_id = :postId) as like_id ")
-		.append("FROM tb_like WHERE post_id = :postId");
+		.append(" (SELECT id  from tb_like where user_id = :userId AND post_id = :postId AND is_active = true) as like_id ")
+		.append("FROM tb_like WHERE post_id = :postId AND is_active = true");
 		
 		Object objLike = null;
 		Optional<Like> optLike = Optional.ofNullable(null);
@@ -132,7 +172,10 @@ public class LikeDao extends AbstractJpaDao{
 			
 			Like like = new Like();
 			like.setCountOfLike(Integer.parseInt(objArr[0].toString()));
-			like.setLikeId(objArr[1].toString());
+			
+			if(objArr[1] != null) {				
+				like.setLikeId(objArr[1].toString());
+			}
 			
 			optLike = Optional.ofNullable(like);
 		}
