@@ -21,7 +21,10 @@ public class ActivityService extends BaseCoreService{
 	private ActivityDao activityDao;
 	@Autowired
 	private ActivityTypeDao activityTypeDao;
-	@Autowired FileDao fileDao;
+	@Autowired 
+	private FileDao fileDao;
+	@Autowired
+	private GenerateService generateService;
 	
 	public List<Activity> getAll(){
 		final List<Activity> activities = activityDao.getAll(Activity.class);
@@ -95,6 +98,7 @@ public class ActivityService extends BaseCoreService{
 				fileInsert = fileDao.save(data.getFile());
 				data.setFile(fileInsert);				
 			}
+			data.setActivityCode(generateService.generate(5));
 			activityDao.save(data);
 			reponseMessageDto.setMessage("Create activity success!");
 		} catch (Exception e) {
