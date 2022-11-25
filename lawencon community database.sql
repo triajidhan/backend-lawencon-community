@@ -542,7 +542,13 @@ select * from tb_user;
 
 --- INSERT POST TYPE
 INSERT INTO tb_post_type(id,post_type_code,post_type_name,created_by,versions) values
-('normal-type-123','N','Normal','37e1be28-5d03-48fa-9a73-8bb00c4c67c4',0),('polling-type-123','PO','Polling','37e1be28-5d03-48fa-9a73-8bb00c4c67c4',0),('premium-type-123','PRE','Premium','37e1be28-5d03-48fa-9a73-8bb00c4c67c4',0);
+('reguler-type-123','REG','Reguler','37e1be28-5d03-48fa-9a73-8bb00c4c67c4',0),
+('polling-type-123','POL','Polling','37e1be28-5d03-48fa-9a73-8bb00c4c67c4',0),
+('premium-type-123','PRE','Premium','37e1be28-5d03-48fa-9a73-8bb00c4c67c4',0);
+
+INSERT INTO tb_activity_type(id,activity_type_code,activity_type_name,created_by,versions) VALUES
+('event-123','E','Event','system',0),
+('course-123','C','Course','system',0);
 
 --
 /**
