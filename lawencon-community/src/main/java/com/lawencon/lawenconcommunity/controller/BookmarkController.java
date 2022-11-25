@@ -35,7 +35,7 @@ public class BookmarkController {
 		return new ResponseEntity<>(bookmarks,HttpStatus.OK);
 	}
 	
-	@GetMapping("{id}/get")
+	@GetMapping("id/{id}")
 	public ResponseEntity<Bookmark> getById(@PathVariable("id") String bookmarkId){
 		final Bookmark bookmark = bookmarkService.getById(bookmarkId);
 		

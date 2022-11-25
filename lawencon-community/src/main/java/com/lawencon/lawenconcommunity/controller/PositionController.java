@@ -35,7 +35,7 @@ public class PositionController {
 		return new ResponseEntity<>(positions,HttpStatus.OK);
 	}
 	
-	@GetMapping("{id}/get")
+	@GetMapping("id/{id}")
 	public ResponseEntity<Position> getById(@PathVariable String id){
 		Position position = positionService.getById(id);
 		

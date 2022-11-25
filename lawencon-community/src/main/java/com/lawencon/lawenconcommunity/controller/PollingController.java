@@ -34,7 +34,7 @@ public class PollingController {
 		return new ResponseEntity<>(pollings,HttpStatus.OK);
 	}
 	
-	@GetMapping("{id}/get")
+	@GetMapping("id/{id}")
 	public ResponseEntity<Polling> getById(@PathVariable("id") String pollingId){
 		final Polling polling = pollingService.getById(pollingId);
 		

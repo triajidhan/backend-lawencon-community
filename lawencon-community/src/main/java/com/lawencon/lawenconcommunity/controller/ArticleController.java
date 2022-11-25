@@ -35,7 +35,7 @@ public class ArticleController {
 		return new ResponseEntity<>(articles,HttpStatus.OK);
 	}
 	
-	@GetMapping("{id}/get")
+	@GetMapping("id/{id}")
 	public ResponseEntity<Article> getById(@PathVariable("id") String id){
 		final Article article = articleService.getById(id);
 		return new ResponseEntity<>(article,HttpStatus.OK);
@@ -87,6 +87,4 @@ public class ArticleController {
 		final ResponseMessageDto responseMessageDto = articleService.update(data);
 		return new ResponseEntity<>(responseMessageDto,HttpStatus.OK);
 	}
-	
-	
 }

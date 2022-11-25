@@ -12,7 +12,6 @@ import com.lawencon.lawenconcommunity.model.Comment;
 @Repository
 public class CommentDao extends AbstractJpaDao{
 
-	
 	public Comment getTotalComment() {
 		StringBuilder sql = new StringBuilder();
 		
