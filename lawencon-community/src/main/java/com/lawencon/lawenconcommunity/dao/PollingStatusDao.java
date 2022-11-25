@@ -1,7 +1,6 @@
 package com.lawencon.lawenconcommunity.dao;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +12,7 @@ import com.lawencon.lawenconcommunity.model.PollingStatus;
 @Repository
 public class PollingStatusDao extends AbstractJpaDao {
 	
-	@SuppressWarnings("unchecked")
+	
 	public PollingStatus getByPolling(String pollingId) {
 		StringBuilder sql = new StringBuilder();
 		
@@ -24,7 +23,6 @@ public class PollingStatusDao extends AbstractJpaDao {
 		.append("FROM tb_polling_status tps ")
 		.append("INNER JOIN tb_polling ON tp.id = tps.polling_id ")
 		.append("WHERE tp.id = :pollingId AND tps.is_active = true ");
-		
 		
 		Object objPolling = null;
 		PollingStatus pollingStatus = new PollingStatus();
@@ -65,7 +63,7 @@ public class PollingStatusDao extends AbstractJpaDao {
 		return pollingStatus;
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	public PollingStatus getByUser(String userId) {
 		StringBuilder sql = new StringBuilder();
 		
@@ -116,7 +114,7 @@ public class PollingStatusDao extends AbstractJpaDao {
 		return pollingStatus;
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	public PollingStatus getByUserAndPolling(String userId, String pollingId) {
 		StringBuilder sql = new StringBuilder();
 		
