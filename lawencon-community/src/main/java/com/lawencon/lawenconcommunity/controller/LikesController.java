@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,6 +42,13 @@ public class LikesController {
 	}
 	
 	@GetMapping("users")
+	public ResponseEntity<List<Like>> getByUser(@RequestParam("userId") String userId,@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit){
+		final List<Like> likes = likeService.getByUser(userId);
+		
+		return new ResponseEntity<>(likes,HttpStatus.OK);
+	}
+	
+	@GetMapping("users-all")
 	public ResponseEntity<List<Like>> getByUser(@RequestParam("userId") String userId){
 		final List<Like> likes = likeService.getByUser(userId);
 		
@@ -85,6 +93,12 @@ public class LikesController {
 	@PostMapping
 	public ResponseEntity<ResponseMessageDto> insert(@RequestBody Like data){
 		final ResponseMessageDto responseMessageDto = likeService.insert(data);
+		return new ResponseEntity<ResponseMessageDto>(responseMessageDto, HttpStatus.CREATED);
+	}
+	
+	@PutMapping
+	public ResponseEntity<ResponseMessageDto> update(@RequestBody Like data){
+		final ResponseMessageDto responseMessageDto = likeService.update(data);
 		return new ResponseEntity<ResponseMessageDto>(responseMessageDto, HttpStatus.CREATED);
 	}
 }

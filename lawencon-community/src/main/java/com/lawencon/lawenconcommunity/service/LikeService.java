@@ -52,6 +52,12 @@ public class LikeService extends BaseCoreService{
 		return likes;
 	}
 	
+	public List<Like> getByUser(String userId,int startPosition,int limit){
+		List<Like> likes = likeDao.getByUser(userId,startPosition,limit);
+		
+		return likes;
+	}
+	
 	public List<Like> getByPost(String postId){
 		List<Like> likes = likeDao.getByPost(postId);
 		
@@ -89,6 +95,7 @@ public class LikeService extends BaseCoreService{
 	public ResponseMessageDto insert(Like data) {
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
 		responseMessageDto.setMessage("Like Failed!");
+		begin();
 		try {
 			User user = new User();
 			user.setId(principalService.getAuthPrincipal());
@@ -99,6 +106,7 @@ public class LikeService extends BaseCoreService{
 			responseMessageDto.setMessage("Like Failed!");
 			e.printStackTrace();
 		}
+		commit();
 		return responseMessageDto;
 	}
 	
@@ -106,22 +114,24 @@ public class LikeService extends BaseCoreService{
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
 		responseMessageDto.setMessage("Unlike Failed!");
 		valId(data);
-		Like like = likeDao.getById(Like.class, data.getId());
+		Like like = likeDao.getByIdAndDetach(Like.class, data.getId());
 		Like likeUpdate = like;
+		begin();
 		try {
-			likeUpdate.setIsActive(false);
+			likeUpdate.setIsActive(data.getIsActive());
+			likeDao.save(likeUpdate);
 			responseMessageDto.setMessage("Unlike Success!");
 		} catch (Exception e) {
 			responseMessageDto.setMessage("Unlike Failed!");
 			e.printStackTrace();
 		}
+		commit();
 		return responseMessageDto;
 	}
 	
 	public void valInsert(Like data) {
 		valFk(data);
 	}
-	
 	
 	public void valId(Like data) {
 		if(likeDao.getById(Like.class, data.getId()) == null) {
