@@ -36,7 +36,6 @@ public class ArticleDao extends AbstractJpaDao{
 		if(articleObjs != null) {
 			Object[] objArr = (Object[]) articleObjs;
 			
-			
 			Article article = new Article();
 			File file = new File();
 			

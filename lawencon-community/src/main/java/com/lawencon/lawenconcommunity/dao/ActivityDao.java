@@ -242,7 +242,7 @@ public class ActivityDao extends AbstractJpaDao{
 		.append("FROM tb_activity ta ")
 		.append("INNER JOIN tb_activity_type tat  ON ta.activity_type_id = tat.id ")
 		.append("WHERE ta.is_active = true ")
-		.append("ORDER BY created_at ")
+		.append("ORDER BY ta.created_at ")
 		.append(ascending)
 		.append("LIMIT :limit OFFSET :startPosition");
 		
