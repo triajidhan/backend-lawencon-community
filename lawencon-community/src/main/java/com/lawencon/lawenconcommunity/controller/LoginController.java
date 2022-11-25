@@ -57,6 +57,7 @@ public class LoginController {
         res.setPosition(user.getPosition());
         res.setIndustry(user.getIndustry());
         res.setCompany(user.getCompany());
+        res.setStatusSubscribe(user.getStatusSubscribe());
         
         return new ResponseEntity<LoginResDto>(res, HttpStatus.OK);
     }

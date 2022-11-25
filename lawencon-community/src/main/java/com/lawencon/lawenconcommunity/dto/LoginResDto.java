@@ -22,4 +22,5 @@ public class LoginResDto {
 	private Industry industry;
 	private Balance balance;
 	private String token;
+	private Boolean statusSubscribe;
 }

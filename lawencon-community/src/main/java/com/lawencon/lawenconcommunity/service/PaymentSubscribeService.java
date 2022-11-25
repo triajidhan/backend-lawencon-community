@@ -56,7 +56,6 @@ public class PaymentSubscribeService extends BaseCoreService {
 		responseMessageDto.setMessage("Payment is Failed!");
 		begin();
 		try {
-			begin();
 			if (data.getFile() != null) {
 				fileInsert = fileDao.save(data.getFile());
 				data.setFile(fileInsert);

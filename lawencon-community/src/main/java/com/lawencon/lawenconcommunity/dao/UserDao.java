@@ -26,7 +26,7 @@ public class UserDao extends AbstractJpaDao{
 		.append("ti.id as ti_id, ti.industry_code, ti.industry_name, ")
 		.append("tp.id as tp_id, tp.position_code, tp.position_name, ")
 		.append("tr.id as tr_id, tr.role_code, tr.role_name, ")
-		.append("file_id, ")
+		.append("file_id, status_subscribe, ")
 		.append("tb.id as tb_id ,tb.total_balance, ")
 		.append("tu.versions, tu.is_active FROM tb_user tu ")
 		.append("LEFT JOIN tb_industry ti ON tu.industry_id = ti.id ")
@@ -86,11 +86,11 @@ public class UserDao extends AbstractJpaDao{
 				file.setId(objArr[14].toString());
 			}
 			
-			if(objArr[15] != null) {				
-				balance.setId(objArr[15].toString());
+			user.setStatusSubscribe(Boolean.valueOf(objArr[15].toString()));
+			if(objArr[16] != null) {				
+				balance.setId(objArr[16].toString());
 				
-				
-				balance.setTotalBalance(BigDecimal.valueOf(Double.valueOf(objArr[16].toString())));
+				balance.setTotalBalance(BigDecimal.valueOf(Double.valueOf(objArr[17].toString())));
 			}
 			
 			user.setIndustry(industry);
@@ -100,8 +100,8 @@ public class UserDao extends AbstractJpaDao{
 			user.setFile(file);
 			
 			
-			user.setVersion(Integer.valueOf(objArr[17].toString()));
-			user.setIsActive(Boolean.valueOf(objArr[18].toString()));
+			user.setVersion(Integer.valueOf(objArr[18].toString()));
+			user.setIsActive(Boolean.valueOf(objArr[19].toString()));
 			
 			objOpt = Optional.ofNullable(user); 
 		}
