@@ -52,6 +52,18 @@ public class BookmarkService extends BaseCoreService{
 		return bookmarks;
 	}
 	
+	public List<Bookmark> getByUser(String userId,int startPosition,int limit){
+		List<Bookmark> bookmarks = bookmarkDao.getByUser(userId,startPosition,limit);
+		
+		return bookmarks;
+	}
+	
+	public List<Bookmark> getByUser(String userId,int startPosition,int limit,boolean ascending){
+		List<Bookmark> bookmarks = bookmarkDao.getByUser(userId,startPosition,limit,ascending);
+		
+		return bookmarks;
+	}
+	
 	public List<Bookmark> getByPost(String postId){
 		List<Bookmark> bookmarks = bookmarkDao.getByPost(postId);
 		
@@ -89,6 +101,7 @@ public class BookmarkService extends BaseCoreService{
 	public ResponseMessageDto insert(Bookmark data) {
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
 		responseMessageDto.setMessage("Bookmark Failed!");
+		begin();
 		try {
 			User user = new User();
 			user.setId(principalService.getAuthPrincipal());
@@ -99,6 +112,7 @@ public class BookmarkService extends BaseCoreService{
 			responseMessageDto.setMessage("Bookmark Failed!");
 			e.printStackTrace();
 		}
+		commit();
 		return responseMessageDto;
 	}
 	

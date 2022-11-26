@@ -37,7 +37,31 @@ public class BookmarkDao extends AbstractJpaDao{
 		.append("FROM tb_bookmark tb ")
 		.append("INNER JOIN tb_user tu ON tu.id = tb.user_id ")
 		.append("INNER JOIN tb_post tp ON tp.id = tb.post_id ")
-		.append("WHERE user_id  = :userId AND tb.is_active = true")
+		.append("WHERE user_id  = :userId AND tb.is_active = true ")
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		List<Bookmark> bookmarks = ConnHandler.getManager().createNativeQuery(sql.toString(),Bookmark.class)
+				.setParameter("userId", userId)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
+				.getResultList();
+		
+		return bookmarks;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Bookmark> getByUser(String userId,int startPosition,int limit,boolean isAscending){
+		StringBuilder sql = new StringBuilder();
+		
+		String ascending = (isAscending) ? "ASC ":"DESC ";
+		
+		sql.append("SELECT * ")
+		.append("FROM tb_bookmark tb ")
+		.append("INNER JOIN tb_user tu ON tu.id = tb.user_id ")
+		.append("INNER JOIN tb_post tp ON tp.id = tb.post_id ")
+		.append("WHERE user_id  = :userId AND tb.is_active = true ")
+		.append("ORDER BY tb.created_at ")
+		.append(ascending)
 		.append("LIMIT :limit OFFSET :startPosition");
 		
 		List<Bookmark> bookmarks = ConnHandler.getManager().createNativeQuery(sql.toString(),Bookmark.class)
@@ -105,7 +129,7 @@ public class BookmarkDao extends AbstractJpaDao{
 		.append("FROM tb_bookmark tb ")
 		.append("INNER JOIN tb_user tu ON tu.id = tb.user_id ")
 		.append("INNER JOIN tb_post tp ON tp.id = tb.post_id ")
-		.append("WHERE post_id  = :postId AND tb.is_active = true")
+		.append("WHERE post_id  = :postId AND tb.is_active = true ")
 		.append("LIMIT :limit OFFSET :startPosition");
 		
 		List<Bookmark> bookmarks = ConnHandler.getManager().createNativeQuery(sql.toString(),Bookmark.class)
@@ -151,8 +175,8 @@ public class BookmarkDao extends AbstractJpaDao{
 		StringBuilder sql = new StringBuilder();
 		
 		sql.append("Select count(*), ")
-		.append("(SELECT count(*) from tb_bookmark where user_id = :userId AND post_id = :postId) as user_id ")
-		.append("FROM tb_bookmark WHERE post_id = :postId");
+		.append("(SELECT id from tb_bookmark where user_id = :userId AND post_id = :postId) as id ")
+		.append("FROM tb_bookmark WHERE post_id = :postId AND is_active = true");
 		
 		
 		Object objBookmark = null;
@@ -174,7 +198,12 @@ public class BookmarkDao extends AbstractJpaDao{
 			
 			Bookmark bookmark = new Bookmark();
 			bookmark.setCountOfBookmark(Integer.parseInt(objArr[0].toString()));
-			bookmark.setBookmarkId(objArr[1].toString());
+			
+			if(objArr[1] != null) {				
+				bookmark.setBookmarkId(objArr[1].toString());
+				bookmark.setId(objArr[1].toString());
+				
+			}
 			
 
 			opt = Optional.ofNullable(bookmark);

@@ -35,15 +35,22 @@ public class LikesController {
 	}
 	
 	@GetMapping("id/{id}")
-	public ResponseEntity<Like> getById(@PathVariable("id") String bookmarkId){
-		final Like like = likeService.getById(bookmarkId);
+	public ResponseEntity<Like> getById(@PathVariable("id") String id){
+		final Like like = likeService.getById(id);
 		
 		return new ResponseEntity<>(like,HttpStatus.OK);
 	}
 	
 	@GetMapping("users")
 	public ResponseEntity<List<Like>> getByUser(@RequestParam("userId") String userId,@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit){
-		final List<Like> likes = likeService.getByUser(userId);
+		final List<Like> likes = likeService.getByUser(userId,startPosition,limit);
+		
+		return new ResponseEntity<>(likes,HttpStatus.OK);
+	}
+	
+	@GetMapping("users-order")
+	public ResponseEntity<List<Like>> getByUser(@RequestParam("userId") String userId,@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit,@RequestParam("asc") boolean ascending){
+		final List<Like> likes = likeService.getByUser(userId,startPosition,limit,ascending);
 		
 		return new ResponseEntity<>(likes,HttpStatus.OK);
 	}
