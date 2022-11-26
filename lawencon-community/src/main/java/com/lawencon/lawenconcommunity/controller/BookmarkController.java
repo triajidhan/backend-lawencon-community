@@ -43,6 +43,20 @@ public class BookmarkController {
 	}
 	
 	@GetMapping("users")
+	public ResponseEntity<List<Bookmark>> getByUser(@RequestParam("userId") String userId,@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit){
+		final List<Bookmark> bookmarks = bookmarkService.getByUser(userId,startPosition,limit);
+		
+		return new ResponseEntity<>(bookmarks,HttpStatus.OK);
+	}
+	
+	@GetMapping("users-order")
+	public ResponseEntity<List<Bookmark>> getByUser(@RequestParam("userId") String userId,@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit,@RequestParam("asc") boolean ascending){
+		final List<Bookmark> bookmarks = bookmarkService.getByUser(userId,startPosition,limit,ascending);
+		
+		return new ResponseEntity<>(bookmarks,HttpStatus.OK);
+	}
+	
+	@GetMapping("users-all")
 	public ResponseEntity<List<Bookmark>> getByUser(@RequestParam("userId") String userId){
 		final List<Bookmark> bookmarks = bookmarkService.getByUser(userId);
 		
