@@ -1,7 +1,10 @@
 package com.lawencon.lawenconcommunity.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +27,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 @RequestMapping("payment-activity-details")
 public class PaymentActivityDetailController {
 
+	@Autowired
 	private PaymentActivityDetailService paymentActivityDetailService;
 	
 	@GetMapping()
@@ -57,6 +61,23 @@ public class PaymentActivityDetailController {
 	@GetMapping("is-active")
 	public ResponseEntity<List<PaymentActivityDetail>> getByIsActive(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit){
 		List<PaymentActivityDetail> paymentActivityDetail = paymentActivityDetailService.getByIsActive(startPosition, limit);
+		
+		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
+	}
+	
+	@GetMapping("partisipatian")
+	public ResponseEntity<List<PaymentActivityDetail>> getReportPartisipation(@RequestParam("beginDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime beginDate,
+			@RequestParam("finishDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime finishDate){
+		
+		List<PaymentActivityDetail> paymentActivityDetail = paymentActivityDetailService.getReportPartisipation(beginDate, finishDate);
+		
+		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
+	}
+	
+	@GetMapping("total-income")
+	public ResponseEntity<List<PaymentActivityDetail>> getReportIncome(@RequestParam("beginDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime beginDate,
+			@RequestParam("finishDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime finishDate){
+		List<PaymentActivityDetail> paymentActivityDetail = paymentActivityDetailService.getReportIncome(beginDate, finishDate);
 		
 		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
 	}
