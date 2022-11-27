@@ -45,4 +45,7 @@ public class PaymentActivityDetail extends BaseEntity {
 	@Transient
 	private Integer countOfPaymentActivity;
 	
+	@Transient
+	private String memberCreate;
+	
 }

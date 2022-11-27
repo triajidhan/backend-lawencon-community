@@ -24,7 +24,6 @@ import com.lawencon.lawenconcommunity.model.Balance;
 import com.lawencon.lawenconcommunity.model.File;
 import com.lawencon.lawenconcommunity.model.Industry;
 import com.lawencon.lawenconcommunity.model.Position;
-import com.lawencon.lawenconcommunity.model.Role;
 import com.lawencon.lawenconcommunity.model.User;
 
 @Service
