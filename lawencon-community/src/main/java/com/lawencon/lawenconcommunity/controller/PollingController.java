@@ -41,14 +41,14 @@ public class PollingController {
 		return new ResponseEntity<>(polling,HttpStatus.OK);
 	}
 	
-	@GetMapping("post")
+	@GetMapping("posts")
 	public ResponseEntity<List<Polling>> getByPost(@RequestParam("postId") String postId){
 		final List<Polling> pollings = pollingService.getByPost(postId);
 		
 		return new ResponseEntity<>(pollings,HttpStatus.OK);
 	}
 	
-	@GetMapping("user")
+	@GetMapping("users")
 	public ResponseEntity<List<Polling>> getByUser(@RequestParam("userId") String userId){
 		final List<Polling> pollings = pollingService.getByUser(userId);
 		

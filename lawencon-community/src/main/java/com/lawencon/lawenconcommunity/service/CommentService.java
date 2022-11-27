@@ -47,12 +47,24 @@ public class CommentService extends BaseCoreService{
 		return comments;
 	}
 	
+	public List<Comment> getByUserAndOrder(String userId,boolean ascending){
+		List<Comment> comments = commentDao.getByUserAndOrder(userId,ascending);
+		
+		return comments;
+	}
+	
 	public Comment getTotalByUser(String userId) {
 		return commentDao.getTotalByUser(userId);
 	}
 	
 	public List<Comment> getByPost(String postId){
 		List<Comment> comments = commentDao.getByPost(postId);
+		
+		return comments;
+	}
+	
+	public List<Comment> getByPostAndOrder(String postId,boolean ascending){
+		List<Comment> comments = commentDao.getByPostAndOrder(postId,ascending);
 		
 		return comments;
 	}

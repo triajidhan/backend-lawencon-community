@@ -37,6 +37,13 @@ public class PaymentActivityDetailController {
 		return new ResponseEntity<>(paymentActivityDetails,HttpStatus.OK);
 	}
 	
+	@GetMapping("total")
+	public ResponseEntity<PaymentActivityDetail> getTotalPaymentActivity(){
+		PaymentActivityDetail paymentActivityDetail = paymentActivityDetailService.getTotalPaymentActivityDetail();
+		
+		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
+	}
+	
 	@GetMapping("id/{id}")
 	public ResponseEntity<PaymentActivityDetail> getById(@PathVariable("id") String paymentActivityId){
 		final PaymentActivityDetail paymentActivity = paymentActivityDetailService.getById(paymentActivityId);
@@ -65,7 +72,7 @@ public class PaymentActivityDetailController {
 		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
 	}
 	
-	@GetMapping("partisipatian")
+	@GetMapping("partisipatian-all")
 	public ResponseEntity<List<PaymentActivityDetail>> getReportPartisipation(@RequestParam("beginDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime beginDate,
 			@RequestParam("finishDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime finishDate){
 		
@@ -74,10 +81,27 @@ public class PaymentActivityDetailController {
 		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
 	}
 	
-	@GetMapping("total-income")
+	@GetMapping("partisipatian")
+	public ResponseEntity<List<PaymentActivityDetail>> getReportPartisipation(@RequestParam("beginDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime beginDate,
+			@RequestParam("finishDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime finishDate,@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit){
+		
+		List<PaymentActivityDetail> paymentActivityDetail = paymentActivityDetailService.getReportPartisipation(beginDate, finishDate,startPosition,limit);
+		
+		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
+	}
+	
+	@GetMapping("total-income-all")
 	public ResponseEntity<List<PaymentActivityDetail>> getReportIncome(@RequestParam("beginDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime beginDate,
 			@RequestParam("finishDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime finishDate){
 		List<PaymentActivityDetail> paymentActivityDetail = paymentActivityDetailService.getReportIncome(beginDate, finishDate);
+		
+		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
+	}
+	
+	@GetMapping("total-income")
+	public ResponseEntity<List<PaymentActivityDetail>> getReportIncome(@RequestParam("beginDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime beginDate,
+			@RequestParam("finishDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime finishDate,@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit){
+		List<PaymentActivityDetail> paymentActivityDetail = paymentActivityDetailService.getReportIncome(beginDate, finishDate,startPosition,limit);
 		
 		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
 	}

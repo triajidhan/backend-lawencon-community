@@ -41,4 +41,30 @@ public class ActivityTypeDao extends AbstractJpaDao{
 		
 		return objResultActivities;
 	}
+	
+	
+	public ActivityType getTotalActivityType(){
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT count(*) ")
+		.append("FROM tb_activity_type ");
+		
+		Object objActivityType = null; 
+		ActivityType activityType = new ActivityType();
+		try {
+			objActivityType = ConnHandler.getManager().createNativeQuery(sql.toString())
+			.getSingleResult();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objActivityType != null) {
+			Object objArr = (Object) objActivityType;
+			
+			activityType.setCountOfActivityType(Integer.parseInt(objArr.toString()));
+		}
+		
+		return activityType;
+	}
 }

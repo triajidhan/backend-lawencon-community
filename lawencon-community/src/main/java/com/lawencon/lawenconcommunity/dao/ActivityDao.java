@@ -78,7 +78,7 @@ public class ActivityDao extends AbstractJpaDao{
 		return activityOpt;
 	}
 	
-	public Activity getTotalActivity() {
+	public Activity getTotalByActivity() {
 		final StringBuilder sql = new StringBuilder();
 		
 		sql.append("select count(ta.id) as total from tb_activity ta ")
@@ -252,5 +252,32 @@ public class ActivityDao extends AbstractJpaDao{
 				.getResultList();
 		
 		return objResultActivities;
+	}
+
+	public Activity getTotalByIsActive() {
+		final StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT count(*) ")
+		.append("FROM tb_activity ta ")
+		.append("INNER JOIN tb_activity_type tat  ON ta.activity_type_id = tat.id ")
+		.append("WHERE ta.is_active = true ");
+		
+		Object objActivity = null; 
+		Activity activity = new Activity();
+		try {
+			objActivity = ConnHandler.getManager().createNativeQuery(sql.toString())
+			.getSingleResult();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objActivity != null) {
+			Object objArr = (Object) objActivity;
+			
+			activity.setCountOfActivity(Integer.parseInt(objArr.toString()));
+		}
+		
+		return activity;
 	}
 }

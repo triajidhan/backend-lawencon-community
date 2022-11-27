@@ -44,7 +44,9 @@ public class PaymentActivityDetailService extends BaseCoreService {
 		return paymentActivityDetailDao.getByIdAndDetach(PaymentActivityDetail.class, id);
 	}
 	
-	
+	public PaymentActivityDetail getTotalPaymentActivityDetail(){
+		return paymentActivityDetailDao.getTotalPaymentActivityDetail();
+	}
 	
 	public List<PaymentActivityDetail> getByIsActive(){
 		return paymentActivityDetailDao.getByIsActive();
