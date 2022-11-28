@@ -106,30 +106,34 @@ public class PaymentSubscribeService extends BaseCoreService {
 	public ResponseMessageDto update(PaymentSubscribe data) {
 		valUpdate(data);
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
-		responseMessageDto.setMessage("Approving Failed!");
+//		responseMessageDto.setMessage("Approving Failed!");
 		PaymentSubscribe paymentSubscribe = paymentSubscribeDao.getById(PaymentSubscribe.class, data.getId());
-		User userSystem = userDao.getById(User.class,userDao.getSystem("SYS").get().getId());
-		User member = userDao.getById(User.class, data.getCreatedBy());
-		PaymentSubscribe paymentApproving = paymentSubscribe;
-		begin();
-		try {
-			paymentApproving.setApprove(true);
-			paymentSubscribeDao.saveAndFlush(paymentApproving);
-			responseMessageDto.setMessage("Approving Success!");
-			BigDecimal totalBalance = data.getPrice().add(userSystem.getBalance().getTotalBalance());
-			Balance balance = new Balance();
-			balance = userSystem.getBalance();
-			balance.setTotalBalance(totalBalance);
-			userSystem.setBalance(balance);
-			userDao.save(userSystem);
-			member.setStatusSubscribe(true);
-			userDao.save(member);
+		if(paymentSubscribe.getApprove()==false) {
+			User userSystem = userDao.getById(User.class,userDao.getSystem("SYS").get().getId());
+			User member = userDao.getById(User.class, data.getCreatedBy());
+			PaymentSubscribe paymentApproving = paymentSubscribe;
+			begin();
+			try {
+				paymentApproving.setApprove(true);
+				paymentSubscribeDao.saveAndFlush(paymentApproving);
+				responseMessageDto.setMessage("Approving Success!");
+				BigDecimal totalBalance = data.getPrice().add(userSystem.getBalance().getTotalBalance());
+				Balance balance = new Balance();
+				balance = userSystem.getBalance();
+				balance.setTotalBalance(totalBalance);
+				userSystem.setBalance(balance);
+				userDao.save(userSystem);
+				member.setStatusSubscribe(true);
+				userDao.save(member);
 
-		} catch (Exception e) {
-			responseMessageDto.setMessage("Approving Failed!");
-			e.printStackTrace();
+			} catch (Exception e) {
+				responseMessageDto.setMessage("Approving Failed!");
+				e.printStackTrace();
+			}
+			commit();
+		}else {
+			throw new RuntimeException("Approving can only be done once!");
 		}
-		commit();
 		return responseMessageDto;
 	}
 }
