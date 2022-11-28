@@ -101,7 +101,7 @@ public class PostService extends BaseCoreService {
 		begin();
 		try {
 
-			if (PostType.PO.toString().equals(postType.getPostTypeCode())) {
+			if (PostType.POL.toString().equals(postType.getPostTypeCode())) {
 				postInsert.setContents(data.getContents());
 
 				postInsert.setPostCode(generateService.generate(5));
@@ -113,10 +113,10 @@ public class PostService extends BaseCoreService {
 
 				postInsert = postDao.save(postInsert);
 				responseMessageDto.setMessage("Success to create the Post!");
-				for (int i = 0; i < data.getPollContent().size(); i++) {
+				for (int i = 0; i < data.getPollContents().size(); i++) {
 					Polling pollingInsert = new Polling();
 					pollingInsert.setPost(postInsert);
-					pollingInsert.setPollContent(data.getPollContent().get(i));
+					pollingInsert.setPollContent(data.getPollContents().get(i));
 					pollingInsert.setTotalPoll(0);
 					pollingInsert = pollingDao.save(pollingInsert);
 				}

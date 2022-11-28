@@ -48,7 +48,7 @@ public class Post extends BaseEntity{
 	private List<File> file;
 	
 	@Transient
-	private List<String> pollContent;
+	private List<String> pollContents;
 	
 	@Transient
 	private Integer countOfPost;
