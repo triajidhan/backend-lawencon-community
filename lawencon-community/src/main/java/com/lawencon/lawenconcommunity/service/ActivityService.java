@@ -46,8 +46,8 @@ public class ActivityService extends BaseCoreService{
 		return activityDao.getByActivityCode(activityCode).get();
 	}
 	
-	public Activity getTotalActivity() {
-		return activityDao.getTotalActivity();
+	public Activity getTotalByActivity() {
+		return activityDao.getTotalByActivity();
 	}
 	
 	public List<Activity> getByActivityType(String activityTypeId,int startPosition,int limit){
@@ -76,6 +76,10 @@ public class ActivityService extends BaseCoreService{
 		final List<Activity> activities = activityDao.getByIsActiveAndOrder(startPosition, limit,ascending);
 		
 		return activities;
+	}
+	
+	public Activity getTotalByIsActive(){
+		return activityDao.getTotalByIsActive();
 	}
 	
 	public List<Activity> getByActivityTypeCode(String activityTypeCode,int startPosition,int limit){

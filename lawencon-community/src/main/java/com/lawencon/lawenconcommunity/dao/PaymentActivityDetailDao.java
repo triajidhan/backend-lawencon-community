@@ -40,14 +40,41 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		
 		sql.append("SELECT * FROM tb_payment_activity_detail tpad ")
 		.append("INNER JOIN tb_activity ta ON ta.id = tpad.activity_id ")
-		.append("WHERE is_active = true ")
-		.append("LIMIT :limit OFFSET :startPosition");
+		.append("WHERE is_active = true ");
 		
 		List<PaymentActivityDetail> paymentActivityDetail = ConnHandler.getManager()
 				.createNativeQuery(sql.toString())
 				.getResultList();
 		
 		return paymentActivityDetail;
+	}
+	
+	public PaymentActivityDetail getTotalPaymentActivityDetail() {
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT count(*) FROM tb_payment_activity_detail tpad ")
+		.append("INNER JOIN tb_activity ta ON ta.id = tpad.activity_id ")
+		.append("WHERE is_active = true ");
+		
+		Object objPaymentActivity = null;
+		PaymentActivityDetail paymentActivity = null;
+		
+		try {
+			objPaymentActivity = ConnHandler.getManager().createNativeQuery(sql.toString())
+					.getSingleResult();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objPaymentActivity != null) {
+			Object obj = (Object) objPaymentActivity;
+			
+			paymentActivity = new PaymentActivityDetail();
+			
+			paymentActivity.setCountOfPaymentActivity(Integer.parseInt(obj.toString()));
+		}
+		
+		return paymentActivity;
 	}
 		
 	@SuppressWarnings("unchecked")
@@ -160,7 +187,6 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 	
 		return paymentActivityDetails;
 	}
-	
 	
 	@SuppressWarnings("unchecked")
 	public List<PaymentActivityDetail> getReportPartisipation(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit){

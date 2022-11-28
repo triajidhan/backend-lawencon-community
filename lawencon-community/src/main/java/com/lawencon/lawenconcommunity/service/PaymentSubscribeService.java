@@ -49,6 +49,10 @@ public class PaymentSubscribeService extends BaseCoreService {
 		return paymentSubscribeDao.getByIsActive();
 	}
 	
+	public PaymentSubscribe getTotalPaymentSubscribe() {
+		return paymentSubscribeDao.getTotalPaymentSubscribe();
+	}
+	
 	public ResponseMessageDto insert(PaymentSubscribe data) {
 		valInsert(data);
 		File fileInsert = new File();

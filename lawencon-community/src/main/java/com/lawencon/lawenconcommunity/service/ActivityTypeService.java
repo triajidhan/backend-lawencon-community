@@ -26,4 +26,8 @@ public class ActivityTypeService extends BaseCoreService{
 	public ActivityType getById(String id) {
 		return activityTypeDao.getByIdAndDetach(ActivityType.class,id);
 	}
+	
+	public ActivityType getByTotalActivityType() {
+		return activityTypeDao.getTotalActivityType();
+	}
 }

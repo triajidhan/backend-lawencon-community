@@ -41,4 +41,31 @@ public class PaymentSubscribeDao extends AbstractJpaDao{
 		
 		return paymentSubscribes;
 	}
+	
+	public PaymentSubscribe getTotalPaymentSubscribe(){
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT count(*) FROM tb_payment_subscribe ")
+		.append("WHERE is_active = true ");
+		
+		Object objPaymentSubscribe = null;
+		PaymentSubscribe paymentSubcribe = null;
+		
+		try {
+			objPaymentSubscribe = ConnHandler.getManager().createNativeQuery(sql.toString())
+					.getSingleResult();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objPaymentSubscribe != null) {
+			Object obj = (Object) objPaymentSubscribe;
+			
+			paymentSubcribe = new PaymentSubscribe();
+			
+			paymentSubcribe.setCountOfPaymentSubscribe(Integer.parseInt(obj.toString()));
+		}
+		
+		return paymentSubcribe;
+	}
 }
