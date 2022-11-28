@@ -2,6 +2,7 @@ package com.lawencon.lawenconcommunity.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +24,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 @RestController
 @RequestMapping("payment-activity-details")
 public class PaymentActivityDetailController {
-
+	
+	@Autowired
 	private PaymentActivityDetailService paymentActivityDetailService;
 	
 	@GetMapping()
