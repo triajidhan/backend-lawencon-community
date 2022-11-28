@@ -48,16 +48,8 @@ public class PaymentActivityDetailService extends BaseCoreService {
 		return paymentActivityDetailDao.getTotalPaymentActivityDetail();
 	}
 	
-	public List<PaymentActivityDetail> getByIsActive(){
-		return paymentActivityDetailDao.getByIsActive();
-	}
-	
 	public List<PaymentActivityDetail> getByActivity(String activityId){
 		return paymentActivityDetailDao.getByActivity(activityId);
-	}
-	
-	public List<PaymentActivityDetail> getByIsActive(int startPosition,int limit){
-		return paymentActivityDetailDao.getByIsActive(startPosition, limit);
 	}
 	
 	public List<PaymentActivityDetail> getByActivity(String activityId,int startPosition,int limit){
@@ -66,6 +58,26 @@ public class PaymentActivityDetailService extends BaseCoreService {
 	
 	public PaymentActivityDetail getTotalByActivity(String activityId){
 		return paymentActivityDetailDao.getTotalByActivity(activityId);
+	}
+	
+	public List<PaymentActivityDetail> getByIsActive(){
+		return paymentActivityDetailDao.getByIsActive();
+	}
+	
+	public List<PaymentActivityDetail> getByIsActive(int startPosition,int limit){
+		return paymentActivityDetailDao.getByIsActive(startPosition, limit);
+	}
+	
+	public List<PaymentActivityDetail> getByUser(String userId,int startPosition,int limit,boolean ascending){
+		return paymentActivityDetailDao.getByUser(userId, startPosition, limit,ascending);
+	}
+	
+	public List<PaymentActivityDetail> getByActivityTypeAndUser(String activityTypeId,String userId,int startPosition,int limit,boolean ascending){
+		return paymentActivityDetailDao.getByActivityTypeAndUser(activityTypeId, userId, startPosition, limit,ascending);
+	}
+	
+	public List<PaymentActivityDetail> getByActivityTypeAndUserOrder(String activityTypeId,String userId,int startPosition,int limit,boolean ascending){
+		return paymentActivityDetailDao.getByActivityTypeAndUser(activityTypeId, userId, startPosition, limit,ascending);
 	}
 	
 	public List<PaymentActivityDetail> getReportPartisipation(LocalDateTime beginDate,LocalDateTime finishDate){

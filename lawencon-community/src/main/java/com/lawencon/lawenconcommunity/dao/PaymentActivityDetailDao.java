@@ -22,11 +22,11 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		
 		sql.append("SELECT * FROM tb_payment_activity_detail tpad ")
 		.append("INNER JOIN tb_activity ta ON ta.id = tpad.activity_id ")
-		.append("WHERE is_active = true ")
+		.append("WHERE tpad.is_active = true ")
 		.append("LIMIT :limit OFFSET :startPosition");
 		
 		List<PaymentActivityDetail> paymentActivityDetail = ConnHandler.getManager()
-				.createNativeQuery(sql.toString())
+				.createNativeQuery(sql.toString(),PaymentActivityDetail.class)
 				.setParameter("startPosition", startPosition)
 				.setParameter("limit", limit)
 				.getResultList();
@@ -40,10 +40,10 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		
 		sql.append("SELECT * FROM tb_payment_activity_detail tpad ")
 		.append("INNER JOIN tb_activity ta ON ta.id = tpad.activity_id ")
-		.append("WHERE is_active = true ");
+		.append("WHERE tpad.is_active = true ");
 		
 		List<PaymentActivityDetail> paymentActivityDetail = ConnHandler.getManager()
-				.createNativeQuery(sql.toString())
+				.createNativeQuery(sql.toString(),PaymentActivityDetail.class)
 				.getResultList();
 		
 		return paymentActivityDetail;
@@ -54,7 +54,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		
 		sql.append("SELECT count(*) FROM tb_payment_activity_detail tpad ")
 		.append("INNER JOIN tb_activity ta ON ta.id = tpad.activity_id ")
-		.append("WHERE is_active = true ");
+		.append("WHERE tpad.is_active = true ");
 		
 		Object objPaymentActivity = null;
 		PaymentActivityDetail paymentActivity = null;
@@ -83,7 +83,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		
 		sql.append("SELECT * FROM tb_payment_activity_detail tpad ")
 		.append("INNER JOIN tb_activity ta ON ta.id = tpad.activity_id ")
-		.append("WHERE is_active = true ")
+		.append("WHERE tpad.is_active = true ")
 		.append("AND activity_id = :activityId ")
 		.append("LIMIT :limit OFFSET :startPosition");
 		
@@ -98,16 +98,91 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<PaymentActivityDetail> getByActivityTypeAndUser(String activityTypeId,String userId,int startPosition,int limit){
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT * FROM tb_payment_activity_detail tpad ")
+		.append("INNER JOIN tb_activity ta ON ta.id = tpad.activity_id ")
+		.append("INNER JOIN tb_activity_type tat ON ta.activity_type_id = tat.id ")
+		.append("WHERE tpad.is_active = true ")
+		.append("AND activity_type_id = :activityId ")
+		.append("AND tpad.created_by = :userId ")
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		List<PaymentActivityDetail> paymentActivityDetail = ConnHandler.getManager()
+				.createNativeQuery(sql.toString(),PaymentActivityDetail.class)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
+				.setParameter("activityId",activityTypeId)
+				.setParameter("userId",userId)
+				.getResultList();
+		
+		return paymentActivityDetail;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<PaymentActivityDetail> getByActivityTypeAndUser(String activityTypeId,String userId,int startPosition,int limit, boolean isAscending){
+		StringBuilder sql = new StringBuilder();
+		
+		String ascending = (isAscending)? "ASC ":"DESC ";
+		
+		sql.append("SELECT * FROM tb_payment_activity_detail tpad ")
+		.append("INNER JOIN tb_activity ta ON ta.id = tpad.activity_id ")
+		.append("INNER JOIN tb_activity_type tat ON ta.activity_type_id = tat.id ")
+		.append("WHERE tpad.is_active = true ")
+		.append("AND activity_type_id = :activityId ")
+		.append("AND tpad.created_by = :userId ")
+		.append("ORDER BY tpad.created_by ")
+		.append(ascending)
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		List<PaymentActivityDetail> paymentActivityDetail = ConnHandler.getManager()
+				.createNativeQuery(sql.toString(),PaymentActivityDetail.class)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
+				.setParameter("activityId",activityTypeId)
+				.setParameter("userId",userId)
+				.getResultList();
+		
+		return paymentActivityDetail;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<PaymentActivityDetail> getByUser(String userId,int startPosition,int limit, boolean isAscending){
+		StringBuilder sql = new StringBuilder();
+		
+		String ascending = (isAscending)? "ASC ":"DESC ";
+		
+		sql.append("SELECT * FROM tb_payment_activity_detail tpad ")
+		.append("INNER JOIN tb_activity ta ON ta.id = tpad.activity_id ")
+		.append("WHERE tpad.is_active = true ")
+		.append("AND tpad.created_by = :userId ")
+		.append("ORDER BY tpad.created_by ")
+		.append(ascending)
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		List<PaymentActivityDetail> paymentActivityDetail = ConnHandler.getManager()
+				.createNativeQuery(sql.toString(),PaymentActivityDetail.class)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
+				.setParameter("userId",userId)
+				.getResultList();
+		
+		return paymentActivityDetail;
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<PaymentActivityDetail> getByActivity(String activityId){
 		StringBuilder sql = new StringBuilder();
 		
 		sql.append("SELECT * FROM tb_payment_activity_detail tpad ")
 		.append("INNER JOIN tb_activity ta ON ta.id = tpad.activity_id ")
-		.append("WHERE is_active = true ")
-		.append("AND activity_id = :activityId ");
+		.append("WHERE tpad.is_active = true ")
+		.append("AND activity_id = :activityId");
 		
 		List<PaymentActivityDetail> paymentActivityDetail = ConnHandler.getManager()
-				.createNativeQuery(sql.toString())
+				.createNativeQuery(sql.toString(),PaymentActivityDetail.class)
 				.setParameter("activityId",activityId)
 				.getResultList();
 		
@@ -120,7 +195,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		sql.append("SELECT count(ta.id) FROM tb_payment_activity_detail tpad ")
 		.append("INNER JOIN tb_activity ta ON ta.id = tpad.activity_id ")
 		.append("WHERE is_active = true ")
-		.append("AND activity_id = :activityId ");
+		.append("AND tpad.activity_id = :activityId ");
 		
 		Object objPaymentActivity = null;
 		PaymentActivityDetail paymentActivity = null;
