@@ -33,13 +33,39 @@ public class PaymentSubscribeDao extends AbstractJpaDao{
 		StringBuilder sql = new StringBuilder();
 		
 		sql.append("SELECT * FROM tb_payment_subscribe ")
-		.append("WHERE is_active = true ")
-		.append("LIMIT :limit OFFSET :startPosition");
+		.append("WHERE is_active = true ");
 		
 		List<PaymentSubscribe> paymentSubscribes = ConnHandler.getManager()
 				.createNativeQuery(sql.toString())
 				.getResultList();
 		
 		return paymentSubscribes;
+	}
+	
+	public PaymentSubscribe getTotalPaymentSubscribe(){
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT count(*) FROM tb_payment_subscribe ")
+		.append("WHERE is_active = true ");
+		
+		Object objPaymentSubscribe = null;
+		PaymentSubscribe paymentSubcribe = null;
+		
+		try {
+			objPaymentSubscribe = ConnHandler.getManager().createNativeQuery(sql.toString())
+					.getSingleResult();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objPaymentSubscribe != null) {
+			Object obj = (Object) objPaymentSubscribe;
+			
+			paymentSubcribe = new PaymentSubscribe();
+			
+			paymentSubcribe.setCountOfPaymentSubscribe(Integer.parseInt(obj.toString()));
+		}
+		
+		return paymentSubcribe;
 	}
 }

@@ -57,7 +57,6 @@ public class Activity extends BaseEntity{
 	@JoinColumn(name="file_id")
 	private File file;
 	
-	
 	@Transient
 	private Integer countOfActivity;
 }

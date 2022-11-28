@@ -49,6 +49,13 @@ public class PaymentSubscribeController {
 		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
 	}
 	
+	@GetMapping("total")
+	public ResponseEntity<PaymentSubscribe> getTotalPayment(){
+		PaymentSubscribe paymentSubscribe = paymentSubscribeService.getTotalPaymentSubscribe();
+		
+		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
+	}
+	
 	@PostMapping()
 	public ResponseEntity<ResponseMessageDto> insert(@RequestBody PaymentSubscribe data){
 		final ResponseMessageDto paymentSubscribeInsertResDto = paymentSubscribeService.insert(data);

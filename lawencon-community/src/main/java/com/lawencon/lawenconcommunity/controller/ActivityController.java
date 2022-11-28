@@ -50,7 +50,7 @@ public class ActivityController {
 	
 	@GetMapping("total-activity")
 	public ResponseEntity<Activity> getTotalActivity(){
-		Activity activity = activityService.getTotalActivity();
+		Activity activity = activityService.getTotalByActivity();
 		
 		return new ResponseEntity<>(activity,HttpStatus.OK);
 	}

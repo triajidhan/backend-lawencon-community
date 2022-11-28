@@ -1,6 +1,7 @@
 package com.lawencon.lawenconcommunity.service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import com.lawencon.security.principal.PrincipalService;
 
 @Service
 public class PaymentActivityDetailService extends BaseCoreService {
+	
 	@Autowired
 	private PaymentActivityDetailDao paymentActivityDetailDao;
 
@@ -42,30 +44,44 @@ public class PaymentActivityDetailService extends BaseCoreService {
 		return paymentActivityDetailDao.getByIdAndDetach(PaymentActivityDetail.class, id);
 	}
 	
-	public PaymentActivityDetail getTotalPayment(){
-		//return paymentActivityDetailDao.getTotal;
-		
-		return null;
+	public PaymentActivityDetail getTotalPaymentActivityDetail(){
+		return paymentActivityDetailDao.getTotalPaymentActivityDetail();
 	}
 	
-	public List<PaymentActivityDetail> getByActivity(String activityId,int startPosition,int limit){
-		return paymentActivityDetailDao.getByActivity(activityId,startPosition, limit);
+	public List<PaymentActivityDetail> getByIsActive(){
+		return paymentActivityDetailDao.getByIsActive();
 	}
 	
 	public List<PaymentActivityDetail> getByActivity(String activityId){
 		return paymentActivityDetailDao.getByActivity(activityId);
 	}
 	
-	public PaymentActivityDetail getTotalByActivity(String activityId){
-		return paymentActivityDetailDao.getTotalByActivity(activityId);
-	}
-	
 	public List<PaymentActivityDetail> getByIsActive(int startPosition,int limit){
 		return paymentActivityDetailDao.getByIsActive(startPosition, limit);
 	}
 	
-	public List<PaymentActivityDetail> getByIsActive(){
-		return paymentActivityDetailDao.getByIsActive();
+	public List<PaymentActivityDetail> getByActivity(String activityId,int startPosition,int limit){
+		return paymentActivityDetailDao.getByActivity(activityId,startPosition, limit);
+	}
+	
+	public PaymentActivityDetail getTotalByActivity(String activityId){
+		return paymentActivityDetailDao.getTotalByActivity(activityId);
+	}
+	
+	public List<PaymentActivityDetail> getReportPartisipation(LocalDateTime beginDate,LocalDateTime finishDate){
+		return paymentActivityDetailDao.getReportPartisipation(beginDate, finishDate);
+	}
+	
+	public List<PaymentActivityDetail> getReportPartisipation(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit){
+		return paymentActivityDetailDao.getReportPartisipation(beginDate, finishDate,startPosition,limit);
+	}
+	
+	public List<PaymentActivityDetail> getReportIncome(LocalDateTime beginDate,LocalDateTime finishDate){
+		return paymentActivityDetailDao.getReportIncome(beginDate, finishDate);
+	}
+	
+	public List<PaymentActivityDetail> getReportIncome(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit){
+		return paymentActivityDetailDao.getReportIncome(beginDate, finishDate,startPosition,limit);
 	}
 
 	public ResponseMessageDto insert(PaymentActivityDetail data) {
