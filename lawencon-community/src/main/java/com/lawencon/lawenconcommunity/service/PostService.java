@@ -12,11 +12,14 @@ import com.lawencon.lawenconcommunity.dao.PollingDao;
 import com.lawencon.lawenconcommunity.dao.PostAttachmentDao;
 import com.lawencon.lawenconcommunity.dao.PostDao;
 import com.lawencon.lawenconcommunity.dao.PostTypeDao;
+import com.lawencon.lawenconcommunity.dao.UserDao;
 import com.lawencon.lawenconcommunity.dto.ResponseMessageDto;
 import com.lawencon.lawenconcommunity.model.File;
 import com.lawencon.lawenconcommunity.model.Polling;
 import com.lawencon.lawenconcommunity.model.Post;
 import com.lawencon.lawenconcommunity.model.PostAttachment;
+import com.lawencon.lawenconcommunity.model.User;
+import com.lawencon.security.principal.PrincipalService;
 
 @Service
 public class PostService extends BaseCoreService {
@@ -33,10 +36,11 @@ public class PostService extends BaseCoreService {
 	private PollingDao pollingDao;
 	@Autowired
 	private PostTypeDao postTypeDao;
+	@Autowired
+	private UserDao userDao;
 
 	public List<Post> getAll(Integer startPosition, Integer limitPage) {
 		final List<Post> posts = postDao.getAll(Post.class, startPosition, limitPage);
-
 		return posts;
 	}
 
@@ -45,23 +49,23 @@ public class PostService extends BaseCoreService {
 
 		return posts;
 	}
-	
+
 	public List<Post> getByUser(String userId) {
 		final List<Post> posts = postDao.getByUser(userId);
 
 		return posts;
 	}
-	
+
 	public List<Post> getByPostType(String postTypeId) {
 		final List<Post> posts = postDao.getByPostType(postTypeId);
 
 		return posts;
 	}
-	
+
 	public Post getTotal() {
 		return postDao.getTotalPost();
 	}
-	
+
 	public Post getTotalByUser(String userId) {
 		return postDao.getTotalByUser(userId);
 	}
@@ -69,26 +73,33 @@ public class PostService extends BaseCoreService {
 	public Post getByPostCode(String postCode) {
 		return postDao.getByPostCode(postCode).get();
 	}
-	
+
 	public Post getTotalByPostType(String postTypeId) {
 		return postDao.getTotalByPostType(postTypeId);
 	}
-	
+
 	public Post getById(String id) {
 		return postDao.getByIdAndDetach(Post.class, id);
 	}
-	
-	public List<Post> getByIsActive(Integer startPosition, Integer limitPage){
-		return postDao.getByIsActive(startPosition, limitPage);
+
+	public List<Post> getByIsActive(Integer startPosition, Integer limitPage) {
+		List<Post> posts = postDao.getByIsActive(startPosition, limitPage);
+		for (int i = 0; i < posts.size(); i++) {
+			posts.get(i).setUser(userDao.getById(User.class, posts.get(i).getCreatedBy()));
+		}
+		return posts;
 	}
-	
-	public List<Post> getByIsActive(){
+
+	public List<Post> getByIsActive() {
 		return postDao.getByIsActive();
 	}
-	
-	public List<Post> getByIsActiveAndOrder(int startPosition,int limit,boolean ascending){
-		
-		return postDao.getByIsActiveAndOrder(startPosition, limit,ascending);
+
+	public List<Post> getByIsActiveAndOrder(int startPosition, int limit, boolean ascending) {
+		List<Post> posts = postDao.getByIsActiveAndOrder(startPosition, limit,ascending);
+		for (int i = 0; i < posts.size(); i++) {
+			posts.get(i).setUser(userDao.getById(User.class, posts.get(i).getCreatedBy()));
+		}
+		return posts;
 	}
 
 	public ResponseMessageDto insert(Post data) {
@@ -120,20 +131,20 @@ public class PostService extends BaseCoreService {
 					pollingInsert.setTotalPoll(0);
 					pollingInsert = pollingDao.save(pollingInsert);
 				}
-				if(data.getFile() != null) {
+				if (data.getFile() != null) {
 					if (data.getFile().size() >= 0) {
 						for (int i = 0; i < data.getFile().size(); i++) {
 							File fileInsert = new File();
 							fileInsert.setFiles(data.getFile().get(i).getFiles());
 							fileInsert.setExt(data.getFile().get(i).getExt());
 							fileInsert = fileDao.save(fileInsert);
-							
+
 							PostAttachment postAttachmentInsert = new PostAttachment();
 							postAttachmentInsert.setFile(fileInsert);
 							postAttachmentInsert.setPost(postInsert);
 							postAttachmentInsert = postAttachmentDao.save(postAttachmentInsert);
 						}
-					}					
+					}
 				}
 
 			} else if (PostType.PRE.toString().equals(postType.getPostTypeCode())) {
@@ -144,20 +155,20 @@ public class PostService extends BaseCoreService {
 				postInsert.setTitlePoll(data.getTitlePoll());
 				postInsert = postDao.save(postInsert);
 				responseMessageDto.setMessage("Success to create the Post!");
-				if(data.getFile() != null) {
+				if (data.getFile() != null) {
 					if (data.getFile().size() >= 0) {
 						for (int i = 0; i < data.getFile().size(); i++) {
 							File fileInsert = new File();
 							fileInsert.setFiles(data.getFile().get(i).getFiles());
 							fileInsert.setExt(data.getFile().get(i).getExt());
 							fileInsert = fileDao.save(fileInsert);
-							
+
 							PostAttachment postAttachmentInsert = new PostAttachment();
 							postAttachmentInsert.setFile(fileInsert);
 							postAttachmentInsert.setPost(postInsert);
 							postAttachmentInsert = postAttachmentDao.save(postAttachmentInsert);
 						}
-					}					
+					}
 				}
 			} else {
 				postInsert.setContents(data.getContents());
@@ -167,20 +178,20 @@ public class PostService extends BaseCoreService {
 				postInsert.setTitlePoll(data.getTitlePoll());
 				postInsert = postDao.save(postInsert);
 				responseMessageDto.setMessage("Success to create the Post!");
-				if(data.getFile() != null) {
+				if (data.getFile() != null) {
 					if (data.getFile().size() >= 0) {
 						for (int i = 0; i < data.getFile().size(); i++) {
 							File fileInsert = new File();
 							fileInsert.setFiles(data.getFile().get(i).getFiles());
 							fileInsert.setExt(data.getFile().get(i).getExt());
 							fileInsert = fileDao.save(fileInsert);
-							
+
 							PostAttachment postAttachmentInsert = new PostAttachment();
 							postAttachmentInsert.setFile(fileInsert);
 							postAttachmentInsert.setPost(postInsert);
 							postAttachmentInsert = postAttachmentDao.save(postAttachmentInsert);
 						}
-					}					
+					}
 				}
 			}
 		} catch (Exception e) {
