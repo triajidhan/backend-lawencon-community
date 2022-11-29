@@ -10,6 +10,7 @@ import com.lawencon.lawenconcommunity.dao.PollingDao;
 import com.lawencon.lawenconcommunity.dao.PollingStatusDao;
 import com.lawencon.lawenconcommunity.dto.ResponseMessageDto;
 import com.lawencon.lawenconcommunity.model.Polling;
+import com.lawencon.lawenconcommunity.model.PollingStatus;
 import com.lawencon.security.principal.PrincipalService;
 
 @Service
@@ -65,6 +66,11 @@ public class PollingService extends BaseCoreService{
 			if(pollingStatusDao.getByUser(principalService.getAuthPrincipal()) == null) {
 				pollingUpdate = poling;
 				pollingUpdate.setTotalPoll(pollingUpdate.getTotalPoll()+1);
+				pollingDao.save(pollingUpdate);
+				
+				PollingStatus pollingStatus = new PollingStatus();
+				pollingStatus.setPolling(pollingUpdate);
+				pollingStatusDao.save(pollingStatus);
 				responseMessageDto.setMessage("Polling Success!");
 			}else {
 				throw new RuntimeException("You can only do one poll!");
