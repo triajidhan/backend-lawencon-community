@@ -102,11 +102,13 @@ public class LikeService extends BaseCoreService{
 		responseMessageDto.setMessage("Like Failed!");
 		begin();
 		try {
+			Like likeInsert= new Like();
 			User user = new User();
 			user.setId(principalService.getAuthPrincipal());
 			data.setUser(user);
-			likeDao.save(data);
-			responseMessageDto.setMessage("Like Success!");
+			likeInsert = likeDao.save(data);
+			responseMessageDto.setMessage("Like Success!");		
+			responseMessageDto.setId(likeInsert.getId());
 		} catch (Exception e) {
 			responseMessageDto.setMessage("Like Failed!");
 			e.printStackTrace();
