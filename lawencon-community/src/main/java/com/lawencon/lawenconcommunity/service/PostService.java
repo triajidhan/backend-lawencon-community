@@ -19,7 +19,6 @@ import com.lawencon.lawenconcommunity.model.Polling;
 import com.lawencon.lawenconcommunity.model.Post;
 import com.lawencon.lawenconcommunity.model.PostAttachment;
 import com.lawencon.lawenconcommunity.model.User;
-import com.lawencon.security.principal.PrincipalService;
 
 @Service
 public class PostService extends BaseCoreService {
