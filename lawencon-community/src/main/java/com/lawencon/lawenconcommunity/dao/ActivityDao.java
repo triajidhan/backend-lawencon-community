@@ -125,6 +125,29 @@ public class ActivityDao extends AbstractJpaDao{
 		return objResultActivities;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Activity> getByActivityType(String activityTypeId,int startPosition,int limit,boolean isAscending){
+		final StringBuilder sql = new StringBuilder();
+	
+		String ascending = (isAscending) ? "ASC ":"DESC ";
+		
+		sql.append("SELECT * ")
+		.append("FROM tb_activity ta ")
+		.append("INNER JOIN tb_activity_type tat  ON ta.activity_type_id = tat.id ")
+		.append("WHERE tat.id = :activityTypeId AND ta.is_active = true ")
+		.append("ORDER BY ta.created_at ")
+		.append(ascending)
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		final List<Activity> objResultActivities = ConnHandler.getManager().createNativeQuery(sql.toString(),Activity.class)
+				.setParameter("activityTypeId", activityTypeId)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
+				.getResultList();
+		
+		return objResultActivities;
+	}
+	
 	public Activity getTotalByActivityType(String activityTypeId) {
 		final StringBuilder sql = new StringBuilder();
 		
@@ -172,6 +195,31 @@ public class ActivityDao extends AbstractJpaDao{
 		return objResultActivities;
 	}
 	
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Activity> getByActivityTypeCode(String activityTypeCode,int startPosition,int limit,boolean isAscending){
+		final StringBuilder sql = new StringBuilder();
+		
+		String ascending = (isAscending) ? "ASC ":"DESC ";
+		
+		sql.append("SELECT * ")
+		.append("FROM tb_activity ta ")
+		.append("INNER JOIN tb_activity_type tat  ON ta.activity_type_id = tat.id ")
+		.append("WHERE tat.activity_type_code = :activityTypeId AND ta.is_active = true ")
+		.append("ORDER BY ta.created_at ")
+		.append(ascending)
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		final List<Activity> objResultActivities = ConnHandler.getManager().createNativeQuery(sql.toString(),Activity.class)
+				.setParameter("activityTypeId", activityTypeCode)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
+				.getResultList();
+		
+		return objResultActivities;
+	}
+	
 	public Activity getTotalByActivityTypeCode(String activityTypeCode) {
 		final StringBuilder sql = new StringBuilder();
 		
@@ -198,6 +246,55 @@ public class ActivityDao extends AbstractJpaDao{
 		
 		return activity;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Activity> getByUser(String userId,int startPosition,int limit,boolean isAscending){
+		final StringBuilder sql = new StringBuilder();
+		
+		String ascending = (isAscending) ? "ASC ":"DESC ";
+		
+		sql.append("SELECT * ")
+		.append("FROM tb_activity ta ")
+		.append("INNER JOIN tb_activity_type tat  ON ta.activity_type_id = tat.id ")
+		.append("WHERE ta.created_by = :userId AND ta.is_active = true ")
+		.append("ORDER BY ta.created_at ")
+		.append(ascending)
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		final List<Activity> objResultActivities = ConnHandler.getManager().createNativeQuery(sql.toString(),Activity.class)
+				.setParameter("userId", userId)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
+				.getResultList();
+		
+		return objResultActivities;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Activity> getByUserAndActivityTypeCode(String userId,String activityTypeCode,int startPosition,int limit,boolean isAscending){
+		final StringBuilder sql = new StringBuilder();
+		
+		String ascending = (isAscending) ? "ASC ":"DESC ";
+		
+		sql.append("SELECT * ")
+		.append("FROM tb_activity ta ")
+		.append("INNER JOIN tb_activity_type tat  ON ta.activity_type_id = tat.id ")
+		.append("WHERE ta.created_by = :userId AND ta.is_active = true ")
+		.append("AND tat.activity_type_code = :activityTypeCode ")
+		.append("ORDER BY ta.created_at ")
+		.append(ascending)
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		final List<Activity> objResultActivities = ConnHandler.getManager().createNativeQuery(sql.toString(),Activity.class)
+				.setParameter("userId", userId)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
+				.setParameter("activityTypeCode", activityTypeCode)
+				.getResultList();
+		
+		return objResultActivities;
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public List<Activity> getByIsActive(){

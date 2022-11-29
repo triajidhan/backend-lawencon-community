@@ -76,6 +76,13 @@ public class ActivityController {
 		return new ResponseEntity<>(activities,HttpStatus.OK);
 	}
 	
+	@GetMapping("activity-type-code-order")
+	public ResponseEntity<List<Activity>> getByActivityTypeCode(@RequestParam("activityTypeCode") String activityTypeCode, @RequestParam("startPosition") int startPosition, @RequestParam("limit") int limitPage, @RequestParam("asc") boolean ascending){
+		final List<Activity> activities = activityService.getByActivityTypeCode(activityTypeCode,startPosition,limitPage,ascending);
+		
+		return new ResponseEntity<>(activities,HttpStatus.OK);
+	}
+	
 	@GetMapping("total-activity-type-code")
 	public ResponseEntity<Activity> getTotalByActivityCode(@RequestParam("activityTypeCode") String activityTypeCode){
 		Activity activity = activityService.getTotalByActivityTypeCode(activityTypeCode);
@@ -100,6 +107,20 @@ public class ActivityController {
 	@GetMapping("is-active-order")
 	public ResponseEntity<List<Activity>> getByIsActiveAndOrder(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limitPage,@RequestParam("asc") boolean ascending){
 		final List<Activity> activities = activityService.getByIsActiveAndOrder(startPosition, limitPage,ascending);
+		
+		return new ResponseEntity<>(activities,HttpStatus.OK);
+	}
+	
+	@GetMapping("users")
+	public ResponseEntity<List<Activity>> getByUser(@RequestParam("userId") String userId,@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limitPage,@RequestParam("asc") boolean ascending){
+		final List<Activity> activities = activityService.getByUser(userId,startPosition, limitPage,ascending);
+		
+		return new ResponseEntity<>(activities,HttpStatus.OK);
+	}
+	
+	@GetMapping("users-activity-type-code")
+	public ResponseEntity<List<Activity>> getByUserAndActivityTypeCode(@RequestParam("userId") String userId,@RequestParam("activityTypeCode") String activityTypeCode,@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limitPage,@RequestParam("asc") boolean ascending){
+		final List<Activity> activities = activityService.getByUserAndActivityTypeCode(userId,activityTypeCode,startPosition, limitPage,ascending);
 		
 		return new ResponseEntity<>(activities,HttpStatus.OK);
 	}

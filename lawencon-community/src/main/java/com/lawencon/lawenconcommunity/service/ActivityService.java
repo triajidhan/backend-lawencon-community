@@ -56,8 +56,26 @@ public class ActivityService extends BaseCoreService{
 		return activities;
 	}
 	
+	public List<Activity> getByActivityType(String activityTypeId,int startPosition,int limit,boolean ascending){
+		final List<Activity> activities = activityDao.getByActivityType(activityTypeId,startPosition,limit,ascending);
+		
+		return activities;
+	}
+	
 	public Activity getTotalByActivityType(String activityTypeId){
 		return activityDao.getTotalByActivityType(activityTypeId);
+	}
+	
+	public List<Activity> getByUser(String userId,int startPosition,int limit,boolean ascending){
+		final List<Activity> activities = activityDao.getByUser(userId,startPosition,limit,ascending);
+		
+		return activities;
+	}
+	
+	public List<Activity> getByUserAndActivityTypeCode(String userId,String activityTypeCode,int startPosition,int limit,boolean ascending){
+		final List<Activity> activities = activityDao.getByUserAndActivityTypeCode(userId,activityTypeCode,startPosition,limit,ascending);
+		
+		return activities;
 	}
 	
 	public List<Activity> getByIsActive(int startPosition,int limit){
@@ -82,14 +100,20 @@ public class ActivityService extends BaseCoreService{
 		return activityDao.getTotalByIsActive();
 	}
 	
+	public Activity getTotalByActivityTypeCode(String activityCode) {
+		return activityDao.getTotalByActivityTypeCode(activityCode);
+	}
+	
 	public List<Activity> getByActivityTypeCode(String activityTypeCode,int startPosition,int limit){
 		final List<Activity> activities = activityDao.getByActivityTypeCode(activityTypeCode,startPosition,limit);
 		
 		return activities;
 	}
 	
-	public Activity getTotalByActivityTypeCode(final String activityCode) {
-		return activityDao.getTotalByActivityTypeCode(activityCode);
+	public List<Activity> getByActivityTypeCode(String activityTypeCode,int startPosition,int limit,boolean ascending){
+		final List<Activity> activities = activityDao.getByActivityTypeCode(activityTypeCode,startPosition,limit,ascending);
+		
+		return activities;
 	}
 	
 	public ResponseMessageDto insert(Activity data) {
