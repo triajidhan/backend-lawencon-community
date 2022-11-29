@@ -153,33 +153,38 @@ public class PaymentActivityDetailService extends BaseCoreService {
 		responseMessageDto.setMessage("Approving Failed!");
 		PaymentActivityDetail paymentActivityDetail = paymentActivityDetailDao.getById(PaymentActivityDetail.class,
 				data.getId());
-		User user = userDao.getById(User.class, paymentActivityDetail.getActivity().getCreatedBy());
-		PaymentActivityDetail paymentApproving = paymentActivityDetail;
-		User userSystem = userDao.getById(User.class,userDao.getSystem("SYS").get().getId());
-		begin();
-		try {
-			paymentApproving.setApprove(true);
-			paymentActivityDetailDao.saveAndFlush(paymentApproving);
-			BigDecimal totalBalance = data.getNet().add(user.getBalance().getTotalBalance());
-			Balance balance = new Balance();
-			balance = user.getBalance();
-			balance.setTotalBalance(totalBalance);
-			user.setBalance(balance);
-			userDao.save(user);
+		if(paymentActivityDetail.getApprove() == false) {
 			
-			BigDecimal totalBalanceSystem = userSystem.getBalance().getTotalBalance().add(new BigDecimal(5000));
-			Balance sysBalance = new Balance();
-			sysBalance = userSystem.getBalance();
-			sysBalance.setTotalBalance(totalBalanceSystem);
-			userSystem.setBalance(sysBalance);
-			userDao.save(userSystem);
-			
-			responseMessageDto.setMessage("Approving Success!");
-		} catch (Exception e) {
-			responseMessageDto.setMessage("Approving Failed!");
-			e.printStackTrace();
+			User user = userDao.getById(User.class, paymentActivityDetail.getActivity().getCreatedBy());
+			PaymentActivityDetail paymentApproving = paymentActivityDetail;
+			User userSystem = userDao.getById(User.class,userDao.getSystem("SYS").get().getId());
+			begin();
+			try {
+				paymentApproving.setApprove(true);
+				paymentActivityDetailDao.saveAndFlush(paymentApproving);
+				BigDecimal totalBalance = data.getNet().add(user.getBalance().getTotalBalance());
+				Balance balance = new Balance();
+				balance = user.getBalance();
+				balance.setTotalBalance(totalBalance);
+				user.setBalance(balance);
+				userDao.save(user);
+				
+				BigDecimal totalBalanceSystem = userSystem.getBalance().getTotalBalance().add(new BigDecimal(5000));
+				Balance sysBalance = new Balance();
+				sysBalance = userSystem.getBalance();
+				sysBalance.setTotalBalance(totalBalanceSystem);
+				userSystem.setBalance(sysBalance);
+				userDao.save(userSystem);
+				
+				responseMessageDto.setMessage("Approving Success!");
+			} catch (Exception e) {
+				responseMessageDto.setMessage("Approving Failed!");
+				e.printStackTrace();
+			}
+			commit();
+		}else {
+			throw new RuntimeException("Approving can only be done once!");
 		}
-		commit();
 		return responseMessageDto;
 	}
 
