@@ -117,7 +117,7 @@ public class LikeService extends BaseCoreService{
 	
 	public ResponseMessageDto update(Like data) {
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
-		responseMessageDto.setMessage("Unlike Failed!");
+		responseMessageDto.setMessage("Failed!");
 		valId(data);
 		Like like = likeDao.getByIdAndDetach(Like.class, data.getId());
 		Like likeUpdate = like;
@@ -125,9 +125,9 @@ public class LikeService extends BaseCoreService{
 		try {
 			likeUpdate.setIsActive(data.getIsActive());
 			likeDao.save(likeUpdate);
-			responseMessageDto.setMessage("Unlike Success!");
+			responseMessageDto.setMessage("Success!");
 		} catch (Exception e) {
-			responseMessageDto.setMessage("Unlike Failed!");
+			responseMessageDto.setMessage("Failed!");
 			e.printStackTrace();
 		}
 		commit();

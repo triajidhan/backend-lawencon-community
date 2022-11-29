@@ -7,8 +7,11 @@ import org.springframework.stereotype.Service;
 
 import com.lawencon.base.BaseCoreService;
 import com.lawencon.lawenconcommunity.dao.PollingDao;
+import com.lawencon.lawenconcommunity.dao.PollingStatusDao;
 import com.lawencon.lawenconcommunity.dto.ResponseMessageDto;
 import com.lawencon.lawenconcommunity.model.Polling;
+import com.lawencon.lawenconcommunity.model.PollingStatus;
+import com.lawencon.security.principal.PrincipalService;
 
 @Service
 public class PollingService extends BaseCoreService{
@@ -16,6 +19,11 @@ public class PollingService extends BaseCoreService{
 	@Autowired
 	private PollingDao pollingDao;
 	
+	@Autowired
+	private PollingStatusDao pollingStatusDao;
+	
+	@Autowired
+	private PrincipalService principalService;
 	public List<Polling> getAll(Integer startPosition, Integer limitPage){
 		List<Polling> pollings = pollingDao.getAll(Polling.class, startPosition, limitPage);
 		
@@ -51,14 +59,23 @@ public class PollingService extends BaseCoreService{
 	public ResponseMessageDto update(Polling data) {
 		valUpdate(data);
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
-		responseMessageDto.setMessage("Polling Failed!");
 		Polling pollingUpdate = new Polling();
 		Polling poling = pollingDao.getByIdAndDetach(Polling.class, data.getId());
 		begin();
 		try {
-			pollingUpdate = poling;
-			pollingUpdate.setTotalPoll(pollingUpdate.getTotalPoll()+1);
-			responseMessageDto.setMessage("Polling Success!");
+			if(pollingStatusDao.getByUser(principalService.getAuthPrincipal()) == null) {
+				pollingUpdate = poling;
+				pollingUpdate.setTotalPoll(pollingUpdate.getTotalPoll()+1);
+				pollingDao.save(pollingUpdate);
+				
+				PollingStatus pollingStatus = new PollingStatus();
+				pollingStatus.setPolling(pollingUpdate);
+				pollingStatusDao.save(pollingStatus);
+				responseMessageDto.setMessage("Polling Success!");
+			}else {
+				throw new RuntimeException("You can only do one poll!");
+			}
+			
 		} catch (Exception e) {
 			responseMessageDto.setMessage("Polling Failed!");
 			e.printStackTrace();
