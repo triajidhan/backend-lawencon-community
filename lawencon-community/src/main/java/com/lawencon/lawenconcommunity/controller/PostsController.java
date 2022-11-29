@@ -42,6 +42,13 @@ public class PostsController {
 		return new ResponseEntity<>(posts,HttpStatus.OK);
 	}
 	
+	@GetMapping("users-order")
+	public ResponseEntity<List<Post>> getByUser(@RequestParam("userId") String userId,@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit,@RequestParam("asc") boolean ascending){
+		final List<Post> posts = postService.getByUser(userId,startPosition,limit,ascending);
+		
+		return new ResponseEntity<>(posts,HttpStatus.OK);
+	}
+	
 	@GetMapping("post-type")
 	public ResponseEntity<List<Post>> getByPostType(@RequestParam("postTypeId") String postTypeId){
 		final List<Post> posts = postService.getByPostType(postTypeId);

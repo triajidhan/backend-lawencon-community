@@ -80,21 +80,68 @@ public class PaymentActivityDetailService extends BaseCoreService {
 		return paymentActivityDetailDao.getByActivityTypeAndUser(activityTypeId, userId, startPosition, limit,ascending);
 	}
 	
-	public List<PaymentActivityDetail> getReportPartisipation(LocalDateTime beginDate,LocalDateTime finishDate){
-		return paymentActivityDetailDao.getReportPartisipation(beginDate, finishDate);
+	public List<PaymentActivityDetail> getReportPartisipationMember(LocalDateTime beginDate,LocalDateTime finishDate){
+		List<PaymentActivityDetail> paymentActivityDetails = null;
+		try {
+			paymentActivityDetails = paymentActivityDetailDao.getReportPartisipationMember(beginDate, finishDate,principalService.getAuthPrincipal());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return paymentActivityDetails;
 	}
 	
-	public List<PaymentActivityDetail> getReportPartisipation(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit){
-		return paymentActivityDetailDao.getReportPartisipation(beginDate, finishDate,startPosition,limit);
+	public List<PaymentActivityDetail> getReportPartisipationMember(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit){
+		List<PaymentActivityDetail> paymentActivityDetails = null;
+		try {
+			paymentActivityDetails = paymentActivityDetailDao.getReportPartisipationMember(beginDate, finishDate,startPosition,limit,principalService.getAuthPrincipal());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return paymentActivityDetails;
 	}
 	
-	public List<PaymentActivityDetail> getReportIncome(LocalDateTime beginDate,LocalDateTime finishDate){
-		return paymentActivityDetailDao.getReportIncome(beginDate, finishDate);
+	
+	public List<PaymentActivityDetail> getReportPartisipationSuper(LocalDateTime beginDate,LocalDateTime finishDate){
+		return paymentActivityDetailDao.getReportPartisipationSuper(beginDate, finishDate);
 	}
 	
-	public List<PaymentActivityDetail> getReportIncome(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit){
-		return paymentActivityDetailDao.getReportIncome(beginDate, finishDate,startPosition,limit);
+	public List<PaymentActivityDetail> getReportPartisipationSuper(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit){
+		return paymentActivityDetailDao.getReportPartisipationSuper(beginDate, finishDate,startPosition,limit);
 	}
+	
+	public List<PaymentActivityDetail> getReportIncomeMember(LocalDateTime beginDate,LocalDateTime finishDate){
+		List<PaymentActivityDetail> paymentActivityDetails = null;
+		try {
+			paymentActivityDetails = paymentActivityDetailDao.getReportIncomeMember(beginDate, finishDate,principalService.getAuthPrincipal());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return paymentActivityDetails;
+	}
+	
+	public List<PaymentActivityDetail> getReportIncomeMember(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit){
+		List<PaymentActivityDetail> paymentActivityDetails = null;
+		try {
+			paymentActivityDetails = paymentActivityDetailDao.getReportIncomeMember(beginDate, finishDate,startPosition,limit,principalService.getAuthPrincipal());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return paymentActivityDetails;
+	}
+	
+	public List<PaymentActivityDetail> getReportIncomeSuper(LocalDateTime beginDate,LocalDateTime finishDate){
+		return paymentActivityDetailDao.getReportIncomeSuper(beginDate, finishDate);
+	}
+	
+	public List<PaymentActivityDetail> getReportIncomeSuper(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit){
+		return paymentActivityDetailDao.getReportIncomeSuper(beginDate, finishDate,startPosition,limit);
+	}
+	
+	
 
 	public ResponseMessageDto insert(PaymentActivityDetail data) {
 		valInsert(data);

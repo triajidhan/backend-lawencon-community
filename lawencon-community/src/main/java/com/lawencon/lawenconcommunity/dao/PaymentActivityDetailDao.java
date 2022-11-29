@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.lawencon.base.AbstractJpaDao;
 import com.lawencon.base.ConnHandler;
 import com.lawencon.lawenconcommunity.model.Activity;
+import com.lawencon.lawenconcommunity.model.ActivityType;
 import com.lawencon.lawenconcommunity.model.PaymentActivityDetail;
 
 @Repository
@@ -217,28 +218,138 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		return paymentActivity;
 	}
 		
-	@SuppressWarnings("unchecked")
-	public List<PaymentActivityDetail> getReportPartisipation(LocalDateTime beginDate,LocalDateTime finishDate){
+	public List<PaymentActivityDetail> getReportPartisipationMember(LocalDateTime beginDate,LocalDateTime finishDate,String userCreated){
 		StringBuilder sql = new StringBuilder();
 		
-		sql.append("select title,tu.full_name as member_create, activity_type_name, begin_schedule, partisipant from tb_activity as ta_prime ")
+		sql.append("SELECT title,tu.full_name as member_create, activity_type_name, provider, begin_schedule, partisipant, tu.id as created_by from tb_activity as ta_prime ")
 		.append("INNER JOIN (")
 		.append("SELECT activity_id, count(activity_id) as partisipant ")
 		.append("FROM (")
 		.append("select ta.id as activity_id ")
-		.append("from tb_payment_activity_detail tpad ")
+		.append("FROM tb_payment_activity_detail tpad ")
 		.append("INNER JOIN tb_activity ta ON tpad.activity_id = ta.id ")
 		.append("WHERE (begin_schedule between :beginDate AND :finishDate) ")
 		.append("AND tpad.approve = true")
 		.append(") tb_pay ")
-		.append("GROUP BY 1 ")
+		.append("GROUP BY activity_id ")
 		.append(") tb_partisipant ON ta_prime.id = tb_partisipant.activity_id ")
 		.append("INNER JOIN tb_activity_type tat ON tat.id = ta_prime.activity_type_id ")
-		.append("INNER JOIN tb_user tu ON ta_prime.created_by = tu.id");
+		.append("INNER JOIN tb_user tu ON ta_prime.created_by = tu.id ")
+		.append("WHERE ta_prime.created_by = :userCreate ");
 		
 		List<PaymentActivityDetail> paymentActivityDetails = new ArrayList<>();
 		
-		List<Object> objPayments = ConnHandler.getManager().createNativeQuery(sql.toString())
+		List<?> objPayments = ConnHandler.getManager().createNativeQuery(sql.toString())
+		.setParameter("beginDate", beginDate)
+		.setParameter("finishDate", finishDate)
+		.setParameter("userCreate", userCreated)
+		.getResultList();
+		
+		objPayments.forEach(objPayment ->{
+			Object[] objArr = (Object[]) objPayment;
+			
+			PaymentActivityDetail paymentActivityDetail = new PaymentActivityDetail();
+			Activity activity = new Activity();
+			ActivityType activityType = new ActivityType();
+			
+			
+			activity.setTitle(objArr[0].toString());
+			paymentActivityDetail.setMemberCreate(objArr[1].toString());
+			activityType.setActivityTypeName(objArr[2].toString());
+			
+			activity.setProvider(objArr[3].toString());
+			activity.setBeginSchedule(Timestamp.valueOf(objArr[4].toString()).toLocalDateTime());
+			
+			paymentActivityDetail.setCountOfPaymentActivity(Integer.parseInt(objArr[5].toString()));
+			activity.setCreatedBy(objArr[6].toString());
+			
+			activity.setActivityType(activityType);
+			paymentActivityDetail.setActivity(activity);
+			paymentActivityDetails.add(paymentActivityDetail);
+		});
+	
+		return paymentActivityDetails;
+	}
+	
+	
+	public List<PaymentActivityDetail> getReportPartisipationMember(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit,String userCreated){
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT title,tu.full_name as member_create, activity_type_name, provider, begin_schedule, partisipant, tu.id as created_by from tb_activity as ta_prime ")
+		.append("INNER JOIN (")
+		.append("SELECT activity_id, count(activity_id) as partisipant ")
+		.append("FROM (")
+		.append("select ta.id as activity_id ")
+		.append("FROM tb_payment_activity_detail tpad ")
+		.append("INNER JOIN tb_activity ta ON tpad.activity_id = ta.id ")
+		.append("WHERE (begin_schedule between :beginDate AND :finishDate) ")
+		.append("AND tpad.approve = true")
+		.append(") tb_pay ")
+		.append("GROUP BY activity_id ")
+		.append(") tb_partisipant ON ta_prime.id = tb_partisipant.activity_id ")
+		.append("INNER JOIN tb_activity_type tat ON tat.id = ta_prime.activity_type_id ")
+		.append("INNER JOIN tb_user tu ON ta_prime.created_by = tu.id ")
+		.append("WHERE ta_prime.created_by = :userCreate ")
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		List<PaymentActivityDetail> paymentActivityDetails = new ArrayList<>();
+		
+		List<?> objPayments = ConnHandler.getManager().createNativeQuery(sql.toString())
+		.setParameter("beginDate", beginDate)
+		.setParameter("finishDate", finishDate)
+		.setParameter("startPosition", startPosition)
+		.setParameter("limit", limit)
+		.setParameter("userCreate", userCreated)
+		.getResultList();
+		
+		objPayments.forEach(objPayment ->{
+			Object[] objArr = (Object[]) objPayment;
+			
+			PaymentActivityDetail paymentActivityDetail = new PaymentActivityDetail();
+			Activity activity = new Activity();
+			ActivityType activityType = new ActivityType();
+			
+			
+			activity.setTitle(objArr[0].toString());
+			paymentActivityDetail.setMemberCreate(objArr[1].toString());
+			activityType.setActivityTypeName(objArr[2].toString());
+			
+			activity.setProvider(objArr[3].toString());
+			activity.setBeginSchedule(Timestamp.valueOf(objArr[4].toString()).toLocalDateTime());
+			
+			paymentActivityDetail.setCountOfPaymentActivity(Integer.parseInt(objArr[5].toString()));
+			activity.setCreatedBy(objArr[6].toString());
+			
+			activity.setActivityType(activityType);
+			paymentActivityDetail.setActivity(activity);
+			paymentActivityDetails.add(paymentActivityDetail);
+		});
+	
+		return paymentActivityDetails;
+	}
+	
+	
+	public List<PaymentActivityDetail> getReportPartisipationSuper(LocalDateTime beginDate,LocalDateTime finishDate){
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT title,tu.full_name as member_create, activity_type_name, provider, begin_schedule, partisipant, tu.id as created_by from tb_activity as ta_prime ")
+		.append("INNER JOIN (")
+		.append("SELECT activity_id, count(activity_id) as partisipant ")
+		.append("FROM (")
+		.append("select ta.id as activity_id ")
+		.append("FROM tb_payment_activity_detail tpad ")
+		.append("INNER JOIN tb_activity ta ON tpad.activity_id = ta.id ")
+		.append("WHERE (begin_schedule between :beginDate AND :finishDate) ")
+		.append("AND tpad.approve = true")
+		.append(") tb_pay ")
+		.append("GROUP BY activity_id ")
+		.append(") tb_partisipant ON ta_prime.id = tb_partisipant.activity_id ")
+		.append("INNER JOIN tb_activity_type tat ON tat.id = ta_prime.activity_type_id ")
+		.append("INNER JOIN tb_user tu ON ta_prime.created_by = tu.id ");
+		
+		List<PaymentActivityDetail> paymentActivityDetails = new ArrayList<>();
+		
+		List<?> objPayments = ConnHandler.getManager().createNativeQuery(sql.toString())
 		.setParameter("beginDate", beginDate)
 		.setParameter("finishDate", finishDate)
 		.getResultList();
@@ -248,36 +359,42 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			
 			PaymentActivityDetail paymentActivityDetail = new PaymentActivityDetail();
 			Activity activity = new Activity();
+			ActivityType activityType = new ActivityType();
+			
 			
 			activity.setTitle(objArr[0].toString());
 			paymentActivityDetail.setMemberCreate(objArr[1].toString());
-			activity.setBeginSchedule(Timestamp.valueOf(objArr[3].toString()).toLocalDateTime());
+			activityType.setActivityTypeName(objArr[2].toString());
 			
-			paymentActivityDetail.setCountOfPaymentActivity(Integer.parseInt(objArr[4].toString()));
+			activity.setProvider(objArr[3].toString());
+			activity.setBeginSchedule(Timestamp.valueOf(objArr[4].toString()).toLocalDateTime());
 			
+			paymentActivityDetail.setCountOfPaymentActivity(Integer.parseInt(objArr[5].toString()));
+			activity.setCreatedBy(objArr[6].toString());
+			
+			activity.setActivityType(activityType);
 			paymentActivityDetail.setActivity(activity);
-			
 			paymentActivityDetails.add(paymentActivityDetail);
 		});
 	
 		return paymentActivityDetails;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<PaymentActivityDetail> getReportPartisipation(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit){
+	
+	public List<PaymentActivityDetail> getReportPartisipationSuper(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit){
 		StringBuilder sql = new StringBuilder();
 		
-		sql.append("select title,tu.full_name as member_create, activity_type_name, begin_schedule, partisipant from tb_activity as ta_prime ")
+		sql.append("SELECT title, activity_type_name, begin_schedule, total_income, tu.id as created_by from tb_activity as ta_prime ")
 		.append("INNER JOIN (")
 		.append("SELECT activity_id, count(activity_id) as partisipant ")
 		.append("FROM (")
 		.append("select ta.id as activity_id ")
-		.append("from tb_payment_activity_detail tpad ")
+		.append("FROM tb_payment_activity_detail tpad ")
 		.append("INNER JOIN tb_activity ta ON tpad.activity_id = ta.id ")
 		.append("WHERE (begin_schedule between :beginDate AND :finishDate) ")
 		.append("AND tpad.approve = true")
 		.append(") tb_pay ")
-		.append("GROUP BY 1 ")
+		.append("GROUP BY activity_id ")
 		.append(") tb_partisipant ON ta_prime.id = tb_partisipant.activity_id ")
 		.append("INNER JOIN tb_activity_type tat ON tat.id = ta_prime.activity_type_id ")
 		.append("INNER JOIN tb_user tu ON ta_prime.created_by = tu.id ")
@@ -285,7 +402,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		
 		List<PaymentActivityDetail> paymentActivityDetails = new ArrayList<>();
 		
-		List<Object> objPayments = ConnHandler.getManager().createNativeQuery(sql.toString())
+		List<?> objPayments = ConnHandler.getManager().createNativeQuery(sql.toString())
 		.setParameter("beginDate", beginDate)
 		.setParameter("finishDate", finishDate)
 		.setParameter("startPosition", startPosition)
@@ -297,43 +414,158 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			
 			PaymentActivityDetail paymentActivityDetail = new PaymentActivityDetail();
 			Activity activity = new Activity();
+			ActivityType activityType = new ActivityType();
+			
+			//title, activity_type_name, begin_schedule, total_income, tu.id as created_by
 			
 			activity.setTitle(objArr[0].toString());
 			paymentActivityDetail.setMemberCreate(objArr[1].toString());
+			activityType.setActivityTypeName(objArr[2].toString());
+			
 			activity.setBeginSchedule(Timestamp.valueOf(objArr[3].toString()).toLocalDateTime());
 			
-			paymentActivityDetail.setCountOfPaymentActivity(Integer.parseInt(objArr[4].toString()));
+			BigDecimal bigDecimal = new BigDecimal(objArr[4].toString());
+			paymentActivityDetail.setNet(bigDecimal);
+			activity.setCreatedBy(objArr[5].toString());
 			
+			activity.setActivityType(activityType);
 			paymentActivityDetail.setActivity(activity);
-			
 			paymentActivityDetails.add(paymentActivityDetail);
 		});
 	
 		return paymentActivityDetails;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<PaymentActivityDetail> getReportIncome(LocalDateTime beginDate,LocalDateTime finishDate){
+	
+	
+	public List<PaymentActivityDetail> getReportIncomeMember(LocalDateTime beginDate,LocalDateTime finishDate,String userId){
 		StringBuilder sql = new StringBuilder();
 		
-		sql.append("select title,tu.full_name as member_create, activity_type_name, begin_schedule, total_income from tb_activity as ta_prime ")
+		sql.append("select title, activity_type_name, begin_schedule, total_income, tu.id as created_by  from tb_activity as ta_prime ")
 		.append("INNER JOIN (")
 		.append("SELECT activity_id, sum(net) as total_income ")
 		.append("FROM (")
-		.append("select ta.id as activity_id, net ")
-		.append("from tb_payment_activity_detail tpad ")
+		.append("SELECT ta.id as activity_id, net ")
+		.append("FROM tb_payment_activity_detail tpad ")
 		.append("INNER JOIN tb_activity ta ON tpad.activity_id = ta.id ")
 		.append("WHERE (begin_schedule between :beginDate AND :finishDate) ")
 		.append("AND tpad.approve = true")
 		.append(") tb_pay ")
-		.append("GROUP BY 1 ")
-		.append(") tb_partisipant ON ta_prime.id = tb_partisipant.activity_id ")
+		.append("GROUP BY activity_id ")
+		.append(") tb_income ON ta_prime.id = tb_income.activity_id ")
 		.append("INNER JOIN tb_activity_type tat ON tat.id = ta_prime.activity_type_id ")
-		.append("INNER JOIN tb_user tu ON ta_prime.created_by = tu.id");
+		.append("INNER JOIN tb_user tu ON ta_prime.created_by = tu.id ")
+		.append("WHERE ta_prime.created_by = :userId ");
 		
 		List<PaymentActivityDetail> paymentActivityDetails = new ArrayList<>();
 		
-		List<Object> objPayments = ConnHandler.getManager().createNativeQuery(sql.toString())
+		List<?> objPayments = ConnHandler.getManager().createNativeQuery(sql.toString())
+		.setParameter("beginDate", beginDate)
+		.setParameter("finishDate", finishDate)
+		.setParameter("userId", userId)
+		.getResultList();
+		
+		objPayments.forEach(objPayment ->{
+			Object[] objArr = (Object[]) objPayment;
+			
+			PaymentActivityDetail paymentActivityDetail = new PaymentActivityDetail();
+			Activity activity = new Activity();
+			ActivityType activityType = new ActivityType();
+			
+			activity.setTitle(objArr[0].toString());
+			activityType.setActivityTypeName(objArr[1].toString());
+			activity.setBeginSchedule(Timestamp.valueOf(objArr[2].toString()).toLocalDateTime());
+
+			BigDecimal bigDecimal = new BigDecimal(objArr[3].toString());
+			paymentActivityDetail.setNet(bigDecimal);
+			activity.setCreatedBy(objArr[4].toString());
+			
+			activity.setActivityType(activityType);
+			paymentActivityDetail.setActivity(activity);
+			paymentActivityDetails.add(paymentActivityDetail);
+		});
+	
+		return paymentActivityDetails;
+	}
+	
+	public List<PaymentActivityDetail> getReportIncomeMember(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit,String UserId){
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("select title, activity_type_name, begin_schedule, total_income, tu.id as created_by  from tb_activity as ta_prime ")
+		.append("INNER JOIN (")
+		.append("SELECT activity_id, sum(net) as total_income ")
+		.append("FROM (")
+		.append("SELECT ta.id as activity_id, net ")
+		.append("FROM tb_payment_activity_detail tpad ")
+		.append("INNER JOIN tb_activity ta ON tpad.activity_id = ta.id ")
+		.append("WHERE (begin_schedule between :beginDate AND :finishDate) ")
+		.append("AND tpad.approve = true")
+		.append(") tb_pay ")
+		.append("GROUP BY activity_id ")
+		.append(") tb_income ON ta_prime.id = tb_income.activity_id ")
+		.append("INNER JOIN tb_activity_type tat ON tat.id = ta_prime.activity_type_id ")
+		.append("INNER JOIN tb_user tu ON ta_prime.created_by = tu.id ")
+		.append("WHERE ta_prime.created_by = :userId ")
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		List<PaymentActivityDetail> paymentActivityDetails = new ArrayList<>();
+		
+		List<?> objPayments = ConnHandler.getManager().createNativeQuery(sql.toString())
+		.setParameter("beginDate", beginDate)
+		.setParameter("finishDate", finishDate)
+		.setParameter("startPosition", startPosition)
+		.setParameter("limit", limit)
+		.setParameter("userId", UserId)
+		.getResultList();
+		
+		objPayments.forEach(objPayment ->{
+			Object[] objArr = (Object[]) objPayment;
+			
+			PaymentActivityDetail paymentActivityDetail = new PaymentActivityDetail();
+			Activity activity = new Activity();
+			ActivityType activityType = new ActivityType();
+			
+			activity.setTitle(objArr[0].toString());
+			activityType.setActivityTypeName(objArr[1].toString());
+			activity.setBeginSchedule(Timestamp.valueOf(objArr[2].toString()).toLocalDateTime());
+
+			BigDecimal bigDecimal = new BigDecimal(objArr[3].toString());
+			paymentActivityDetail.setNet(bigDecimal);
+			activity.setCreatedBy(objArr[4].toString());
+			
+			activity.setActivityType(activityType);
+			paymentActivityDetail.setActivity(activity);
+			paymentActivityDetails.add(paymentActivityDetail);
+		});
+	
+		return paymentActivityDetails;
+	}
+	
+	
+	public List<PaymentActivityDetail> getReportIncomeSuper(LocalDateTime beginDate,LocalDateTime finishDate){
+StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT full_name,tat.activity_type_name, total_income, tb_income_group.created_by FROM tb_user AS tb_activity_user_type ")
+		.append("INNER JOIN (")
+		.append("SELECT created_by,activity_type_id, sum(total_income) as total_income from tb_activity as tb_activity_grouping_user_type ")
+		.append("INNER JOIN (")
+		.append("SELECT activity_id, sum(net) as total_income ")
+		.append("FROM ( ")
+		.append("select ta.id as activity_id, net ")
+		.append("from tb_payment_activity_detail tpad ")
+		.append("INNER JOIN tb_activity ta ON tpad.activity_id = ta.id ")
+		.append("WHERE (begin_schedule between :begin AND :finish) ")
+		.append("AND tpad.approve = true ")
+		.append(") tb_pay ")
+		.append("GROUP BY activity_id ")
+		.append(") tb_income ON tb_activity_grouping_user_type.id = tb_income.activity_id ")
+		.append("GROUP BY created_by, activity_type_id ")
+		.append(") tb_income_group ON tb_activity_user_type.id = tb_income_group.created_by ")
+		.append("INNER JOIN tb_activity_type tat ON tat.id = tb_income_group.activity_type_id ");
+		
+		List<PaymentActivityDetail> paymentActivityDetails = new ArrayList<>();
+		
+		List<?> objPayments = ConnHandler.getManager().createNativeQuery(sql.toString())
 		.setParameter("beginDate", beginDate)
 		.setParameter("finishDate", finishDate)
 		.getResultList();
@@ -343,45 +575,50 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			
 			PaymentActivityDetail paymentActivityDetail = new PaymentActivityDetail();
 			Activity activity = new Activity();
+			ActivityType activityType = new ActivityType();
 			
-			activity.setTitle(objArr[0].toString());
-			paymentActivityDetail.setMemberCreate(objArr[1].toString());
-			activity.setBeginSchedule(Timestamp.valueOf(objArr[3].toString()).toLocalDateTime());
+			// full_name,tat.activity_type_name, total_income, tb_income_group.created_by
+			paymentActivityDetail.setMemberCreate(objArr[0].toString());
+			activityType.setActivityTypeName(objArr[1].toString());
 
-			BigDecimal bigDecimal = new BigDecimal(objArr[4].toString());
+			BigDecimal bigDecimal = new BigDecimal(objArr[2].toString());
 			paymentActivityDetail.setNet(bigDecimal);
+			activity.setCreatedBy(objArr[3].toString());
 			
+			activity.setActivityType(activityType);
 			paymentActivityDetail.setActivity(activity);
-			
 			paymentActivityDetails.add(paymentActivityDetail);
 		});
 	
 		return paymentActivityDetails;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<PaymentActivityDetail> getReportIncome(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit){
+	
+	public List<PaymentActivityDetail> getReportIncomeSuper(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit){
 		StringBuilder sql = new StringBuilder();
 		
-		sql.append("select title,tu.full_name as member_create, activity_type_name, begin_schedule, total_income from tb_activity as ta_prime ")
+		sql.append("SELECT full_name,tat.activity_type_name, total_income, tb_income_group.created_by FROM tb_user AS tb_activity_user_type ")
+		.append("INNER JOIN (")
+		.append("SELECT created_by,activity_type_id, sum(total_income) as total_income from tb_activity as tb_activity_grouping_user_type ")
 		.append("INNER JOIN (")
 		.append("SELECT activity_id, sum(net) as total_income ")
-		.append("FROM (")
+		.append("FROM ( ")
 		.append("select ta.id as activity_id, net ")
 		.append("from tb_payment_activity_detail tpad ")
 		.append("INNER JOIN tb_activity ta ON tpad.activity_id = ta.id ")
-		.append("WHERE (begin_schedule between :beginDate AND :finishDate) ")
-		.append("AND tpad.approve = true")
+		.append("WHERE (begin_schedule between :begin AND :finish) ")
+		.append("AND tpad.approve = true ")
 		.append(") tb_pay ")
-		.append("GROUP BY 1 ")
-		.append(") tb_partisipant ON ta_prime.id = tb_partisipant.activity_id ")
-		.append("INNER JOIN tb_activity_type tat ON tat.id = ta_prime.activity_type_id ")
-		.append("INNER JOIN tb_user tu ON ta_prime.created_by = tu.id ")
+		.append("GROUP BY activity_id ")
+		.append(") tb_income ON tb_activity_grouping_user_type.id = tb_income.activity_id ")
+		.append("GROUP BY created_by, activity_type_id ")
+		.append(") tb_income_group ON tb_activity_user_type.id = tb_income_group.created_by ")
+		.append("INNER JOIN tb_activity_type tat ON tat.id = tb_income_group.activity_type_id ")
 		.append("LIMIT :limit OFFSET :startPosition");
 		
 		List<PaymentActivityDetail> paymentActivityDetails = new ArrayList<>();
 		
-		List<Object> objPayments = ConnHandler.getManager().createNativeQuery(sql.toString())
+		List<?> objPayments = ConnHandler.getManager().createNativeQuery(sql.toString())
 		.setParameter("beginDate", beginDate)
 		.setParameter("finishDate", finishDate)
 		.setParameter("startPosition", startPosition)
@@ -393,16 +630,17 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			
 			PaymentActivityDetail paymentActivityDetail = new PaymentActivityDetail();
 			Activity activity = new Activity();
+			ActivityType activityType = new ActivityType();
 			
-			activity.setTitle(objArr[0].toString());
-			paymentActivityDetail.setMemberCreate(objArr[1].toString());
-			activity.setBeginSchedule(Timestamp.valueOf(objArr[3].toString()).toLocalDateTime());
+			paymentActivityDetail.setMemberCreate(objArr[0].toString());
+			activityType.setActivityTypeName(objArr[1].toString());
 
-			BigDecimal bigDecimal = new BigDecimal(objArr[4].toString());
+			BigDecimal bigDecimal = new BigDecimal(objArr[2].toString());
 			paymentActivityDetail.setNet(bigDecimal);
+			activity.setCreatedBy(objArr[3].toString());
 			
+			activity.setActivityType(activityType);
 			paymentActivityDetail.setActivity(activity);
-			
 			paymentActivityDetails.add(paymentActivityDetail);
 		});
 	

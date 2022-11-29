@@ -89,6 +89,30 @@ public class PostDao extends AbstractJpaDao{
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<Post> getByUser(final String userId,int startPosition, int limit,boolean isAscending){
+		final StringBuilder sql = new StringBuilder();
+		
+		String ascending = (isAscending) ? "ASC ": "DESC ";
+		
+		sql.append("SELECT * ")
+		.append("FROM tb_post tp ")
+		.append("INNER JOIN tb_post_type tpt ON tp.post_type_id = tpt.id ")
+		.append("WHERE tp.created_by = :userId AND tp.is_active = true ")
+		.append("ORDER BY tp.created_at ")
+		.append(ascending)
+		.append("LIMIT :limit OFFSET :startPosition");;
+		
+		final List<Post> objResultPosts = ConnHandler.getManager().createNativeQuery(sql.toString(),Post.class)
+				.setParameter("userId", userId)
+				.setParameter("startPosition",startPosition)
+				.setParameter("limit",limit)
+				.getResultList();
+		
+		return objResultPosts;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
 	public List<Post> getByPostType(final String postTypeId){
 		final StringBuilder sql = new StringBuilder();
 		
