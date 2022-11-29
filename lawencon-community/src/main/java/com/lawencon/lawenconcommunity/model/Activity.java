@@ -10,6 +10,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lawencon.base.BaseEntity;
 
 import lombok.Getter;
@@ -40,9 +41,11 @@ public class Activity extends BaseEntity{
 	@Column(name="locations",length=100)
 	private String location;
 	
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'+07:00'")
 	@Column(name="begin_schedule")
 	private LocalDateTime beginSchedule;
 
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'+07:00'")
 	@Column(name="finish_schedule")
 	private LocalDateTime finishSchedule;
 	
