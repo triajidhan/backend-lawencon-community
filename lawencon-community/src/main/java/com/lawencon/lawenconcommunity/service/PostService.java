@@ -54,6 +54,12 @@ public class PostService extends BaseCoreService {
 
 		return posts;
 	}
+	
+	public List<Post> getByUser(String userId,int startPosition,int limit, boolean ascending) {
+		final List<Post> posts = postDao.getByUser(userId,startPosition,limit,ascending);
+
+		return posts;
+	}
 
 	public List<Post> getByPostType(String postTypeId) {
 		final List<Post> posts = postDao.getByPostType(postTypeId);
