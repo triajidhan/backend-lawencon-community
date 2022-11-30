@@ -74,7 +74,14 @@ public class PaymentActivityDetailController {
 	
 	@GetMapping("activity-type-user")
 	public ResponseEntity<List<PaymentActivityDetail>> getByActivityTypeAndUser(@RequestParam("activityTypeId") String activityId,@RequestParam("userId") String userId,@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit,@RequestParam("asc") boolean ascending){
-		List<PaymentActivityDetail> paymentActivityDetails = paymentActivityDetailService.getByActivityTypeAndUser(activityId,userId,startPosition, limit, ascending);
+		List<PaymentActivityDetail> paymentActivityDetails = paymentActivityDetailService.getByActivityTypeAndUserOrder(activityId,userId,startPosition, limit, ascending);
+		
+		return new ResponseEntity<>(paymentActivityDetails,HttpStatus.OK);
+	}
+	
+	@GetMapping("activity-type-code-user")
+	public ResponseEntity<List<PaymentActivityDetail>> getByActivityTypeCodeAndUser(@RequestParam("activityTypeCode") String activityCode,@RequestParam("userId") String userId,@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit,@RequestParam("asc") boolean ascending){
+		List<PaymentActivityDetail> paymentActivityDetails = paymentActivityDetailService.getByActivityTypeCodeAndUserOrder(activityCode,userId,startPosition, limit, ascending);
 		
 		return new ResponseEntity<>(paymentActivityDetails,HttpStatus.OK);
 	}

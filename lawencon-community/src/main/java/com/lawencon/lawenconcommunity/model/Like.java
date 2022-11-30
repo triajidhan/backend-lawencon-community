@@ -5,6 +5,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 
 import com.lawencon.base.BaseEntity;
 
@@ -12,7 +13,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "tb_like")
+@Table(name = "tb_like",uniqueConstraints = {
+		@UniqueConstraint(columnNames = {"user_id","post_id"})
+})
 @Getter
 @Setter
 public class Like extends BaseEntity {
