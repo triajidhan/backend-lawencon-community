@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.lawencon.base.BaseEntity;
 
@@ -32,4 +33,6 @@ public class Polling extends BaseEntity{
 	@JoinColumn(name = "post_id")
 	private Post post;
 	
+	@Transient
+	private PollingStatus pollingStatus;
 }
