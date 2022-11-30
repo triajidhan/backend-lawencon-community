@@ -94,7 +94,10 @@ public class CommentService extends BaseCoreService{
 			User user = new User();
 			user.setId(principalService.getAuthPrincipal());
 			data.setUser(user);
-			commentDao.save(data);
+			Comment commentInsert = new Comment();
+			
+			commentInsert = commentDao.save(data);
+			responseMessageDto.setId(commentInsert.getId());
 			responseMessageDto.setMessage("Comment Success");
 		} catch (Exception e) {
 			responseMessageDto.setMessage("Comment Failed!");
