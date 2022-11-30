@@ -519,7 +519,7 @@ ALTER TABLE tb_payment_activity_detail
 CREATE TABLE tb_polling_status(
     id varchar(36),
 
-    polling_id varchar(5) not null,
+    polling_id varchar(36) not null,
 
     created_by varchar(36) not null,
     created_at timestamp without time zone not null default now(),
@@ -1291,4 +1291,4 @@ INNER JOIN tb_activity_type tat ON tat.id = ta_prime.activity_type_id
 INNER JOIN tb_user tu ON ta_prime.created_by = tu.id;
 
 
-
+SELECT *  from tb_like where user_id = 'b831ee8b-64c4-41da-9279-900fe15857fc' AND post_id = 'a8db8403-494f-4ac2-aa42-e380e47dedbf';

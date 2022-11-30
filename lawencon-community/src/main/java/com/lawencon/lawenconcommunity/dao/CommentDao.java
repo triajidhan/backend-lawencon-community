@@ -66,9 +66,9 @@ public class CommentDao extends AbstractJpaDao{
 		.append("FROM tb_comment tc ")
 		.append("INNER JOIN tb_user tu ON tu.id = tc.user_id ")
 		.append("INNER JOIN tb_post tp ON tp.id = tc.post_id ")
+		.append("WHERE user_id  = :userId AND tc.is_active = true ")
 		.append("ORDER BY tc.created_at ")
-		.append(ascending)
-		.append("WHERE user_id  = :userId AND tc.is_active = true");
+		.append(ascending);
 		
 		List<Comment> comments = ConnHandler.getManager().createNativeQuery(sql.toString(),Comment.class)
 				.setParameter("userId", userId)
@@ -133,9 +133,9 @@ public class CommentDao extends AbstractJpaDao{
 		.append("FROM tb_comment tc ")
 		.append("INNER JOIN tb_user tu ON tu.id = tc.user_id ")
 		.append("INNER JOIN tb_post tp ON tp.id = tc.post_id ")
+		.append("WHERE post_id = :postId AND tc.is_active = true ")
 		.append("ORDER BY tc.created_at ")
-		.append(ascending)
-		.append("WHERE post_id  = :postId AND tc.is_active = true");
+		.append(ascending);
 		
 		List<Comment> comments = ConnHandler.getManager().createNativeQuery(sql.toString(),Comment.class)
 				.setParameter("postId", postId)
