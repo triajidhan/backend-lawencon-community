@@ -31,7 +31,7 @@ public class PollingStatusService extends BaseCoreService{
 		return pollingStatusDao.getByUser(userId);
 	}
 	
-	public PollingStatus getByUserAndPolling(String userId, String pollingId){
-		return pollingStatusDao.getByUserAndPolling(userId, pollingId);
+	public PollingStatus getByUserAndPosting(String userId, String postingId){
+		return pollingStatusDao.getByUserAndPosting(userId, postingId);
 	}
 }

@@ -40,7 +40,17 @@ public class PollingService extends BaseCoreService{
 	
 	public List<Polling> getByPost(String postId){
 		List<Polling> pollings = pollingDao.getByPost(postId);
-		
+		for(int i = 0 ; i<pollings.size(); i++) {
+			PollingStatus pollingStatus = new PollingStatus();
+			try {
+				pollingStatus = pollingStatusDao.getByUserAndPosting(principalService.getAuthPrincipal(), postId);
+				if(pollingStatus!= null) {					
+					pollings.get(i).setPollingStatus(pollingStatus);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		return pollings;
 	}
 	
@@ -63,22 +73,24 @@ public class PollingService extends BaseCoreService{
 		Polling poling = pollingDao.getByIdAndDetach(Polling.class, data.getId());
 		begin();
 		try {
-			if(pollingStatusDao.getByUser(principalService.getAuthPrincipal()) == null) {
+			PollingStatus validatePoling = pollingStatusDao.getByUserAndPosting(principalService.getAuthPrincipal(),poling.getPost().getId());
+			if(validatePoling == null) {
 				pollingUpdate = poling;
 				pollingUpdate.setTotalPoll(pollingUpdate.getTotalPoll()+1);
 				pollingDao.save(pollingUpdate);
 				
 				PollingStatus pollingStatus = new PollingStatus();
 				pollingStatus.setPolling(pollingUpdate);
-				pollingStatusDao.save(pollingStatus);
+				pollingStatus = pollingStatusDao.save(pollingStatus);
+				responseMessageDto.setId(pollingStatus.getId());
 				responseMessageDto.setMessage("Polling Success!");
 			}else {
 				throw new RuntimeException("You can only do one poll!");
 			}
 			
 		} catch (Exception e) {
-			responseMessageDto.setMessage("Polling Failed!");
 			e.printStackTrace();
+			throw new RuntimeException("Polling Failed!");
 		}
 		commit();
 		return responseMessageDto;

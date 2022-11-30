@@ -106,7 +106,9 @@ public class BookmarkService extends BaseCoreService{
 			User user = new User();
 			user.setId(principalService.getAuthPrincipal());
 			data.setUser(user);
-			bookmarkDao.save(data);
+			Bookmark bookmarkInsert = new Bookmark();
+			bookmarkInsert = bookmarkDao.save(data);
+			responseMessageDto.setId(bookmarkInsert.getId());
 			responseMessageDto.setMessage("Bookmark Success!");
 		} catch (Exception e) {
 			responseMessageDto.setMessage("Bookmark Failed!");

@@ -82,7 +82,9 @@ public class LikeService extends BaseCoreService{
 	}
 	
 	public Like getUserLikePost(String userId,String postId) {
-		return likeDao.userLikePost(userId, postId).get();
+		Like data = likeDao.userLikePost(userId, postId).get();
+;
+		return data;
 	}
 	
 	public List<Like> getByIsActive(Integer startPosition, Integer limitPage){

@@ -651,7 +651,7 @@ select * from tb_user;
 
 --- INSERT POST TYPE
 INSERT INTO tb_post_type(id,post_type_code,post_type_name,created_by,versions) values
-('regular-type','REQ','Regular','system',0),
+('regular-type','REG','Regular','system',0),
 ('polling-type','POL','Polling','system',0),
 ('premium-type','PRE','Premium','system',0);
 --
