@@ -150,6 +150,57 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 	
 	
 	@SuppressWarnings("unchecked")
+	public List<PaymentActivityDetail> getByActivityTypeCodeAndUser(String activityTypeCode,String userId,int startPosition,int limit){
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT * FROM tb_payment_activity_detail tpad ")
+		.append("INNER JOIN tb_activity ta ON ta.id = tpad.activity_id ")
+		.append("INNER JOIN tb_activity_type tat ON ta.activity_type_id = tat.id ")
+		.append("WHERE tpad.is_active = true ")
+		.append("AND tat.activity_type_code = :activityCode ")
+		.append("AND tpad.created_by = :userId ")
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		List<PaymentActivityDetail> paymentActivityDetail = ConnHandler.getManager()
+				.createNativeQuery(sql.toString(),PaymentActivityDetail.class)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
+				.setParameter("activityCode",activityTypeCode)
+				.setParameter("userId",userId)
+				.getResultList();
+		
+		return paymentActivityDetail;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<PaymentActivityDetail> getByActivityTypeCodeAndUser(String activityTypeCode,String userId,int startPosition,int limit, boolean isAscending){
+		StringBuilder sql = new StringBuilder();
+		
+		String ascending = (isAscending)? "ASC ":"DESC ";
+		
+		sql.append("SELECT * FROM tb_payment_activity_detail tpad ")
+		.append("INNER JOIN tb_activity ta ON ta.id = tpad.activity_id ")
+		.append("INNER JOIN tb_activity_type tat ON ta.activity_type_id = tat.id ")
+		.append("WHERE tpad.is_active = true ")
+		.append("AND activity_type_id = :activityCode ")
+		.append("AND tpad.created_by = :userId ")
+		.append("ORDER BY tpad.created_by ")
+		.append(ascending)
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		List<PaymentActivityDetail> paymentActivityDetail = ConnHandler.getManager()
+				.createNativeQuery(sql.toString(), PaymentActivityDetail.class)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
+				.setParameter("activityCode",activityTypeCode)
+				.setParameter("userId",userId)
+				.getResultList();
+		
+		return paymentActivityDetail;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
 	public List<PaymentActivityDetail> getByUser(String userId,int startPosition,int limit, boolean isAscending){
 		StringBuilder sql = new StringBuilder();
 		

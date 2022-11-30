@@ -72,13 +72,22 @@ public class PaymentActivityDetailService extends BaseCoreService {
 		return paymentActivityDetailDao.getByUser(userId, startPosition, limit,ascending);
 	}
 	
-	public List<PaymentActivityDetail> getByActivityTypeAndUser(String activityTypeId,String userId,int startPosition,int limit,boolean ascending){
-		return paymentActivityDetailDao.getByActivityTypeAndUser(activityTypeId, userId, startPosition, limit,ascending);
+	public List<PaymentActivityDetail> getByActivityTypeAndUser(String activityTypeId,String userId,int startPosition,int limit){
+		return paymentActivityDetailDao.getByActivityTypeAndUser(activityTypeId, userId, startPosition, limit);
 	}
 	
 	public List<PaymentActivityDetail> getByActivityTypeAndUserOrder(String activityTypeId,String userId,int startPosition,int limit,boolean ascending){
 		return paymentActivityDetailDao.getByActivityTypeAndUser(activityTypeId, userId, startPosition, limit,ascending);
 	}
+	
+	public List<PaymentActivityDetail> getByActivityTypeCodeAndUser(String activityTypeCode,String userId,int startPosition,int limit){
+		return paymentActivityDetailDao.getByActivityTypeCodeAndUser(activityTypeCode, userId, startPosition, limit);
+	}
+	
+	public List<PaymentActivityDetail> getByActivityTypeCodeAndUserOrder(String activityTypeCode,String userId,int startPosition,int limit,boolean ascending){
+		return paymentActivityDetailDao.getByActivityTypeCodeAndUser(activityTypeCode, userId, startPosition, limit,ascending);
+	}
+	
 	
 	public List<PaymentActivityDetail> getReportPartisipationMember(LocalDateTime beginDate,LocalDateTime finishDate){
 		List<PaymentActivityDetail> paymentActivityDetails = null;
