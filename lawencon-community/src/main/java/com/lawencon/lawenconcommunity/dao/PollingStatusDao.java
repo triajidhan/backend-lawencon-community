@@ -76,11 +76,11 @@ public class PollingStatusDao extends AbstractJpaDao {
 		.append("WHERE tps.created_by = :userId AND tps.is_active = true ");
 		
 		Object objPolling = null;
-		PollingStatus pollingStatus = new PollingStatus();
+		PollingStatus pollingStatus = null;
 		
 		try {
 			objPolling = ConnHandler.getManager()
-					.createNativeQuery(sql.toString(), PollingStatus.class)
+					.createNativeQuery(sql.toString())
 					.setParameter("userId", userId)
 					.getSingleResult();
 		}catch(Exception e) {
@@ -89,6 +89,7 @@ public class PollingStatusDao extends AbstractJpaDao {
 		
 		
 		if(objPolling != null) {
+			pollingStatus = new PollingStatus();
 			Object[] objArr = (Object[]) objPolling;
 			
 			Polling polling = new Polling();
@@ -115,7 +116,7 @@ public class PollingStatusDao extends AbstractJpaDao {
 	}
 	
 	
-	public PollingStatus getByUserAndPolling(String userId, String pollingId) {
+	public PollingStatus getByUserAndPosting(String userId, String postingId) {
 		StringBuilder sql = new StringBuilder();
 		
 		sql.append("SELECT ")
@@ -123,18 +124,19 @@ public class PollingStatusDao extends AbstractJpaDao {
 		.append("tp.poll_content, tp.total_poll,")
 		.append("tps.created_by, tps.created_at, tps.versions, tps.is_active ")
 		.append("FROM tb_polling_status tps ")
-		.append("INNER JOIN tb_polling ON tp.id = tps.polling_id ")
-		.append("WHERE tps.created_by = :userId AND tp.id =:pollingId ")
+		.append("INNER JOIN tb_polling tp ON tp.id = tps.polling_id ")
+		.append("INNER JOIN tb_post tpost ON tpost.id = tp.post_id ")
+		.append("WHERE tps.created_by = :userId AND tpost.id =:postingId ")
 		.append("AND tps.is_active = true");
 		
 		Object objPolling = null;
-		PollingStatus pollingStatus = new PollingStatus();
+		PollingStatus pollingStatus = null;
 		
 		try {
 			objPolling = ConnHandler.getManager()
-					.createNativeQuery(sql.toString(), PollingStatus.class)
+					.createNativeQuery(sql.toString())
 					.setParameter("userId", userId)
-					.setParameter("pollingId", pollingId)
+					.setParameter("postingId", postingId)
 					.getSingleResult();
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -142,8 +144,8 @@ public class PollingStatusDao extends AbstractJpaDao {
 		
 		
 		if(objPolling != null) {
+			pollingStatus = new PollingStatus();
 			Object[] objArr = (Object[]) objPolling;
-			
 			Polling polling = new Polling();
 			
 			

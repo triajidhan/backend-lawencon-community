@@ -44,9 +44,9 @@ public class PollingStatusController {
 		return new ResponseEntity<>(pollingStatus,HttpStatus.OK);
 	}
 	
-	@GetMapping("user-pollings")
-	public ResponseEntity<PollingStatus> getByUserAndPolling(@RequestParam("userId")String userId,@RequestParam("pollingId")String pollingId){
-		final PollingStatus pollingStatus = pollingStatusService.getByUserAndPolling(userId,pollingId);
+	@GetMapping("user-posting")
+	public ResponseEntity<PollingStatus> getByUserAndPosting(@RequestParam("userId")String userId,@RequestParam("pollingId")String postingId){
+		final PollingStatus pollingStatus = pollingStatusService.getByUserAndPosting(userId,postingId);
 		
 		return new ResponseEntity<>(pollingStatus,HttpStatus.OK);
 	}
