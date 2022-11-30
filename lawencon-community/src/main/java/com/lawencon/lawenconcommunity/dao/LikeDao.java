@@ -155,7 +155,8 @@ public class LikeDao extends AbstractJpaDao{
 		StringBuilder sql = new StringBuilder();
 		
 		sql.append("Select count(*),")
-		.append(" (SELECT id  from tb_like where user_id = :userId AND post_id = :postId) as id ")
+		.append(" (SELECT id  from tb_like where user_id = :userId AND post_id = :postId) as id, ")
+		.append(" (SELECT is_active  from tb_like where user_id = :userId AND post_id = :postId) as is_active ")
 		.append("FROM tb_like WHERE post_id = :postId AND is_active = true");
 		
 		Object objLike = null;
@@ -179,6 +180,10 @@ public class LikeDao extends AbstractJpaDao{
 			if(objArr[1] != null) {				
 				like.setLikeId(objArr[1].toString());
 				like.setId(objArr[1].toString());
+			}
+			
+			if(objArr[2] != null) {				
+				like.setIsActive(Boolean.parseBoolean(objArr[2].toString()));
 			}
 			
 			optLike = Optional.ofNullable(like);

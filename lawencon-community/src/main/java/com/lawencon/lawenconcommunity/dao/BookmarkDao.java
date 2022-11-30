@@ -175,7 +175,8 @@ public class BookmarkDao extends AbstractJpaDao{
 		StringBuilder sql = new StringBuilder();
 		
 		sql.append("Select count(*), ")
-		.append("(SELECT id from tb_bookmark where user_id = :userId AND post_id = :postId) as id ")
+		.append("(SELECT id from tb_bookmark where user_id = :userId AND post_id = :postId) as id, ")
+		.append("(SELECT is_active from tb_bookmark where user_id = :userId AND post_id = :postId) as is_active ")
 		.append("FROM tb_bookmark WHERE post_id = :postId AND is_active = true");
 		
 		
@@ -203,6 +204,10 @@ public class BookmarkDao extends AbstractJpaDao{
 				bookmark.setBookmarkId(objArr[1].toString());
 				bookmark.setId(objArr[1].toString());
 				
+			}
+			
+			if(objArr[2] != null) {				
+				bookmark.setIsActive((Boolean.parseBoolean(objArr[2].toString())));
 			}
 			
 
@@ -239,7 +244,6 @@ public class BookmarkDao extends AbstractJpaDao{
 		.append("WHERE tb.is_active = true ");
 		
 		final List<Bookmark> objResultBookmarks = ConnHandler.getManager().createNativeQuery(sql.toString(),Bookmark.class)
-
 				.getResultList();
 		
 		return objResultBookmarks;

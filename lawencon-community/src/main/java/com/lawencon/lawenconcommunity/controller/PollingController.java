@@ -55,9 +55,10 @@ public class PollingController {
 		return new ResponseEntity<>(pollings,HttpStatus.OK);
 	}
 	
+	
 	@PutMapping()
-	public ResponseEntity<ResponseMessageDto> insert(@RequestBody Polling data){
-		final ResponseMessageDto responseMessageDto = pollingService.update(data);
-		return new ResponseEntity<ResponseMessageDto>(responseMessageDto, HttpStatus.OK);
+	public ResponseEntity<ResponseMessageDto> update(@RequestBody Polling data){
+		final ResponseMessageDto pollingUpdateResDto = pollingService.update(data);
+		return new ResponseEntity<>(pollingUpdateResDto, HttpStatus.OK);
 	}
 }

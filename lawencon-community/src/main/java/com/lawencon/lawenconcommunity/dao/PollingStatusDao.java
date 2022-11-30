@@ -72,7 +72,7 @@ public class PollingStatusDao extends AbstractJpaDao {
 		.append("tp.poll_content, tp.total_poll,")
 		.append("tps.created_by, tps.created_at, tps.versions, tps.is_active ")
 		.append("FROM tb_polling_status tps ")
-		.append("INNER JOIN tb_polling ON tp.id = tps.polling_id ")
+		.append("INNER JOIN tb_polling tp ON tp.id = tps.polling_id ")
 		.append("WHERE tps.created_by = :userId AND tps.is_active = true ");
 		
 		Object objPolling = null;
