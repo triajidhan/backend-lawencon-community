@@ -109,11 +109,10 @@ public class PaymentSubscribeService extends BaseCoreService {
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
 		PaymentSubscribe paymentSubscribe = paymentSubscribeDao.getById(PaymentSubscribe.class, data.getId());
 		begin();
-		if (paymentSubscribe.getApprove() == false && data.getIsActive() == null) {
+		if (paymentSubscribe.getApprove() == false && data.getIsActive() == true) {
 			User userSystem = userDao.getById(User.class, userDao.getSystem("SYS").get().getId());
 			User member = userDao.getById(User.class, data.getCreatedBy());
 			PaymentSubscribe paymentApproving = paymentSubscribe;
-
 			try {
 				paymentApproving.setApprove(true);
 				paymentSubscribeDao.saveAndFlush(paymentApproving);
