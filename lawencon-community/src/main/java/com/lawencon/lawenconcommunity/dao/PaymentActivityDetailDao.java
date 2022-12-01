@@ -12,7 +12,10 @@ import com.lawencon.base.AbstractJpaDao;
 import com.lawencon.base.ConnHandler;
 import com.lawencon.lawenconcommunity.model.Activity;
 import com.lawencon.lawenconcommunity.model.ActivityType;
+import com.lawencon.lawenconcommunity.model.Industry;
 import com.lawencon.lawenconcommunity.model.PaymentActivityDetail;
+import com.lawencon.lawenconcommunity.model.Position;
+import com.lawencon.lawenconcommunity.model.User;
 
 @Repository
 public class PaymentActivityDetailDao extends AbstractJpaDao{
@@ -272,7 +275,13 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 	public List<PaymentActivityDetail> getReportPartisipationMember(LocalDateTime beginDate,LocalDateTime finishDate,String userCreated){
 		StringBuilder sql = new StringBuilder();
 		
-		sql.append("SELECT title,tu.full_name as member_create, activity_type_name, provider, begin_schedule, partisipant, tu.id as created_by from tb_activity as ta_prime ")
+		sql.append("SELECT title,tu.full_name as member_create, activity_type_name, provider, begin_schedule, partisipant, tu.id as created_by, ")
+		.append("tu.company, ")
+		.append("tp.position_code, tp.position_name, ")
+		.append("ti.industry_code, ti.industry_name, ")
+		.append("activity_type_code, ")
+		.append("activity_code, locations, finish_schedule, price ")
+		.append("from tb_activity as ta_prime ")
 		.append("INNER JOIN (")
 		.append("SELECT activity_id, count(activity_id) as partisipant ")
 		.append("FROM (")
@@ -286,6 +295,8 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append(") tb_partisipant ON ta_prime.id = tb_partisipant.activity_id ")
 		.append("INNER JOIN tb_activity_type tat ON tat.id = ta_prime.activity_type_id ")
 		.append("INNER JOIN tb_user tu ON ta_prime.created_by = tu.id ")
+		.append("INNER JOIN tb_position tp ON tp.id = tu.position_id ")
+		.append("INNER JOIN tb_industry ti ON ti.id = tu.industry_id ")
 		.append("WHERE ta_prime.created_by = :userCreate ");
 		
 		List<PaymentActivityDetail> paymentActivityDetails = new ArrayList<>();
@@ -302,18 +313,38 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			PaymentActivityDetail paymentActivityDetail = new PaymentActivityDetail();
 			Activity activity = new Activity();
 			ActivityType activityType = new ActivityType();
+			User user = new User();
+			Position position = new Position();
+			Industry industry = new Industry();
 			
 			
 			activity.setTitle(objArr[0].toString());
-			paymentActivityDetail.setMemberCreate(objArr[1].toString());
+			user.setFullName(objArr[1].toString());
 			activityType.setActivityTypeName(objArr[2].toString());
 			
 			activity.setProvider(objArr[3].toString());
 			activity.setBeginSchedule(Timestamp.valueOf(objArr[4].toString()).toLocalDateTime());
 			
-			paymentActivityDetail.setCountOfPaymentActivity(Integer.parseInt(objArr[5].toString()));
+			paymentActivityDetail.setPartisipation(Integer.parseInt(objArr[5].toString()));
 			activity.setCreatedBy(objArr[6].toString());
 			
+			user.setCompany(objArr[7].toString());
+			position.setPositionCode(objArr[8].toString());
+			position.setPositionName(objArr[9].toString());
+			
+			industry.setIndustryCode(objArr[10].toString());
+			industry.setIndustryName(objArr[11].toString());
+			
+			activityType.setActivityTypeCode(objArr[12].toString());
+			
+			activity.setActivityCode(objArr[13].toString());
+			activity.setLocation(objArr[14].toString());
+			activity.setFinishSchedule(Timestamp.valueOf(objArr[15].toString()).toLocalDateTime());
+			activity.setPrice(Float.parseFloat(objArr[16].toString()));
+		
+			user.setPosition(position);
+			user.setIndustry(industry);
+			paymentActivityDetail.setUser(user);
 			activity.setActivityType(activityType);
 			paymentActivityDetail.setActivity(activity);
 			paymentActivityDetails.add(paymentActivityDetail);
@@ -326,7 +357,13 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 	public List<PaymentActivityDetail> getReportPartisipationMember(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit,String userCreated){
 		StringBuilder sql = new StringBuilder();
 		
-		sql.append("SELECT title,tu.full_name as member_create, activity_type_name, provider, begin_schedule, partisipant, tu.id as created_by from tb_activity as ta_prime ")
+		sql.append("SELECT title,tu.full_name as member_create, activity_type_name, provider, begin_schedule, partisipant, tu.id as created_by, ")
+		.append("tu.company, ")
+		.append("tp.position_code, tp.position_name, ")
+		.append("ti.industry_code, ti.industry_name, ")
+		.append("activity_type_code, ")
+		.append("activity_code, locations, finish_schedule, price ")
+		.append("from tb_activity as ta_prime ")
 		.append("INNER JOIN (")
 		.append("SELECT activity_id, count(activity_id) as partisipant ")
 		.append("FROM (")
@@ -340,6 +377,8 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append(") tb_partisipant ON ta_prime.id = tb_partisipant.activity_id ")
 		.append("INNER JOIN tb_activity_type tat ON tat.id = ta_prime.activity_type_id ")
 		.append("INNER JOIN tb_user tu ON ta_prime.created_by = tu.id ")
+		.append("INNER JOIN tb_position tp ON tp.id = tu.position_id ")
+		.append("INNER JOIN tb_industry ti ON ti.id = tu.industry_id ")
 		.append("WHERE ta_prime.created_by = :userCreate ")
 		.append("LIMIT :limit OFFSET :startPosition");
 		
@@ -359,18 +398,40 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			PaymentActivityDetail paymentActivityDetail = new PaymentActivityDetail();
 			Activity activity = new Activity();
 			ActivityType activityType = new ActivityType();
+			User user = new User();
+			Position position = new Position();
+			Industry industry = new Industry();
 			
 			
 			activity.setTitle(objArr[0].toString());
 			paymentActivityDetail.setMemberCreate(objArr[1].toString());
+			user.setFullName(objArr[1].toString());
+			
 			activityType.setActivityTypeName(objArr[2].toString());
 			
 			activity.setProvider(objArr[3].toString());
 			activity.setBeginSchedule(Timestamp.valueOf(objArr[4].toString()).toLocalDateTime());
 			
-			paymentActivityDetail.setCountOfPaymentActivity(Integer.parseInt(objArr[5].toString()));
+			paymentActivityDetail.setPartisipation(Integer.parseInt(objArr[5].toString()));
 			activity.setCreatedBy(objArr[6].toString());
 			
+			user.setCompany(objArr[7].toString());
+			position.setPositionCode(objArr[8].toString());
+			position.setPositionName(objArr[9].toString());
+			
+			industry.setIndustryCode(objArr[10].toString());
+			industry.setIndustryName(objArr[11].toString());
+			
+			activityType.setActivityTypeCode(objArr[12].toString());
+			
+			activity.setActivityCode(objArr[13].toString());
+			activity.setLocation(objArr[14].toString());
+			activity.setFinishSchedule(Timestamp.valueOf(objArr[15].toString()).toLocalDateTime());
+			activity.setPrice(Float.parseFloat(objArr[16].toString()));
+		
+			user.setPosition(position);
+			user.setIndustry(industry);
+			paymentActivityDetail.setUser(user);
 			activity.setActivityType(activityType);
 			paymentActivityDetail.setActivity(activity);
 			paymentActivityDetails.add(paymentActivityDetail);
@@ -383,7 +444,13 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 	public List<PaymentActivityDetail> getReportPartisipationSuper(LocalDateTime beginDate,LocalDateTime finishDate){
 		StringBuilder sql = new StringBuilder();
 		
-		sql.append("SELECT title,tu.full_name as member_create, activity_type_name, provider, begin_schedule, partisipant, tu.id as created_by from tb_activity as ta_prime ")
+		sql.append("SELECT title,tu.full_name as member_create, activity_type_name, provider, begin_schedule, partisipant, tu.id as created_by, ")
+		.append("tu.company, ")
+		.append("tp.position_code, tp.position_name, ")
+		.append("ti.industry_code, ti.industry_name, ")
+		.append("activity_type_code, ")
+		.append("activity_code, locations, finish_schedule, price ")
+		.append("from tb_activity as ta_prime ")
 		.append("INNER JOIN (")
 		.append("SELECT activity_id, count(activity_id) as partisipant ")
 		.append("FROM (")
@@ -396,7 +463,9 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append("GROUP BY activity_id ")
 		.append(") tb_partisipant ON ta_prime.id = tb_partisipant.activity_id ")
 		.append("INNER JOIN tb_activity_type tat ON tat.id = ta_prime.activity_type_id ")
-		.append("INNER JOIN tb_user tu ON ta_prime.created_by = tu.id ");
+		.append("INNER JOIN tb_user tu ON ta_prime.created_by = tu.id ")
+		.append("INNER JOIN tb_position tp ON tp.id = tu.position_id ")
+		.append("INNER JOIN tb_industry ti ON ti.id = tu.industry_id ");
 		
 		List<PaymentActivityDetail> paymentActivityDetails = new ArrayList<>();
 		
@@ -411,10 +480,12 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			PaymentActivityDetail paymentActivityDetail = new PaymentActivityDetail();
 			Activity activity = new Activity();
 			ActivityType activityType = new ActivityType();
-			
-			
+			User user = new User();
+			Position position = new Position();
+			Industry industry = new Industry();
+						
 			activity.setTitle(objArr[0].toString());
-			paymentActivityDetail.setMemberCreate(objArr[1].toString());
+			user.setFullName(objArr[1].toString());
 			activityType.setActivityTypeName(objArr[2].toString());
 			
 			activity.setProvider(objArr[3].toString());
@@ -423,6 +494,23 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			paymentActivityDetail.setCountOfPaymentActivity(Integer.parseInt(objArr[5].toString()));
 			activity.setCreatedBy(objArr[6].toString());
 			
+			user.setCompany(objArr[7].toString());
+			position.setPositionCode(objArr[8].toString());
+			position.setPositionName(objArr[9].toString());
+			
+			industry.setIndustryCode(objArr[10].toString());
+			industry.setIndustryName(objArr[11].toString());
+			
+			activityType.setActivityTypeCode(objArr[12].toString());
+			
+			activity.setActivityCode(objArr[13].toString());
+			activity.setLocation(objArr[14].toString());
+			activity.setFinishSchedule(Timestamp.valueOf(objArr[15].toString()).toLocalDateTime());
+			activity.setPrice(Float.parseFloat(objArr[16].toString()));
+		
+			user.setPosition(position);
+			user.setIndustry(industry);
+			paymentActivityDetail.setUser(user);
 			activity.setActivityType(activityType);
 			paymentActivityDetail.setActivity(activity);
 			paymentActivityDetails.add(paymentActivityDetail);
@@ -435,7 +523,13 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 	public List<PaymentActivityDetail> getReportPartisipationSuper(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit){
 		StringBuilder sql = new StringBuilder();
 		
-		sql.append("SELECT title, activity_type_name, begin_schedule, total_income, tu.id as created_by from tb_activity as ta_prime ")
+		sql.append("SELECT title,tu.full_name as member_create, activity_type_name, provider, begin_schedule, partisipant, tu.id as created_by, ")
+		.append("tu.company, ")
+		.append("tp.position_code, tp.position_name, ")
+		.append("ti.industry_code, ti.industry_name, ")
+		.append("activity_type_code, ")
+		.append("activity_code, locations, finish_schedule, price ")
+		.append("from tb_activity as ta_prime ")
 		.append("INNER JOIN (")
 		.append("SELECT activity_id, count(activity_id) as partisipant ")
 		.append("FROM (")
@@ -449,6 +543,8 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append(") tb_partisipant ON ta_prime.id = tb_partisipant.activity_id ")
 		.append("INNER JOIN tb_activity_type tat ON tat.id = ta_prime.activity_type_id ")
 		.append("INNER JOIN tb_user tu ON ta_prime.created_by = tu.id ")
+		.append("INNER JOIN tb_position tp ON tp.id = tu.position_id ")
+		.append("INNER JOIN tb_industry ti ON ti.id = tu.industry_id ")
 		.append("LIMIT :limit OFFSET :startPosition");
 		
 		List<PaymentActivityDetail> paymentActivityDetails = new ArrayList<>();
@@ -466,19 +562,37 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			PaymentActivityDetail paymentActivityDetail = new PaymentActivityDetail();
 			Activity activity = new Activity();
 			ActivityType activityType = new ActivityType();
-			
-			//title, activity_type_name, begin_schedule, total_income, tu.id as created_by
+			User user = new User();
+			Position position = new Position();
+			Industry industry = new Industry();
 			
 			activity.setTitle(objArr[0].toString());
-			paymentActivityDetail.setMemberCreate(objArr[1].toString());
+			user.setFullName(objArr[1].toString());
 			activityType.setActivityTypeName(objArr[2].toString());
 			
-			activity.setBeginSchedule(Timestamp.valueOf(objArr[3].toString()).toLocalDateTime());
+			activity.setProvider(objArr[3].toString());
+			activity.setBeginSchedule(Timestamp.valueOf(objArr[4].toString()).toLocalDateTime());
 			
-			BigDecimal bigDecimal = new BigDecimal(objArr[4].toString());
-			paymentActivityDetail.setNet(bigDecimal);
-			activity.setCreatedBy(objArr[5].toString());
+			paymentActivityDetail.setCountOfPaymentActivity(Integer.parseInt(objArr[5].toString()));
+			activity.setCreatedBy(objArr[6].toString());
 			
+			user.setCompany(objArr[7].toString());
+			position.setPositionCode(objArr[8].toString());
+			position.setPositionName(objArr[9].toString());
+			
+			industry.setIndustryCode(objArr[10].toString());
+			industry.setIndustryName(objArr[11].toString());
+			
+			activityType.setActivityTypeCode(objArr[12].toString());
+			
+			activity.setActivityCode(objArr[13].toString());
+			activity.setLocation(objArr[14].toString());
+			activity.setFinishSchedule(Timestamp.valueOf(objArr[15].toString()).toLocalDateTime());
+			activity.setPrice(Float.parseFloat(objArr[16].toString()));
+		
+			user.setPosition(position);
+			user.setIndustry(industry);
+			paymentActivityDetail.setUser(user);
 			activity.setActivityType(activityType);
 			paymentActivityDetail.setActivity(activity);
 			paymentActivityDetails.add(paymentActivityDetail);
@@ -486,8 +600,6 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 	
 		return paymentActivityDetails;
 	}
-	
-	
 	
 	public List<PaymentActivityDetail> getReportIncomeMember(LocalDateTime beginDate,LocalDateTime finishDate,String userId){
 		StringBuilder sql = new StringBuilder();
@@ -506,6 +618,8 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append(") tb_income ON ta_prime.id = tb_income.activity_id ")
 		.append("INNER JOIN tb_activity_type tat ON tat.id = ta_prime.activity_type_id ")
 		.append("INNER JOIN tb_user tu ON ta_prime.created_by = tu.id ")
+		.append("INNER JOIN tb_position tp ON tp.id = tu.position_id ")
+		.append("INNER JOIN tb_industry ti ON ti.id = tu.industry_id ")
 		.append("WHERE ta_prime.created_by = :userId ");
 		
 		List<PaymentActivityDetail> paymentActivityDetails = new ArrayList<>();
@@ -556,6 +670,8 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append(") tb_income ON ta_prime.id = tb_income.activity_id ")
 		.append("INNER JOIN tb_activity_type tat ON tat.id = ta_prime.activity_type_id ")
 		.append("INNER JOIN tb_user tu ON ta_prime.created_by = tu.id ")
+		.append("INNER JOIN tb_position tp ON tp.id = tu.position_id ")
+		.append("INNER JOIN tb_industry ti ON ti.id = tu.industry_id ")
 		.append("WHERE ta_prime.created_by = :userId ")
 		.append("LIMIT :limit OFFSET :startPosition");
 		
@@ -594,7 +710,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 	
 	
 	public List<PaymentActivityDetail> getReportIncomeSuper(LocalDateTime beginDate,LocalDateTime finishDate){
-StringBuilder sql = new StringBuilder();
+		StringBuilder sql = new StringBuilder();
 		
 		sql.append("SELECT full_name,tat.activity_type_name, total_income, tb_income_group.created_by FROM tb_user AS tb_activity_user_type ")
 		.append("INNER JOIN (")

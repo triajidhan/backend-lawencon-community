@@ -53,6 +53,12 @@ public class CommentService extends BaseCoreService{
 		return comments;
 	}
 	
+	public List<Comment> getByUserAndOrder(String userId,int startPosition,int limit,boolean ascending){
+		List<Comment> comments = commentDao.getByUserAndOrder(userId,startPosition,limit,ascending);
+		
+		return comments;
+	}
+	
 	public Comment getTotalByUser(String userId) {
 		return commentDao.getTotalByUser(userId);
 	}
@@ -65,6 +71,12 @@ public class CommentService extends BaseCoreService{
 	
 	public List<Comment> getByPostAndOrder(String postId,boolean ascending){
 		List<Comment> comments = commentDao.getByPostAndOrder(postId,ascending);
+		
+		return comments;
+	}
+	
+	public List<Comment> getByPostAndOrder(String postId,int startPosition,int limit,boolean ascending){
+		List<Comment> comments = commentDao.getByPostAndOrder(postId,startPosition,limit,ascending);
 		
 		return comments;
 	}
