@@ -96,6 +96,12 @@ public class ActivityService extends BaseCoreService{
 		return activities;
 	}
 	
+	public List<Activity> getByIsActiveAndGreaterDateTimeNowAndOrder(int startPosition,int limit,boolean ascending){
+		final List<Activity> activities = activityDao.getByIsActiveAndGreaterDateTimeNowAndOrder(startPosition, limit,ascending);
+		
+		return activities;
+	}
+	
 	public Activity getTotalByIsActive(){
 		return activityDao.getTotalByIsActive();
 	}

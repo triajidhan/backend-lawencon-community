@@ -85,8 +85,9 @@ public class UserDao extends AbstractJpaDao{
 			if(objArr[14] != null) {
 				file.setId(objArr[14].toString());
 			}
-			
-			user.setStatusSubscribe(Boolean.valueOf(objArr[15].toString()));
+			if(objArr[15] != null) {				
+				user.setStatusSubscribe(Boolean.valueOf(objArr[15].toString()));
+			}
 			if(objArr[16] != null) {				
 				balance.setId(objArr[16].toString());
 				
