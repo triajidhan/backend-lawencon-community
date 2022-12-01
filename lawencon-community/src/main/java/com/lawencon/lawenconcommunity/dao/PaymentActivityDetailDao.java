@@ -53,6 +53,37 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		return paymentActivityDetail;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<PaymentActivityDetail> getByIsActiveFalse(){
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT * FROM tb_payment_activity_detail tpad ")
+		.append("INNER JOIN tb_activity ta ON ta.id = tpad.activity_id ")
+		.append("WHERE tpad.is_active = false");
+		
+		List<PaymentActivityDetail> paymentActivityDetail = ConnHandler.getManager()
+				.createNativeQuery(sql.toString(),PaymentActivityDetail.class)
+				.getResultList();
+		
+		return paymentActivityDetail;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<PaymentActivityDetail> getByIsActiveTrueAndApprovedFalse(){
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT * FROM tb_payment_activity_detail tpad ")
+		.append("INNER JOIN tb_activity ta ON ta.id = tpad.activity_id ")
+		.append("WHERE tpad.is_active = true AND tpad.approved = false");
+		
+		List<PaymentActivityDetail> paymentActivityDetail = ConnHandler.getManager()
+				.createNativeQuery(sql.toString(),PaymentActivityDetail.class)
+				.getResultList();
+		
+		return paymentActivityDetail;
+	}
+	
+	
 	public PaymentActivityDetail getTotalPaymentActivityDetail() {
 		StringBuilder sql = new StringBuilder();
 		
@@ -272,10 +303,12 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		return paymentActivity;
 	}
 		
-	public List<PaymentActivityDetail> getReportPartisipationMember(LocalDateTime beginDate,LocalDateTime finishDate,String userCreated){
+	public List<PaymentActivityDetail> getReportPartisipationMember(LocalDateTime beginDate,LocalDateTime finishDate,String userCreated,boolean isAscending){
 		StringBuilder sql = new StringBuilder();
 		
-		sql.append("SELECT title,tu.full_name as member_create, activity_type_name, provider, begin_schedule, partisipant, tu.id as created_by, ")
+		String ascending =(isAscending)? "ASC ": "DESC ";
+		
+		sql.append("SELECT title,tu.full_name as member_create, activity_type_name, provider, begin_schedule, partisipant, tu.id, ")
 		.append("tu.company, ")
 		.append("tp.position_code, tp.position_name, ")
 		.append("ti.industry_code, ti.industry_name, ")
@@ -297,7 +330,9 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append("INNER JOIN tb_user tu ON ta_prime.created_by = tu.id ")
 		.append("INNER JOIN tb_position tp ON tp.id = tu.position_id ")
 		.append("INNER JOIN tb_industry ti ON ti.id = tu.industry_id ")
-		.append("WHERE ta_prime.created_by = :userCreate ");
+		.append("WHERE ta_prime.created_by = :userCreate ")
+		.append("ORDER BY ta_prime.created_at ")
+		.append(ascending);
 		
 		List<PaymentActivityDetail> paymentActivityDetails = new ArrayList<>();
 		
@@ -327,6 +362,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			
 			paymentActivityDetail.setPartisipation(Integer.parseInt(objArr[5].toString()));
 			activity.setCreatedBy(objArr[6].toString());
+			user.setId(objArr[6].toString());
 			
 			user.setCompany(objArr[7].toString());
 			position.setPositionCode(objArr[8].toString());
@@ -353,11 +389,12 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		return paymentActivityDetails;
 	}
 	
-	
-	public List<PaymentActivityDetail> getReportPartisipationMember(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit,String userCreated){
+	public List<PaymentActivityDetail> getReportPartisipationMember(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit,String userCreated,boolean isAscending){
 		StringBuilder sql = new StringBuilder();
 		
-		sql.append("SELECT title,tu.full_name as member_create, activity_type_name, provider, begin_schedule, partisipant, tu.id as created_by, ")
+		String ascending = (isAscending) ? "ASC ": "DESC ";
+		
+		sql.append("SELECT title,tu.full_name, activity_type_name, provider, begin_schedule, partisipant, tu.id, ")
 		.append("tu.company, ")
 		.append("tp.position_code, tp.position_name, ")
 		.append("ti.industry_code, ti.industry_name, ")
@@ -380,6 +417,8 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append("INNER JOIN tb_position tp ON tp.id = tu.position_id ")
 		.append("INNER JOIN tb_industry ti ON ti.id = tu.industry_id ")
 		.append("WHERE ta_prime.created_by = :userCreate ")
+		.append("ORDER BY ta_prime.create_at ")
+		.append(ascending)
 		.append("LIMIT :limit OFFSET :startPosition");
 		
 		List<PaymentActivityDetail> paymentActivityDetails = new ArrayList<>();
@@ -414,6 +453,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			
 			paymentActivityDetail.setPartisipation(Integer.parseInt(objArr[5].toString()));
 			activity.setCreatedBy(objArr[6].toString());
+			user.setId(objArr[6].toString());
 			
 			user.setCompany(objArr[7].toString());
 			position.setPositionCode(objArr[8].toString());
@@ -428,6 +468,8 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			activity.setLocation(objArr[14].toString());
 			activity.setFinishSchedule(Timestamp.valueOf(objArr[15].toString()).toLocalDateTime());
 			activity.setPrice(Float.parseFloat(objArr[16].toString()));
+			
+			user.setId(objArr[17].toString());
 		
 			user.setPosition(position);
 			user.setIndustry(industry);
@@ -440,11 +482,12 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		return paymentActivityDetails;
 	}
 	
-	
-	public List<PaymentActivityDetail> getReportPartisipationSuper(LocalDateTime beginDate,LocalDateTime finishDate){
+	public List<PaymentActivityDetail> getReportPartisipationSuper(LocalDateTime beginDate,LocalDateTime finishDate,boolean isAscending){
 		StringBuilder sql = new StringBuilder();
 		
-		sql.append("SELECT title,tu.full_name as member_create, activity_type_name, provider, begin_schedule, partisipant, tu.id as created_by, ")
+		String ascending = (isAscending)? "ASC ":"DESC ";
+		
+		sql.append("SELECT title,tu.full_name, activity_type_name, provider, begin_schedule, partisipant, tu.id, ")
 		.append("tu.company, ")
 		.append("tp.position_code, tp.position_name, ")
 		.append("ti.industry_code, ti.industry_name, ")
@@ -465,7 +508,9 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append("INNER JOIN tb_activity_type tat ON tat.id = ta_prime.activity_type_id ")
 		.append("INNER JOIN tb_user tu ON ta_prime.created_by = tu.id ")
 		.append("INNER JOIN tb_position tp ON tp.id = tu.position_id ")
-		.append("INNER JOIN tb_industry ti ON ti.id = tu.industry_id ");
+		.append("INNER JOIN tb_industry ti ON ti.id = tu.industry_id ")
+		.append("ORDER BY ta_prime.created_at ")
+		.append(ascending);
 		
 		List<PaymentActivityDetail> paymentActivityDetails = new ArrayList<>();
 		
@@ -493,6 +538,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			
 			paymentActivityDetail.setCountOfPaymentActivity(Integer.parseInt(objArr[5].toString()));
 			activity.setCreatedBy(objArr[6].toString());
+			user.setId(objArr[6].toString());
 			
 			user.setCompany(objArr[7].toString());
 			position.setPositionCode(objArr[8].toString());
@@ -507,6 +553,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			activity.setLocation(objArr[14].toString());
 			activity.setFinishSchedule(Timestamp.valueOf(objArr[15].toString()).toLocalDateTime());
 			activity.setPrice(Float.parseFloat(objArr[16].toString()));
+			user.setId(objArr[17].toString());
 		
 			user.setPosition(position);
 			user.setIndustry(industry);
@@ -519,9 +566,10 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		return paymentActivityDetails;
 	}
 	
-	
-	public List<PaymentActivityDetail> getReportPartisipationSuper(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit){
+	public List<PaymentActivityDetail> getReportPartisipationSuper(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit, boolean isAscending){
 		StringBuilder sql = new StringBuilder();
+		
+		String ascending = (isAscending) ? "ASC ": "DESC ";
 		
 		sql.append("SELECT title,tu.full_name as member_create, activity_type_name, provider, begin_schedule, partisipant, tu.id as created_by, ")
 		.append("tu.company, ")
@@ -545,6 +593,8 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append("INNER JOIN tb_user tu ON ta_prime.created_by = tu.id ")
 		.append("INNER JOIN tb_position tp ON tp.id = tu.position_id ")
 		.append("INNER JOIN tb_industry ti ON ti.id = tu.industry_id ")
+		.append("ORDER BY ta_prime.created_at ")
+		.append(ascending)
 		.append("LIMIT :limit OFFSET :startPosition");
 		
 		List<PaymentActivityDetail> paymentActivityDetails = new ArrayList<>();
@@ -575,6 +625,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			
 			paymentActivityDetail.setCountOfPaymentActivity(Integer.parseInt(objArr[5].toString()));
 			activity.setCreatedBy(objArr[6].toString());
+			user.setId(objArr[6].toString());
 			
 			user.setCompany(objArr[7].toString());
 			position.setPositionCode(objArr[8].toString());
@@ -601,62 +652,18 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		return paymentActivityDetails;
 	}
 	
-	public List<PaymentActivityDetail> getReportIncomeMember(LocalDateTime beginDate,LocalDateTime finishDate,String userId){
+	public List<PaymentActivityDetail> getReportIncomeMember(LocalDateTime beginDate,LocalDateTime finishDate,String userId,boolean isAscending){
 		StringBuilder sql = new StringBuilder();
 		
-		sql.append("select title, activity_type_name, begin_schedule, total_income, tu.id as created_by  from tb_activity as ta_prime ")
-		.append("INNER JOIN (")
-		.append("SELECT activity_id, sum(net) as total_income ")
-		.append("FROM (")
-		.append("SELECT ta.id as activity_id, net ")
-		.append("FROM tb_payment_activity_detail tpad ")
-		.append("INNER JOIN tb_activity ta ON tpad.activity_id = ta.id ")
-		.append("WHERE (begin_schedule between :beginDate AND :finishDate) ")
-		.append("AND tpad.approve = true")
-		.append(") tb_pay ")
-		.append("GROUP BY activity_id ")
-		.append(") tb_income ON ta_prime.id = tb_income.activity_id ")
-		.append("INNER JOIN tb_activity_type tat ON tat.id = ta_prime.activity_type_id ")
-		.append("INNER JOIN tb_user tu ON ta_prime.created_by = tu.id ")
-		.append("INNER JOIN tb_position tp ON tp.id = tu.position_id ")
-		.append("INNER JOIN tb_industry ti ON ti.id = tu.industry_id ")
-		.append("WHERE ta_prime.created_by = :userId ");
+		String ascending = (isAscending) ? "ASC ": "DESC ";
 		
-		List<PaymentActivityDetail> paymentActivityDetails = new ArrayList<>();
-		
-		List<?> objPayments = ConnHandler.getManager().createNativeQuery(sql.toString())
-		.setParameter("beginDate", beginDate)
-		.setParameter("finishDate", finishDate)
-		.setParameter("userId", userId)
-		.getResultList();
-		
-		objPayments.forEach(objPayment ->{
-			Object[] objArr = (Object[]) objPayment;
-			
-			PaymentActivityDetail paymentActivityDetail = new PaymentActivityDetail();
-			Activity activity = new Activity();
-			ActivityType activityType = new ActivityType();
-			
-			activity.setTitle(objArr[0].toString());
-			activityType.setActivityTypeName(objArr[1].toString());
-			activity.setBeginSchedule(Timestamp.valueOf(objArr[2].toString()).toLocalDateTime());
-
-			BigDecimal bigDecimal = new BigDecimal(objArr[3].toString());
-			paymentActivityDetail.setNet(bigDecimal);
-			activity.setCreatedBy(objArr[4].toString());
-			
-			activity.setActivityType(activityType);
-			paymentActivityDetail.setActivity(activity);
-			paymentActivityDetails.add(paymentActivityDetail);
-		});
-	
-		return paymentActivityDetails;
-	}
-	
-	public List<PaymentActivityDetail> getReportIncomeMember(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit,String UserId){
-		StringBuilder sql = new StringBuilder();
-		
-		sql.append("select title, activity_type_name, begin_schedule, total_income, tu.id as created_by  from tb_activity as ta_prime ")
+		sql.append("select title, activity_type_name, begin_schedule, total_income, tu.id, ")
+		.append("tu.company, ")
+		.append("tp.position_code, tp.position_name, ")
+		.append("ti.industry_code, ti.industry_name, ")
+		.append("activity_type_code, ")
+		.append("activity_code, locations, finish_schedule, price, provider, tu.fullName ")
+		.append("from tb_activity as ta_prime ")
 		.append("INNER JOIN (")
 		.append("SELECT activity_id, sum(net) as total_income ")
 		.append("FROM (")
@@ -673,6 +680,97 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append("INNER JOIN tb_position tp ON tp.id = tu.position_id ")
 		.append("INNER JOIN tb_industry ti ON ti.id = tu.industry_id ")
 		.append("WHERE ta_prime.created_by = :userId ")
+		.append("ORDER BY ta_prime.created_at ")
+		.append(ascending);
+		
+		List<PaymentActivityDetail> paymentActivityDetails = new ArrayList<>();
+		
+		List<?> objPayments = ConnHandler.getManager().createNativeQuery(sql.toString())
+		.setParameter("beginDate", beginDate)
+		.setParameter("finishDate", finishDate)
+		.setParameter("userId", userId)
+		.getResultList();
+		
+		objPayments.forEach(objPayment ->{
+			Object[] objArr = (Object[]) objPayment;
+			
+			PaymentActivityDetail paymentActivityDetail = new PaymentActivityDetail();
+			Activity activity = new Activity();
+			ActivityType activityType = new ActivityType();
+			
+			User user = new User();
+			Position position = new Position();
+			Industry industry = new Industry();
+			
+			activity.setTitle(objArr[0].toString());
+			activityType.setActivityTypeName(objArr[1].toString());
+			activity.setBeginSchedule(Timestamp.valueOf(objArr[2].toString()).toLocalDateTime());
+
+			BigDecimal bigDecimal = new BigDecimal(objArr[3].toString());
+			paymentActivityDetail.setNet(bigDecimal);
+			activity.setCreatedBy(objArr[4].toString());
+			user.setId(objArr[4].toString());
+			
+			user.setCompany(objArr[5].toString());
+			position.setPositionCode(objArr[6].toString());
+			position.setPositionName(objArr[7].toString());
+			
+			industry.setIndustryCode(objArr[8].toString());
+			industry.setIndustryName(objArr[9].toString());
+			
+			activityType.setActivityTypeCode(objArr[10].toString());
+			
+			activity.setActivityCode(objArr[11].toString());
+			activity.setLocation(objArr[12].toString());
+			activity.setFinishSchedule(Timestamp.valueOf(objArr[13].toString()).toLocalDateTime());
+			activity.setPrice(Float.parseFloat(objArr[14].toString()));
+			activity.setProvider(objArr[15].toString());
+			
+			user.setFullName(objArr[16].toString());
+
+			user.setPosition(position);
+			user.setIndustry(industry);
+			
+			paymentActivityDetail.setUser(user);
+			activity.setActivityType(activityType);
+			paymentActivityDetail.setActivity(activity);
+			
+			paymentActivityDetails.add(paymentActivityDetail);
+		});
+	
+		return paymentActivityDetails;
+	}
+	
+	public List<PaymentActivityDetail> getReportIncomeMember(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit,String UserId,boolean isAscending){
+		StringBuilder sql = new StringBuilder();
+		
+		String ascending = (isAscending) ? "ASC ": "DESC ";
+		
+		sql.append("select title, activity_type_name, begin_schedule, total_income, tu.id, ")
+		.append("tu.company, ")
+		.append("tp.position_code, tp.position_name, ")
+		.append("ti.industry_code, ti.industry_name, ")
+		.append("activity_type_code, ")
+		.append("activity_code, locations, finish_schedule, price, provider ")
+		.append("from tb_activity as ta_prime ")
+		.append("INNER JOIN (")
+		.append("SELECT activity_id, sum(net) as total_income ")
+		.append("FROM (")
+		.append("SELECT ta.id as activity_id, net ")
+		.append("FROM tb_payment_activity_detail tpad ")
+		.append("INNER JOIN tb_activity ta ON tpad.activity_id = ta.id ")
+		.append("WHERE (begin_schedule between :beginDate AND :finishDate) ")
+		.append("AND tpad.approve = true")
+		.append(") tb_pay ")
+		.append("GROUP BY activity_id ")
+		.append(") tb_income ON ta_prime.id = tb_income.activity_id ")
+		.append("INNER JOIN tb_activity_type tat ON tat.id = ta_prime.activity_type_id ")
+		.append("INNER JOIN tb_user tu ON ta_prime.created_by = tu.id ")
+		.append("INNER JOIN tb_position tp ON tp.id = tu.position_id ")
+		.append("INNER JOIN tb_industry ti ON ti.id = tu.industry_id ")
+		.append("WHERE ta_prime.created_by = :userId ")
+		.append("ORDER BY ta_prime.created_at ")
+		.append(ascending)
 		.append("LIMIT :limit OFFSET :startPosition");
 		
 		List<PaymentActivityDetail> paymentActivityDetails = new ArrayList<>();
@@ -692,6 +790,10 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			Activity activity = new Activity();
 			ActivityType activityType = new ActivityType();
 			
+			User user = new User();
+			Position position = new Position();
+			Industry industry = new Industry();
+			
 			activity.setTitle(objArr[0].toString());
 			activityType.setActivityTypeName(objArr[1].toString());
 			activity.setBeginSchedule(Timestamp.valueOf(objArr[2].toString()).toLocalDateTime());
@@ -699,6 +801,26 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			BigDecimal bigDecimal = new BigDecimal(objArr[3].toString());
 			paymentActivityDetail.setNet(bigDecimal);
 			activity.setCreatedBy(objArr[4].toString());
+			user.setId(objArr[4].toString());
+			
+			user.setCompany(objArr[5].toString());
+			position.setPositionCode(objArr[6].toString());
+			position.setPositionName(objArr[7].toString());
+			
+			industry.setIndustryCode(objArr[8].toString());
+			industry.setIndustryName(objArr[9].toString());
+			
+			activityType.setActivityTypeCode(objArr[10].toString());
+			
+			activity.setActivityCode(objArr[11].toString());
+			activity.setLocation(objArr[12].toString());
+			activity.setFinishSchedule(Timestamp.valueOf(objArr[13].toString()).toLocalDateTime());
+			activity.setPrice(Float.parseFloat(objArr[14].toString()));
+			activity.setProvider(objArr[15].toString());
+		
+			user.setPosition(position);
+			user.setIndustry(industry);
+			paymentActivityDetail.setUser(user);
 			
 			activity.setActivityType(activityType);
 			paymentActivityDetail.setActivity(activity);
@@ -708,63 +830,16 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		return paymentActivityDetails;
 	}
 	
-	
-	public List<PaymentActivityDetail> getReportIncomeSuper(LocalDateTime beginDate,LocalDateTime finishDate){
+	public List<PaymentActivityDetail> getReportIncomeSuper(LocalDateTime beginDate,LocalDateTime finishDate,boolean isAscending){
 		StringBuilder sql = new StringBuilder();
 		
-		sql.append("SELECT full_name,tat.activity_type_name, total_income, tb_income_group.created_by FROM tb_user AS tb_activity_user_type ")
-		.append("INNER JOIN (")
-		.append("SELECT created_by,activity_type_id, sum(total_income) as total_income from tb_activity as tb_activity_grouping_user_type ")
-		.append("INNER JOIN (")
-		.append("SELECT activity_id, sum(net) as total_income ")
-		.append("FROM ( ")
-		.append("select ta.id as activity_id, net ")
-		.append("from tb_payment_activity_detail tpad ")
-		.append("INNER JOIN tb_activity ta ON tpad.activity_id = ta.id ")
-		.append("WHERE (begin_schedule between :beginDate AND :finishDate) ")
-		.append("AND tpad.approve = true ")
-		.append(") tb_pay ")
-		.append("GROUP BY activity_id ")
-		.append(") tb_income ON tb_activity_grouping_user_type.id = tb_income.activity_id ")
-		.append("GROUP BY created_by, activity_type_id ")
-		.append(") tb_income_group ON tb_activity_user_type.id = tb_income_group.created_by ")
-		.append("INNER JOIN tb_activity_type tat ON tat.id = tb_income_group.activity_type_id ");
+		String ascending = (isAscending) ? "ASC ": "DESC ";
 		
-		List<PaymentActivityDetail> paymentActivityDetails = new ArrayList<>();
-		
-		List<?> objPayments = ConnHandler.getManager().createNativeQuery(sql.toString())
-		.setParameter("beginDate", beginDate)
-		.setParameter("finishDate", finishDate)
-		.getResultList();
-		
-		objPayments.forEach(objPayment ->{
-			Object[] objArr = (Object[]) objPayment;
-			
-			PaymentActivityDetail paymentActivityDetail = new PaymentActivityDetail();
-			Activity activity = new Activity();
-			ActivityType activityType = new ActivityType();
-			
-			// full_name,tat.activity_type_name, total_income, tb_income_group.created_by
-			paymentActivityDetail.setMemberCreate(objArr[0].toString());
-			activityType.setActivityTypeName(objArr[1].toString());
-
-			BigDecimal bigDecimal = new BigDecimal(objArr[2].toString());
-			paymentActivityDetail.setNet(bigDecimal);
-			activity.setCreatedBy(objArr[3].toString());
-			
-			activity.setActivityType(activityType);
-			paymentActivityDetail.setActivity(activity);
-			paymentActivityDetails.add(paymentActivityDetail);
-		});
-	
-		return paymentActivityDetails;
-	}
-	
-	
-	public List<PaymentActivityDetail> getReportIncomeSuper(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit){
-		StringBuilder sql = new StringBuilder();
-		
-		sql.append("SELECT full_name,tat.activity_type_name, total_income, tb_income_group.created_by FROM tb_user AS tb_activity_user_type ")
+		sql.append("SELECT full_name,tat.activity_type_name, total_income, tb_income_group.created_by, ")
+		.append("company, ")
+		.append("tp.position_code, tp.position_name, ")
+		.append("ti.industry_code, ti.industry_name, tb_activity_user_type.id,tat.activity_type_code ")
+		.append("FROM tb_user AS tb_activity_user_type ")
 		.append("INNER JOIN (")
 		.append("SELECT created_by,activity_type_id, sum(total_income) as total_income from tb_activity as tb_activity_grouping_user_type ")
 		.append("INNER JOIN (")
@@ -781,6 +856,88 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append("GROUP BY created_by, activity_type_id ")
 		.append(") tb_income_group ON tb_activity_user_type.id = tb_income_group.created_by ")
 		.append("INNER JOIN tb_activity_type tat ON tat.id = tb_income_group.activity_type_id ")
+		.append("INNER JOIN tb_position tp ON tp.id = tb_activity_user_type.position_id ")
+		.append("INNER JOIN tb_industry ti ON ti.id = tb_activity_user_type.industry_id ")
+		.append("ORDER BY tb_activity_user_type.created_at ")
+		.append(ascending);
+		
+		List<PaymentActivityDetail> paymentActivityDetails = new ArrayList<>();
+		
+		List<?> objPayments = ConnHandler.getManager().createNativeQuery(sql.toString())
+		.setParameter("beginDate", beginDate)
+		.setParameter("finishDate", finishDate)
+		.getResultList();
+		
+		objPayments.forEach(objPayment ->{
+			Object[] objArr = (Object[]) objPayment;
+			
+			PaymentActivityDetail paymentActivityDetail = new PaymentActivityDetail();
+			Activity activity = new Activity();
+			ActivityType activityType = new ActivityType();
+			
+			User user = new User();
+			Position position = new Position();
+			Industry industry = new Industry();
+			
+			user.setFullName(objArr[0].toString());
+			activityType.setActivityTypeName(objArr[1].toString());
+
+			BigDecimal bigDecimal = new BigDecimal(objArr[2].toString());
+			paymentActivityDetail.setNet(bigDecimal);
+			activity.setCreatedBy(objArr[3].toString());
+			
+			user.setCompany(objArr[4].toString());
+			position.setPositionCode(objArr[5].toString());
+			position.setPositionName(objArr[6].toString());
+			
+			industry.setIndustryCode(objArr[7].toString());
+			industry.setIndustryName(objArr[8].toString());
+			
+			user.setId(objArr[9].toString());
+			activityType.setActivityTypeCode(objArr[10].toString());
+			
+			user.setPosition(position);
+			user.setIndustry(industry);
+			paymentActivityDetail.setUser(user);
+			
+			activity.setActivityType(activityType);
+			paymentActivityDetail.setActivity(activity);
+			paymentActivityDetails.add(paymentActivityDetail);
+		});
+	
+		return paymentActivityDetails;
+	}
+	
+	public List<PaymentActivityDetail> getReportIncomeSuper(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit, boolean isAscending){
+		StringBuilder sql = new StringBuilder();
+		
+		String ascending = (isAscending) ? "ASC ": "DESC ";
+		
+		sql.append("SELECT full_name,tat.activity_type_name, total_income, tb_income_group.created_by, ")
+		.append("company, ")
+		.append("tp.position_code, tp.position_name, ")
+		.append("ti.industry_code, ti.industry_name, tb_activity_user_type.id ")
+		.append("FROM tb_user AS tb_activity_user_type ")
+		.append("INNER JOIN (")
+		.append("SELECT created_by,activity_type_id, sum(total_income) as total_income from tb_activity as tb_activity_grouping_user_type ")
+		.append("INNER JOIN (")
+		.append("SELECT activity_id, sum(net) as total_income ")
+		.append("FROM ( ")
+		.append("select ta.id as activity_id, net ")
+		.append("from tb_payment_activity_detail tpad ")
+		.append("INNER JOIN tb_activity ta ON tpad.activity_id = ta.id ")
+		.append("WHERE (begin_schedule between :beginDate AND :finishDate) ")
+		.append("AND tpad.approve = true ")
+		.append(") tb_pay ")
+		.append("GROUP BY activity_id ")
+		.append(") tb_income ON tb_activity_grouping_user_type.id = tb_income.activity_id ")
+		.append("GROUP BY created_by, activity_type_id ")
+		.append(") tb_income_group ON tb_activity_user_type.id = tb_income_group.created_by ")
+		.append("INNER JOIN tb_activity_type tat ON tat.id = tb_income_group.activity_type_id ")
+		.append("INNER JOIN tb_position tp ON tp.id = tb_activity_user_type.position_id ")
+		.append("INNER JOIN tb_industry ti ON ti.id = tb_activity_user_type.industry_id ")
+		.append("ORDER BY ta_prime.created_at ")
+		.append(ascending)
 		.append("LIMIT :limit OFFSET :startPosition");
 		
 		List<PaymentActivityDetail> paymentActivityDetails = new ArrayList<>();
@@ -799,12 +956,29 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			Activity activity = new Activity();
 			ActivityType activityType = new ActivityType();
 			
-			paymentActivityDetail.setMemberCreate(objArr[0].toString());
+			User user = new User();
+			Position position = new Position();
+			Industry industry = new Industry();
+			
+			user.setFullName(objArr[0].toString());
 			activityType.setActivityTypeName(objArr[1].toString());
 
 			BigDecimal bigDecimal = new BigDecimal(objArr[2].toString());
 			paymentActivityDetail.setNet(bigDecimal);
 			activity.setCreatedBy(objArr[3].toString());
+			
+			user.setCompany(objArr[4].toString());
+			position.setPositionCode(objArr[5].toString());
+			position.setPositionName(objArr[6].toString());
+			
+			industry.setIndustryCode(objArr[7].toString());
+			industry.setIndustryName(objArr[8].toString());
+			
+			user.setId(objArr[9].toString());
+			
+			user.setPosition(position);
+			user.setIndustry(industry);
+			paymentActivityDetail.setUser(user);
 			
 			activity.setActivityType(activityType);
 			paymentActivityDetail.setActivity(activity);

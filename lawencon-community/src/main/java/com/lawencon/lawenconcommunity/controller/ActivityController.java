@@ -111,6 +111,13 @@ public class ActivityController {
 		return new ResponseEntity<>(activities,HttpStatus.OK);
 	}
 	
+	@GetMapping("is-active-order-greater-now")
+	public ResponseEntity<List<Activity>> getByIsActiveAndGreaterDateTimeNowAndOrder(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limitPage,@RequestParam("asc") boolean ascending){
+		final List<Activity> activities = activityService.getByIsActiveAndGreaterDateTimeNowAndOrder(startPosition, limitPage,ascending);
+		
+		return new ResponseEntity<>(activities,HttpStatus.OK);
+	}
+	
 	@GetMapping("users")
 	public ResponseEntity<List<Activity>> getByUser(@RequestParam("userId") String userId,@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limitPage,@RequestParam("asc") boolean ascending){
 		final List<Activity> activities = activityService.getByUser(userId,startPosition, limitPage,ascending);
