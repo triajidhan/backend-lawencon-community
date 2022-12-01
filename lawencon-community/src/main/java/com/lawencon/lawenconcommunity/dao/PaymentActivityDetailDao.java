@@ -54,36 +54,49 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<PaymentActivityDetail> getByIsActiveFalse(){
+	public List<PaymentActivityDetail> getByIsActiveFalse(int startPosition,int limit, boolean isAscending){
 		StringBuilder sql = new StringBuilder();
+		
+		String ascending = (isAscending) ? "ASC ":"DESC ";
 		
 		sql.append("SELECT * FROM tb_payment_activity_detail tpad ")
 		.append("INNER JOIN tb_activity ta ON ta.id = tpad.activity_id ")
-		.append("WHERE tpad.is_active = false");
+		.append("WHERE tpad.is_active = false ")
+		.append("ORDER BY tpad.created_at ")
+		.append(ascending)
+		.append("LIMIT :limit OFFSET :startPosition");
 		
 		List<PaymentActivityDetail> paymentActivityDetail = ConnHandler.getManager()
 				.createNativeQuery(sql.toString(),PaymentActivityDetail.class)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
 				.getResultList();
 		
 		return paymentActivityDetail;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<PaymentActivityDetail> getByIsActiveTrueAndApprovedFalse(){
+	public List<PaymentActivityDetail> getByIsActiveTrueAndApprovedFalse(int startPosition,int limit, boolean isAscending){
 		StringBuilder sql = new StringBuilder();
+		
+		String ascending = (isAscending) ? "ASC ":"DESC ";
 		
 		sql.append("SELECT * FROM tb_payment_activity_detail tpad ")
 		.append("INNER JOIN tb_activity ta ON ta.id = tpad.activity_id ")
-		.append("WHERE tpad.is_active = true AND tpad.approved = false ")
-		.append("tpad.is_active = true AND tpad.approved = false ");
+		.append("WHERE tpad.is_active = true AND tpad.approve = false ")
+		.append("ORDER BY tpad.created_at ")
+		.append(ascending)
+		.append("LIMIT :limit OFFSET :startPosition");
+		
 		
 		List<PaymentActivityDetail> paymentActivityDetail = ConnHandler.getManager()
 				.createNativeQuery(sql.toString(),PaymentActivityDetail.class)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
 				.getResultList();
 		
 		return paymentActivityDetail;
 	}
-	
 	
 	public PaymentActivityDetail getTotalPaymentActivityDetail() {
 		StringBuilder sql = new StringBuilder();

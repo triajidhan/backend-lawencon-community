@@ -99,12 +99,12 @@ public class PaymentActivityDetailService extends BaseCoreService {
 	
 	
 	
-	public List<PaymentActivityDetail> getByIsActiveTrueAndApprovedFalse(){
-		return paymentActivityDetailDao.getByIsActiveTrueAndApprovedFalse();
+	public List<PaymentActivityDetail> getByIsActiveTrueAndApprovedFalse(int startPosition,int limit, boolean isAscending){
+		return paymentActivityDetailDao.getByIsActiveTrueAndApprovedFalse(startPosition,limit, isAscending);
 	}
 	
-	public List<PaymentActivityDetail> getByIsActiveFalse(){
-		return paymentActivityDetailDao.getByIsActiveFalse();
+	public List<PaymentActivityDetail> getByIsActiveFalse(int startPosition,int limit, boolean isAscending){
+		return paymentActivityDetailDao.getByIsActiveFalse(startPosition,limit, isAscending);
 	}
 	
 	
