@@ -74,7 +74,8 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		
 		sql.append("SELECT * FROM tb_payment_activity_detail tpad ")
 		.append("INNER JOIN tb_activity ta ON ta.id = tpad.activity_id ")
-		.append("WHERE tpad.is_active = true AND tpad.approved = false");
+		.append("WHERE tpad.is_active = true AND tpad.approved = false ")
+		.append("tpad.is_active = true AND tpad.approved = false ");
 		
 		List<PaymentActivityDetail> paymentActivityDetail = ConnHandler.getManager()
 				.createNativeQuery(sql.toString(),PaymentActivityDetail.class)
@@ -417,7 +418,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append("INNER JOIN tb_position tp ON tp.id = tu.position_id ")
 		.append("INNER JOIN tb_industry ti ON ti.id = tu.industry_id ")
 		.append("WHERE ta_prime.created_by = :userCreate ")
-		.append("ORDER BY ta_prime.create_at ")
+		.append("ORDER BY ta_prime.created_at ")
 		.append(ascending)
 		.append("LIMIT :limit OFFSET :startPosition");
 		
@@ -468,8 +469,6 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			activity.setLocation(objArr[14].toString());
 			activity.setFinishSchedule(Timestamp.valueOf(objArr[15].toString()).toLocalDateTime());
 			activity.setPrice(Float.parseFloat(objArr[16].toString()));
-			
-			user.setId(objArr[17].toString());
 		
 			user.setPosition(position);
 			user.setIndustry(industry);
@@ -936,7 +935,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append("INNER JOIN tb_activity_type tat ON tat.id = tb_income_group.activity_type_id ")
 		.append("INNER JOIN tb_position tp ON tp.id = tb_activity_user_type.position_id ")
 		.append("INNER JOIN tb_industry ti ON ti.id = tb_activity_user_type.industry_id ")
-		.append("ORDER BY ta_prime.created_at ")
+		.append("ORDER BY tb_activity_user_type.created_at ")
 		.append(ascending)
 		.append("LIMIT :limit OFFSET :startPosition");
 		
