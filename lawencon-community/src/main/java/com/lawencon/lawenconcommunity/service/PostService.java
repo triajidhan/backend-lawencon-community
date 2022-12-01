@@ -84,7 +84,9 @@ public class PostService extends BaseCoreService {
 	}
 
 	public Post getById(String id) {
-		return postDao.getByIdAndDetach(Post.class, id);
+		Post post = postDao.getByIdAndDetach(Post.class, id);
+		post.setUser(userDao.getById(User.class, post.getCreatedBy()));
+		return post;
 	}
 
 	public List<Post> getByIsActive(Integer startPosition, Integer limitPage) {
