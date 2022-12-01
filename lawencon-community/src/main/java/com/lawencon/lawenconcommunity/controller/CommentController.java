@@ -44,8 +44,8 @@ public class CommentController {
 	}
 	
 	@GetMapping("users")
-	public ResponseEntity<List<Comment>> getByUser(@RequestParam("userId") String userId){
-		List<Comment> comments = commentService.getByUser(userId);
+	public ResponseEntity<List<Comment>> getByUserAndOrder(@RequestParam("userId") String userId,@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit,@RequestParam("asc") boolean ascending){
+		List<Comment> comments = commentService.getByUserAndOrder(userId,startPosition,limit,ascending);
 		
 		return new ResponseEntity<>(comments,HttpStatus.OK);
 	}
@@ -65,8 +65,8 @@ public class CommentController {
 	}
 	
 	@GetMapping("posts")
-	public ResponseEntity<List<Comment>> getByPost(@RequestParam String postId){
-		List<Comment> comments = commentService.getByPost(postId);
+	public ResponseEntity<List<Comment>> getByPostAndOrder(@RequestParam("postId") String postId,@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit,@RequestParam("asc") boolean ascending){
+		List<Comment> comments = commentService.getByPostAndOrder(postId,startPosition,limit,ascending);
 		
 		return new ResponseEntity<>(comments,HttpStatus.OK);
 	}

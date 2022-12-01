@@ -48,4 +48,12 @@ public class PaymentActivityDetail extends BaseEntity {
 	@Transient
 	private String memberCreate;
 	
+	@Transient
+	private User user;
+	
+	@Transient
+	private Integer partisipation;
+	
 }
+
+
