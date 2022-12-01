@@ -20,7 +20,7 @@ import com.lawencon.security.principal.PrincipalService;
 
 @Service
 public class PaymentActivityDetailService extends BaseCoreService {
-	
+
 	@Autowired
 	private PaymentActivityDetailDao paymentActivityDetailDao;
 
@@ -32,125 +32,135 @@ public class PaymentActivityDetailService extends BaseCoreService {
 
 	@Autowired
 	private PrincipalService principalService;
-	
+
 	@Autowired
 	private GenerateService generateService;
-	
-	public List<PaymentActivityDetail> getAll(int startPosition,int limit){
-		return paymentActivityDetailDao.getAll(PaymentActivityDetail.class,startPosition, limit);
+
+	public List<PaymentActivityDetail> getAll(int startPosition, int limit) {
+		return paymentActivityDetailDao.getAll(PaymentActivityDetail.class, startPosition, limit);
 	}
-	
+
 	public PaymentActivityDetail getById(String id) {
 		return paymentActivityDetailDao.getByIdAndDetach(PaymentActivityDetail.class, id);
 	}
-	
-	public PaymentActivityDetail getTotalPaymentActivityDetail(){
+
+	public PaymentActivityDetail getTotalPaymentActivityDetail() {
 		return paymentActivityDetailDao.getTotalPaymentActivityDetail();
 	}
-	
-	public List<PaymentActivityDetail> getByActivity(String activityId){
+
+	public List<PaymentActivityDetail> getByActivity(String activityId) {
 		return paymentActivityDetailDao.getByActivity(activityId);
 	}
-	
-	public List<PaymentActivityDetail> getByActivity(String activityId,int startPosition,int limit){
-		return paymentActivityDetailDao.getByActivity(activityId,startPosition, limit);
+
+	public List<PaymentActivityDetail> getByActivity(String activityId, int startPosition, int limit) {
+		return paymentActivityDetailDao.getByActivity(activityId, startPosition, limit);
 	}
-	
-	public PaymentActivityDetail getTotalByActivity(String activityId){
+
+	public PaymentActivityDetail getTotalByActivity(String activityId) {
 		return paymentActivityDetailDao.getTotalByActivity(activityId);
 	}
-	
-	public List<PaymentActivityDetail> getByIsActive(){
+
+	public List<PaymentActivityDetail> getByIsActive() {
 		return paymentActivityDetailDao.getByIsActive();
 	}
-	
-	public List<PaymentActivityDetail> getByIsActive(int startPosition,int limit){
+
+	public List<PaymentActivityDetail> getByIsActive(int startPosition, int limit) {
 		return paymentActivityDetailDao.getByIsActive(startPosition, limit);
 	}
-	
-	public List<PaymentActivityDetail> getByUser(String userId,int startPosition,int limit,boolean ascending){
-		return paymentActivityDetailDao.getByUser(userId, startPosition, limit,ascending);
+
+	public List<PaymentActivityDetail> getByUser(String userId, int startPosition, int limit, boolean ascending) {
+		return paymentActivityDetailDao.getByUser(userId, startPosition, limit, ascending);
 	}
-	
-	public List<PaymentActivityDetail> getByActivityTypeAndUser(String activityTypeId,String userId,int startPosition,int limit){
+
+	public List<PaymentActivityDetail> getByActivityTypeAndUser(String activityTypeId, String userId, int startPosition,
+			int limit) {
 		return paymentActivityDetailDao.getByActivityTypeAndUser(activityTypeId, userId, startPosition, limit);
 	}
-	
-	public List<PaymentActivityDetail> getByActivityTypeAndUserOrder(String activityTypeId,String userId,int startPosition,int limit,boolean ascending){
-		return paymentActivityDetailDao.getByActivityTypeAndUser(activityTypeId, userId, startPosition, limit,ascending);
+
+	public List<PaymentActivityDetail> getByActivityTypeAndUserOrder(String activityTypeId, String userId,
+			int startPosition, int limit, boolean ascending) {
+		return paymentActivityDetailDao.getByActivityTypeAndUser(activityTypeId, userId, startPosition, limit,
+				ascending);
 	}
-	
-	public List<PaymentActivityDetail> getByActivityTypeCodeAndUser(String activityTypeCode,String userId,int startPosition,int limit){
+
+	public List<PaymentActivityDetail> getByActivityTypeCodeAndUser(String activityTypeCode, String userId,
+			int startPosition, int limit) {
 		return paymentActivityDetailDao.getByActivityTypeCodeAndUser(activityTypeCode, userId, startPosition, limit);
 	}
-	
-	public List<PaymentActivityDetail> getByActivityTypeCodeAndUserOrder(String activityTypeCode,String userId,int startPosition,int limit,boolean ascending){
-		return paymentActivityDetailDao.getByActivityTypeCodeAndUser(activityTypeCode, userId, startPosition, limit,ascending);
+
+	public List<PaymentActivityDetail> getByActivityTypeCodeAndUserOrder(String activityTypeCode, String userId,
+			int startPosition, int limit, boolean ascending) {
+		return paymentActivityDetailDao.getByActivityTypeCodeAndUser(activityTypeCode, userId, startPosition, limit,
+				ascending);
 	}
-	
-	
-	public List<PaymentActivityDetail> getReportPartisipationMember(LocalDateTime beginDate,LocalDateTime finishDate){
+
+	public List<PaymentActivityDetail> getReportPartisipationMember(LocalDateTime beginDate, LocalDateTime finishDate) {
 		List<PaymentActivityDetail> paymentActivityDetails = null;
 		try {
-			paymentActivityDetails = paymentActivityDetailDao.getReportPartisipationMember(beginDate, finishDate,principalService.getAuthPrincipal());
+			paymentActivityDetails = paymentActivityDetailDao.getReportPartisipationMember(beginDate, finishDate,
+					principalService.getAuthPrincipal());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return paymentActivityDetails;
 	}
-	
-	public List<PaymentActivityDetail> getReportPartisipationMember(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit){
+
+	public List<PaymentActivityDetail> getReportPartisipationMember(LocalDateTime beginDate, LocalDateTime finishDate,
+			int startPosition, int limit) {
 		List<PaymentActivityDetail> paymentActivityDetails = null;
 		try {
-			paymentActivityDetails = paymentActivityDetailDao.getReportPartisipationMember(beginDate, finishDate,startPosition,limit,principalService.getAuthPrincipal());
+			paymentActivityDetails = paymentActivityDetailDao.getReportPartisipationMember(beginDate, finishDate,
+					startPosition, limit, principalService.getAuthPrincipal());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return paymentActivityDetails;
 	}
-	
-	
-	public List<PaymentActivityDetail> getReportPartisipationSuper(LocalDateTime beginDate,LocalDateTime finishDate){
+
+	public List<PaymentActivityDetail> getReportPartisipationSuper(LocalDateTime beginDate, LocalDateTime finishDate) {
 		return paymentActivityDetailDao.getReportPartisipationSuper(beginDate, finishDate);
 	}
-	
-	public List<PaymentActivityDetail> getReportPartisipationSuper(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit){
-		return paymentActivityDetailDao.getReportPartisipationSuper(beginDate, finishDate,startPosition,limit);
+
+	public List<PaymentActivityDetail> getReportPartisipationSuper(LocalDateTime beginDate, LocalDateTime finishDate,
+			int startPosition, int limit) {
+		return paymentActivityDetailDao.getReportPartisipationSuper(beginDate, finishDate, startPosition, limit);
 	}
-	
-	public List<PaymentActivityDetail> getReportIncomeMember(LocalDateTime beginDate,LocalDateTime finishDate){
+
+	public List<PaymentActivityDetail> getReportIncomeMember(LocalDateTime beginDate, LocalDateTime finishDate) {
 		List<PaymentActivityDetail> paymentActivityDetails = null;
 		try {
-			paymentActivityDetails = paymentActivityDetailDao.getReportIncomeMember(beginDate, finishDate,principalService.getAuthPrincipal());
+			paymentActivityDetails = paymentActivityDetailDao.getReportIncomeMember(beginDate, finishDate,
+					principalService.getAuthPrincipal());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return paymentActivityDetails;
 	}
-	
-	public List<PaymentActivityDetail> getReportIncomeMember(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit){
+
+	public List<PaymentActivityDetail> getReportIncomeMember(LocalDateTime beginDate, LocalDateTime finishDate,
+			int startPosition, int limit) {
 		List<PaymentActivityDetail> paymentActivityDetails = null;
 		try {
-			paymentActivityDetails = paymentActivityDetailDao.getReportIncomeMember(beginDate, finishDate,startPosition,limit,principalService.getAuthPrincipal());
+			paymentActivityDetails = paymentActivityDetailDao.getReportIncomeMember(beginDate, finishDate,
+					startPosition, limit, principalService.getAuthPrincipal());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return paymentActivityDetails;
 	}
-	
-	public List<PaymentActivityDetail> getReportIncomeSuper(LocalDateTime beginDate,LocalDateTime finishDate){
+
+	public List<PaymentActivityDetail> getReportIncomeSuper(LocalDateTime beginDate, LocalDateTime finishDate) {
 		return paymentActivityDetailDao.getReportIncomeSuper(beginDate, finishDate);
 	}
-	
-	public List<PaymentActivityDetail> getReportIncomeSuper(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit){
-		return paymentActivityDetailDao.getReportIncomeSuper(beginDate, finishDate,startPosition,limit);
+
+	public List<PaymentActivityDetail> getReportIncomeSuper(LocalDateTime beginDate, LocalDateTime finishDate,
+			int startPosition, int limit) {
+		return paymentActivityDetailDao.getReportIncomeSuper(beginDate, finishDate, startPosition, limit);
 	}
-	
-	
 
 	public ResponseMessageDto insert(PaymentActivityDetail data) {
 		valInsert(data);
@@ -209,12 +219,11 @@ public class PaymentActivityDetailService extends BaseCoreService {
 		responseMessageDto.setMessage("Approving Failed!");
 		PaymentActivityDetail paymentActivityDetail = paymentActivityDetailDao.getById(PaymentActivityDetail.class,
 				data.getId());
-		if(paymentActivityDetail.getApprove() == false) {
-			
+		begin();
+		if (paymentActivityDetail.getApprove() == false && data.getIsActive() == null) {
 			User user = userDao.getById(User.class, paymentActivityDetail.getActivity().getCreatedBy());
 			PaymentActivityDetail paymentApproving = paymentActivityDetail;
-			User userSystem = userDao.getById(User.class,userDao.getSystem("SYS").get().getId());
-			begin();
+			User userSystem = userDao.getById(User.class, userDao.getSystem("SYS").get().getId());
 			try {
 				paymentApproving.setApprove(true);
 				paymentActivityDetailDao.saveAndFlush(paymentApproving);
@@ -224,23 +233,33 @@ public class PaymentActivityDetailService extends BaseCoreService {
 				balance.setTotalBalance(totalBalance);
 				user.setBalance(balance);
 				userDao.save(user);
-				
+
 				BigDecimal totalBalanceSystem = userSystem.getBalance().getTotalBalance().add(new BigDecimal(5000));
 				Balance sysBalance = new Balance();
 				sysBalance = userSystem.getBalance();
 				sysBalance.setTotalBalance(totalBalanceSystem);
 				userSystem.setBalance(sysBalance);
 				userDao.save(userSystem);
-				
+
 				responseMessageDto.setMessage("Approving Success!");
 			} catch (Exception e) {
-				responseMessageDto.setMessage("Approving Failed!");
 				e.printStackTrace();
+				throw new RuntimeException("Approving Failed!");
 			}
-			commit();
+		} else if (data.getIsActive() != null) {
+			PaymentActivityDetail paymentApproving = paymentActivityDetail;
+			paymentApproving.setIsActive(data.getIsActive());
+			try {
+				paymentActivityDetailDao.saveAndFlush(paymentApproving);
+				responseMessageDto.setMessage("Rejected");
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new RuntimeException("Rejecting Failed!");
+			}
 		}else {
 			throw new RuntimeException("Approving can only be done once!");
 		}
+		commit();
 		return responseMessageDto;
 	}
 
