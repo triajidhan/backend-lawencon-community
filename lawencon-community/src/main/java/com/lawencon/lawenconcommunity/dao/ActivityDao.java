@@ -350,6 +350,28 @@ public class ActivityDao extends AbstractJpaDao{
 		
 		return objResultActivities;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Activity> getByIsActiveAndGreaterDateTimeNowAndOrder(int startPosition,int limit,boolean isAscending){
+		final StringBuilder sql = new StringBuilder();
+		
+		String ascending = (isAscending) ? "ASC ":"DESC ";
+		
+		sql.append("SELECT * ")
+		.append("FROM tb_activity ta ")
+		.append("INNER JOIN tb_activity_type tat  ON ta.activity_type_id = tat.id ")
+		.append("WHERE ta.is_active = true AND begin_schedule > now() ")
+		.append("ORDER BY ta.created_at ")
+		.append(ascending)
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		final List<Activity> objResultActivities = ConnHandler.getManager().createNativeQuery(sql.toString(),Activity.class)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
+				.getResultList();
+		
+		return objResultActivities;
+	}
 
 	public Activity getTotalByIsActive() {
 		final StringBuilder sql = new StringBuilder();

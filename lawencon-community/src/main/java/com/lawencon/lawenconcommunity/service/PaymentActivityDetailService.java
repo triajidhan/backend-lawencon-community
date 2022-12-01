@@ -2,6 +2,7 @@ package com.lawencon.lawenconcommunity.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,18 @@ import com.lawencon.base.BaseCoreService;
 import com.lawencon.lawenconcommunity.dao.FileDao;
 import com.lawencon.lawenconcommunity.dao.PaymentActivityDetailDao;
 import com.lawencon.lawenconcommunity.dao.UserDao;
+import com.lawencon.lawenconcommunity.dto.PaymentPartisipationMemberDto;
+import com.lawencon.lawenconcommunity.dto.PaymentPartisipationSuperDto;
+import com.lawencon.lawenconcommunity.dto.PaymentTotalIncomeMemberDto;
+import com.lawencon.lawenconcommunity.dto.PaymentTotalIncomeSuperDto;
 import com.lawencon.lawenconcommunity.dto.ResponseMessageDto;
+import com.lawencon.lawenconcommunity.model.Activity;
+import com.lawencon.lawenconcommunity.model.ActivityType;
 import com.lawencon.lawenconcommunity.model.Balance;
 import com.lawencon.lawenconcommunity.model.File;
+import com.lawencon.lawenconcommunity.model.Industry;
 import com.lawencon.lawenconcommunity.model.PaymentActivityDetail;
+import com.lawencon.lawenconcommunity.model.Position;
 import com.lawencon.lawenconcommunity.model.User;
 import com.lawencon.security.principal.PrincipalService;
 
@@ -89,10 +98,20 @@ public class PaymentActivityDetailService extends BaseCoreService {
 	}
 	
 	
-	public List<PaymentActivityDetail> getReportPartisipationMember(LocalDateTime beginDate,LocalDateTime finishDate){
+	
+	public List<PaymentActivityDetail> getByIsActiveTrueAndApprovedFalse(){
+		return paymentActivityDetailDao.getByIsActiveTrueAndApprovedFalse();
+	}
+	
+	public List<PaymentActivityDetail> getByIsActiveFalse(){
+		return paymentActivityDetailDao.getByIsActiveFalse();
+	}
+	
+	
+	public List<PaymentActivityDetail> getReportPartisipationMember(LocalDateTime beginDate,LocalDateTime finishDate,boolean ascending){
 		List<PaymentActivityDetail> paymentActivityDetails = null;
 		try {
-			paymentActivityDetails = paymentActivityDetailDao.getReportPartisipationMember(beginDate, finishDate,principalService.getAuthPrincipal());
+			paymentActivityDetails = paymentActivityDetailDao.getReportPartisipationMember(beginDate, finishDate,principalService.getAuthPrincipal(),ascending);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -100,10 +119,10 @@ public class PaymentActivityDetailService extends BaseCoreService {
 		return paymentActivityDetails;
 	}
 	
-	public List<PaymentActivityDetail> getReportPartisipationMember(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit){
+	public List<PaymentActivityDetail> getReportPartisipationMember(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit, boolean ascending){
 		List<PaymentActivityDetail> paymentActivityDetails = null;
 		try {
-			paymentActivityDetails = paymentActivityDetailDao.getReportPartisipationMember(beginDate, finishDate,startPosition,limit,principalService.getAuthPrincipal());
+			paymentActivityDetails = paymentActivityDetailDao.getReportPartisipationMember(beginDate, finishDate,startPosition,limit,principalService.getAuthPrincipal(),ascending);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -112,18 +131,18 @@ public class PaymentActivityDetailService extends BaseCoreService {
 	}
 	
 	
-	public List<PaymentActivityDetail> getReportPartisipationSuper(LocalDateTime beginDate,LocalDateTime finishDate){
-		return paymentActivityDetailDao.getReportPartisipationSuper(beginDate, finishDate);
+	public List<PaymentActivityDetail> getReportPartisipationSuper(LocalDateTime beginDate,LocalDateTime finishDate,boolean ascending){
+		return paymentActivityDetailDao.getReportPartisipationSuper(beginDate, finishDate,ascending);
 	}
 	
-	public List<PaymentActivityDetail> getReportPartisipationSuper(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit){
-		return paymentActivityDetailDao.getReportPartisipationSuper(beginDate, finishDate,startPosition,limit);
+	public List<PaymentActivityDetail> getReportPartisipationSuper(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit, boolean ascending){
+		return paymentActivityDetailDao.getReportPartisipationSuper(beginDate, finishDate,startPosition,limit,ascending);
 	}
 	
-	public List<PaymentActivityDetail> getReportIncomeMember(LocalDateTime beginDate,LocalDateTime finishDate){
+	public List<PaymentActivityDetail> getReportIncomeMember(LocalDateTime beginDate,LocalDateTime finishDate,boolean ascending){
 		List<PaymentActivityDetail> paymentActivityDetails = null;
 		try {
-			paymentActivityDetails = paymentActivityDetailDao.getReportIncomeMember(beginDate, finishDate,principalService.getAuthPrincipal());
+			paymentActivityDetails = paymentActivityDetailDao.getReportIncomeMember(beginDate, finishDate,principalService.getAuthPrincipal(),ascending);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -131,10 +150,10 @@ public class PaymentActivityDetailService extends BaseCoreService {
 		return paymentActivityDetails;
 	}
 	
-	public List<PaymentActivityDetail> getReportIncomeMember(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit){
+	public List<PaymentActivityDetail> getReportIncomeMember(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit, boolean ascending){
 		List<PaymentActivityDetail> paymentActivityDetails = null;
 		try {
-			paymentActivityDetails = paymentActivityDetailDao.getReportIncomeMember(beginDate, finishDate,startPosition,limit,principalService.getAuthPrincipal());
+			paymentActivityDetails = paymentActivityDetailDao.getReportIncomeMember(beginDate, finishDate,startPosition,limit,principalService.getAuthPrincipal(),ascending);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -142,15 +161,202 @@ public class PaymentActivityDetailService extends BaseCoreService {
 		return paymentActivityDetails;
 	}
 	
-	public List<PaymentActivityDetail> getReportIncomeSuper(LocalDateTime beginDate,LocalDateTime finishDate){
-		return paymentActivityDetailDao.getReportIncomeSuper(beginDate, finishDate);
+	public List<PaymentActivityDetail> getReportIncomeSuper(LocalDateTime beginDate,LocalDateTime finishDate, boolean ascending){
+		return paymentActivityDetailDao.getReportIncomeSuper(beginDate, finishDate,ascending);
 	}
 	
-	public List<PaymentActivityDetail> getReportIncomeSuper(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit){
-		return paymentActivityDetailDao.getReportIncomeSuper(beginDate, finishDate,startPosition,limit);
+	public List<PaymentActivityDetail> getReportIncomeSuper(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit, boolean ascending){
+		return paymentActivityDetailDao.getReportIncomeSuper(beginDate, finishDate,startPosition,limit, ascending);
 	}
 	
 	
+	
+	public List<PaymentPartisipationMemberDto> getReportPaymentPartisipationMemberDto(LocalDateTime beginDate,LocalDateTime finishDate, boolean ascending){
+		List<PaymentActivityDetail> paymentActivityDetails = null;
+		
+		List<PaymentPartisipationMemberDto> partisipationMemberDtos = new ArrayList<>();
+		
+		try {
+			paymentActivityDetails = paymentActivityDetailDao.getReportPartisipationMember(beginDate, finishDate,principalService.getAuthPrincipal(),ascending);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		for(int i = 0; i < paymentActivityDetails.size();i++) {
+			PaymentActivityDetail paymentActivityDetail =  paymentActivityDetails.get(i);
+			
+			PaymentPartisipationMemberDto partisipationMemberDto = new PaymentPartisipationMemberDto();
+			
+			ActivityType activityType =  paymentActivityDetail.getActivity().getActivityType();
+			partisipationMemberDto.setActivityTypeCode(activityType.getActivityTypeCode());
+			partisipationMemberDto.setActivityTypeName(activityType.getActivityTypeName());
+			
+			Activity activity =  paymentActivityDetail.getActivity();
+			partisipationMemberDto.setActivityCode(activity.getActivityCode());
+			partisipationMemberDto.setTitle(activity.getTitle());
+			partisipationMemberDto.setBeginSchedule(activity.getBeginSchedule());
+			partisipationMemberDto.setFinishSchedule(activity.getFinishSchedule());
+			partisipationMemberDto.setLocation(activity.getLocation());
+			partisipationMemberDto.setPrice(activity.getPrice());
+			partisipationMemberDto.setProvider(activity.getProvider());
+			
+			User user = paymentActivityDetail.getUser();
+			partisipationMemberDto.setId(user.getId());
+			partisipationMemberDto.setFullName(user.getFullName());
+			partisipationMemberDto.setCompany(user.getCompany());
+			
+			Position position = paymentActivityDetail.getUser().getPosition();
+			partisipationMemberDto.setPositionCode(position.getPositionCode());
+			partisipationMemberDto.setPositionName(position.getPositionName());
+			
+			Industry industry = paymentActivityDetail.getUser().getIndustry();
+			partisipationMemberDto.setIndustryCode(industry.getIndustryCode());
+			partisipationMemberDto.setIndustryName(industry.getIndustryName());
+			
+			partisipationMemberDto.setPartisipant(paymentActivityDetail.getPartisipation());
+			
+			partisipationMemberDto.setCreatedBy(paymentActivityDetail.getActivity().getCreatedBy());
+			
+			partisipationMemberDtos.add(partisipationMemberDto);
+		}
+		
+		return partisipationMemberDtos;
+	}
+	
+	
+	public List<PaymentPartisipationSuperDto> getReportPaymentPartisipationSuperDto(LocalDateTime beginDate,LocalDateTime finishDate,boolean ascending){
+		List<PaymentActivityDetail> paymentActivityDetails =  paymentActivityDetailDao.getReportPartisipationSuper(beginDate, finishDate,ascending);
+		
+		List<PaymentPartisipationSuperDto> partisipationSuperDtos = new ArrayList<>();
+		
+		for(int i = 0; i < paymentActivityDetails.size();i++) {
+			PaymentActivityDetail paymentActivityDetail =  paymentActivityDetails.get(i);
+			
+			PaymentPartisipationSuperDto partisipationSuperDto = new PaymentPartisipationSuperDto();
+			
+			ActivityType activityType =  paymentActivityDetail.getActivity().getActivityType();
+			partisipationSuperDto.setActivityTypeCode(activityType.getActivityTypeCode());
+			partisipationSuperDto.setActivityTypeName(activityType.getActivityTypeName());
+			
+			Activity activity =  paymentActivityDetail.getActivity();
+			partisipationSuperDto.setActivityCode(activity.getActivityCode());
+			partisipationSuperDto.setTitle(activity.getTitle());
+			partisipationSuperDto.setBeginSchedule(activity.getBeginSchedule());
+			partisipationSuperDto.setFinishSchedule(activity.getFinishSchedule());
+			partisipationSuperDto.setLocation(activity.getLocation());
+			partisipationSuperDto.setPrice(activity.getPrice());
+			partisipationSuperDto.setProvider(activity.getProvider());
+			
+			User user = paymentActivityDetail.getUser();
+			partisipationSuperDto.setId(user.getId());
+			partisipationSuperDto.setFullName(user.getFullName());
+			partisipationSuperDto.setCompany(user.getCompany());
+			
+			Position position = paymentActivityDetail.getUser().getPosition();
+			partisipationSuperDto.setPositionCode(position.getPositionCode());
+			partisipationSuperDto.setPositionName(position.getPositionName());
+			
+			Industry industry = paymentActivityDetail.getUser().getIndustry();
+			partisipationSuperDto.setIndustryCode(industry.getIndustryCode());
+			partisipationSuperDto.setIndustryName(industry.getIndustryName());
+			
+			partisipationSuperDto.setPartisipant(paymentActivityDetail.getPartisipation());
+			
+			partisipationSuperDto.setCreatedBy(paymentActivityDetail.getActivity().getCreatedBy());
+			
+			partisipationSuperDtos.add(partisipationSuperDto);
+		}
+		
+		return partisipationSuperDtos;
+	}
+	
+	public List<PaymentTotalIncomeMemberDto> getPaymentTotalIncomeMemberDto(LocalDateTime beginDate,LocalDateTime finishDate,boolean ascending){
+		List<PaymentActivityDetail> paymentActivityDetails = null;
+		try {
+			paymentActivityDetails = paymentActivityDetailDao.getReportIncomeMember(beginDate, finishDate,principalService.getAuthPrincipal(),ascending);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		List<PaymentTotalIncomeMemberDto> totalIncomeMemberDtos = new ArrayList<>();
+		
+		for(int i = 0; i < paymentActivityDetails.size();i++) {
+			PaymentActivityDetail paymentActivityDetail =  paymentActivityDetails.get(i);
+			
+			PaymentTotalIncomeMemberDto totalIncomeMemberDto = new PaymentTotalIncomeMemberDto();
+			
+			ActivityType activityType =  paymentActivityDetail.getActivity().getActivityType();
+			totalIncomeMemberDto.setActivityTypeCode(activityType.getActivityTypeCode());
+			totalIncomeMemberDto.setActivityTypeName(activityType.getActivityTypeName());
+			
+			Activity activity =  paymentActivityDetail.getActivity();
+			totalIncomeMemberDto.setActivityCode(activity.getActivityCode());
+			totalIncomeMemberDto.setTitle(activity.getTitle());
+			totalIncomeMemberDto.setBeginSchedule(activity.getBeginSchedule());
+			totalIncomeMemberDto.setFinishSchedule(activity.getFinishSchedule());
+			totalIncomeMemberDto.setLocation(activity.getLocation());
+			totalIncomeMemberDto.setPrice(activity.getPrice());
+			totalIncomeMemberDto.setProvider(activity.getProvider());
+			
+			User user = paymentActivityDetail.getUser();
+			totalIncomeMemberDto.setId(user.getId());
+			totalIncomeMemberDto.setFullName(user.getFullName());
+			totalIncomeMemberDto.setCompany(user.getCompany());
+			
+			Position position = paymentActivityDetail.getUser().getPosition();
+			totalIncomeMemberDto.setPositionCode(position.getPositionCode());
+			totalIncomeMemberDto.setPositionName(position.getPositionName());
+			
+			Industry industry = paymentActivityDetail.getUser().getIndustry();
+			totalIncomeMemberDto.setIndustryCode(industry.getIndustryCode());
+			totalIncomeMemberDto.setIndustryName(industry.getIndustryName());
+			
+			totalIncomeMemberDto.setTotalIncome(paymentActivityDetail.getNet());
+			
+			totalIncomeMemberDto.setCreatedBy(paymentActivityDetail.getActivity().getCreatedBy());
+			
+			totalIncomeMemberDtos.add(totalIncomeMemberDto);
+		}
+		
+		return totalIncomeMemberDtos;
+	}
+	
+	public List<PaymentTotalIncomeSuperDto> getPaymentTotalIncomeSuperDto(LocalDateTime beginDate,LocalDateTime finishDate,boolean ascending){
+		List<PaymentActivityDetail> paymentActivityDetails =  paymentActivityDetailDao.getReportIncomeSuper(beginDate, finishDate,ascending);
+		
+		List<PaymentTotalIncomeSuperDto> totalIncomeMemberDtos = new ArrayList<>();
+		
+		for(int i = 0; i < paymentActivityDetails.size();i++) {
+			PaymentActivityDetail paymentActivityDetail =  paymentActivityDetails.get(i);
+			
+			PaymentTotalIncomeSuperDto totalIncomeSuperDto = new PaymentTotalIncomeSuperDto();
+			
+			ActivityType activityType =  paymentActivityDetail.getActivity().getActivityType();
+			totalIncomeSuperDto.setActivityTypeCode(activityType.getActivityTypeCode());
+			totalIncomeSuperDto.setActivityTypeName(activityType.getActivityTypeName());
+			
+			User user = paymentActivityDetail.getUser();
+			totalIncomeSuperDto.setId(user.getId());
+			totalIncomeSuperDto.setFullName(user.getFullName());
+			totalIncomeSuperDto.setCompany(user.getCompany());
+			
+			Position position = paymentActivityDetail.getUser().getPosition();
+			totalIncomeSuperDto.setPositionCode(position.getPositionCode());
+			totalIncomeSuperDto.setPositionName(position.getPositionName());
+			
+			Industry industry = paymentActivityDetail.getUser().getIndustry();
+			totalIncomeSuperDto.setIndustryCode(industry.getIndustryCode());
+			totalIncomeSuperDto.setIndustryName(industry.getIndustryName());
+			
+			totalIncomeSuperDto.setTotalIncome(paymentActivityDetail.getNet());
+			
+			totalIncomeSuperDto.setCreatedBy(paymentActivityDetail.getActivity().getCreatedBy());
+			
+			totalIncomeMemberDtos.add(totalIncomeSuperDto);
+		}
+		
+		return totalIncomeMemberDtos;
+	}
 
 	public ResponseMessageDto insert(PaymentActivityDetail data) {
 		valInsert(data);
