@@ -1272,6 +1272,12 @@ INNER JOIN (
 INNER JOIN tb_activity_type tat ON tat.id = ta_prime.activity_type_id
 INNER JOIN tb_user tu ON ta_prime.created_by = tu.id;
 
+-- INSERT USER SYSTEM, SUPER ADMIN, ADMIN
+INSERT INTO tb_balance(id,total_balance,created_by,created_at,versions) VALUES
+('system-1',0,'system-user-id',now(),0);
+
+INSERT INTO tb_user(id,full_name,email,pass,role_id ,created_by,versions,balance_id) VALUES
+('system-user-id','system','system@mail.com',12345,'system','system-user-id',0,'system-1');
 
 
 -- jumlah keuntungan yang mengikuti event
