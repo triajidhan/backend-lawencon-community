@@ -390,7 +390,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			activity.setActivityCode(objArr[13].toString());
 			activity.setLocation(objArr[14].toString());
 			activity.setFinishSchedule(Timestamp.valueOf(objArr[15].toString()).toLocalDateTime());
-			activity.setPrice(Float.parseFloat(objArr[16].toString()));
+			activity.setPrice(BigDecimal.valueOf(Double.valueOf(objArr[16].toString())));
 		
 			user.setPosition(position);
 			user.setIndustry(industry);
@@ -481,7 +481,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			activity.setActivityCode(objArr[13].toString());
 			activity.setLocation(objArr[14].toString());
 			activity.setFinishSchedule(Timestamp.valueOf(objArr[15].toString()).toLocalDateTime());
-			activity.setPrice(Float.parseFloat(objArr[16].toString()));
+			activity.setPrice(BigDecimal.valueOf(Double.valueOf(objArr[16].toString())));
 		
 			user.setPosition(position);
 			user.setIndustry(industry);
@@ -564,7 +564,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			activity.setActivityCode(objArr[13].toString());
 			activity.setLocation(objArr[14].toString());
 			activity.setFinishSchedule(Timestamp.valueOf(objArr[15].toString()).toLocalDateTime());
-			activity.setPrice(Float.parseFloat(objArr[16].toString()));
+			activity.setPrice(BigDecimal.valueOf(Double.valueOf(objArr[16].toString())));
 			user.setId(objArr[17].toString());
 		
 			user.setPosition(position);
@@ -651,7 +651,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			activity.setActivityCode(objArr[13].toString());
 			activity.setLocation(objArr[14].toString());
 			activity.setFinishSchedule(Timestamp.valueOf(objArr[15].toString()).toLocalDateTime());
-			activity.setPrice(Float.parseFloat(objArr[16].toString()));
+			activity.setPrice(BigDecimal.valueOf(Double.valueOf(objArr[16].toString())));
 		
 			user.setPosition(position);
 			user.setIndustry(industry);
@@ -735,7 +735,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			activity.setActivityCode(objArr[11].toString());
 			activity.setLocation(objArr[12].toString());
 			activity.setFinishSchedule(Timestamp.valueOf(objArr[13].toString()).toLocalDateTime());
-			activity.setPrice(Float.parseFloat(objArr[14].toString()));
+			activity.setPrice(BigDecimal.valueOf(Double.valueOf(objArr[14].toString())));
 			activity.setProvider(objArr[15].toString());
 			
 			user.setFullName(objArr[16].toString());
@@ -827,7 +827,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			activity.setActivityCode(objArr[11].toString());
 			activity.setLocation(objArr[12].toString());
 			activity.setFinishSchedule(Timestamp.valueOf(objArr[13].toString()).toLocalDateTime());
-			activity.setPrice(Float.parseFloat(objArr[14].toString()));
+			activity.setPrice(BigDecimal.valueOf(Double.valueOf(objArr[14].toString())));
 			activity.setProvider(objArr[15].toString());
 		
 			user.setPosition(position);
