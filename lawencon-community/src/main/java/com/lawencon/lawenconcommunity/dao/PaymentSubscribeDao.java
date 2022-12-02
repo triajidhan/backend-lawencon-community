@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import com.lawencon.base.AbstractJpaDao;
 import com.lawencon.base.ConnHandler;
-import com.lawencon.lawenconcommunity.model.PaymentActivityDetail;
 import com.lawencon.lawenconcommunity.model.PaymentSubscribe;
 
 @Repository
@@ -112,4 +111,83 @@ public class PaymentSubscribeDao extends AbstractJpaDao{
 		
 		return paymentSubscribes;
 	}
+	
+	
+	public PaymentSubscribe getTotalByIsActiveTrueAndApprovedFalse(){
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT count(*) FROM tb_payment_subscribe tps ")
+		.append("WHERE tps.is_active = true AND tps.approve = false ");
+		
+		Object objPaymentSubscribe = null;
+		PaymentSubscribe paymentSubcribe = null;
+		
+		try {
+			objPaymentSubscribe = ConnHandler.getManager().createNativeQuery(sql.toString())
+					.getSingleResult();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objPaymentSubscribe != null) {
+			Object obj = (Object) objPaymentSubscribe;
+			
+			paymentSubcribe = new PaymentSubscribe();
+			
+			paymentSubcribe.setCountOfPaymentSubscribe(Integer.parseInt(obj.toString()));
+		}
+		
+		return paymentSubcribe;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<PaymentSubscribe> getByIsActiveTrueAndApprovedTrue(int startPosition,int limit, boolean isAscending){
+		StringBuilder sql = new StringBuilder();
+		
+		String ascending = (isAscending) ? "ASC ":"DESC ";
+		
+		sql.append("SELECT * FROM tb_payment_subscribe tps ")
+		.append("WHERE tps.is_active = true AND tps.approve = true ")
+		.append("ORDER BY tps.created_at ")
+		.append(ascending)
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		
+		List<PaymentSubscribe> paymentSubscribes = ConnHandler.getManager()
+				.createNativeQuery(sql.toString(),PaymentSubscribe.class)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
+				.getResultList();
+		
+		return paymentSubscribes;
+	}
+	
+	public PaymentSubscribe getTotalByIsActiveTrueAndApprovedTrue(){
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT count(*) FROM tb_payment_subscribe tps ")
+		.append("WHERE tps.is_active = true AND tps.approve = true ");
+		
+		Object objPaymentSubscribe = null;
+		PaymentSubscribe paymentSubcribe = null;
+		
+		try {
+			objPaymentSubscribe = ConnHandler.getManager().createNativeQuery(sql.toString())
+					.getSingleResult();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objPaymentSubscribe != null) {
+			Object obj = (Object) objPaymentSubscribe;
+			
+			paymentSubcribe = new PaymentSubscribe();
+			
+			paymentSubcribe.setCountOfPaymentSubscribe(Integer.parseInt(obj.toString()));
+		}
+		
+		return paymentSubcribe;
+	}
+	
 }

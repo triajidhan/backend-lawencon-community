@@ -99,8 +99,8 @@ public class PaymentActivityDetailController {
 	}
 	
 	@GetMapping("is-active")
-	public ResponseEntity<List<PaymentActivityDetail>> getByIsActive(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit){
-		List<PaymentActivityDetail> paymentActivityDetail = paymentActivityDetailService.getByIsActive(startPosition, limit);
+	public ResponseEntity<List<PaymentActivityDetail>> getByIsActive(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit,@RequestParam("asc") boolean ascending){
+		List<PaymentActivityDetail> paymentActivityDetail = paymentActivityDetailService.getByIsActive(startPosition, limit,ascending);
 		
 		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
 	}
@@ -113,8 +113,22 @@ public class PaymentActivityDetailController {
 	}
 	
 	@GetMapping("is-active-approve-false")
-	public ResponseEntity<List<PaymentActivityDetail>> getByIsActiveTrueAndApprovedFalse(int startPosition,int limit, boolean isAscending){
+	public ResponseEntity<List<PaymentActivityDetail>> getByIsActiveTrueAndApprovedFalse(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit, @RequestParam("asc") boolean isAscending){
 		List<PaymentActivityDetail> paymentActivityDetail = paymentActivityDetailService.getByIsActiveTrueAndApprovedFalse(startPosition,limit, isAscending);
+		
+		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
+	}
+	
+	@GetMapping("is-active-approve-true")
+	public ResponseEntity<List<PaymentActivityDetail>> getByIsActiveTrueAndApprovedTrue(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit, @RequestParam("asc") boolean isAscending){
+		List<PaymentActivityDetail> paymentActivityDetail = paymentActivityDetailService.getByIsActiveTrueAndApprovedTrue(startPosition,limit, isAscending);
+		
+		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
+	}
+	
+	@GetMapping("total-is-active-approve-true")
+	public ResponseEntity<PaymentActivityDetail> getTotalByIsActiveTrueAndApprovedTrue(){
+		PaymentActivityDetail paymentActivityDetail = paymentActivityDetailService.getTotalByIsActiveTrueAndApprovedTrue();
 		
 		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
 	}
@@ -125,6 +139,15 @@ public class PaymentActivityDetailController {
 		
 		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
 	}
+	
+	
+	@GetMapping("total-is-active-approve-false")
+	public ResponseEntity<PaymentActivityDetail> getTotalByIsActiveTrueAndApprovedFalse(){
+		PaymentActivityDetail paymentActivityDetail = paymentActivityDetailService.getTotalByIsActiveTrueAndApprovedFalse();
+		
+		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
+	}
+	
 	
 	@GetMapping("partisipatian-member-all")
 	public ResponseEntity<List<PaymentActivityDetail>> getReportPartisipation(@RequestParam("beginDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime beginDate,

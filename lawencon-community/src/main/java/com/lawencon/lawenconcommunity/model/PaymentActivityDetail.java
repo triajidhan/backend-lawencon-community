@@ -53,7 +53,6 @@ public class PaymentActivityDetail extends BaseEntity {
 	
 	@Transient
 	private Integer partisipation;
-	
 }
 
 
