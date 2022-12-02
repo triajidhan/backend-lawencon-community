@@ -30,25 +30,26 @@ public class PaymentSubscribeService extends BaseCoreService {
 
 	@Autowired
 	private PrincipalService principalService;
-	
-	@Autowired 
+
+	@Autowired
 	private GenerateService generateService;
-	public List<PaymentSubscribe> getAll(int startPosition,int limit){
-		return paymentSubscribeDao.getAll(PaymentSubscribe.class,startPosition, limit);
+
+	public List<PaymentSubscribe> getAll(int startPosition, int limit) {
+		return paymentSubscribeDao.getAll(PaymentSubscribe.class, startPosition, limit);
 	}
-	
+
 	public PaymentSubscribe getById(String id) {
 		return paymentSubscribeDao.getByIdAndDetach(PaymentSubscribe.class, id);
 	}
-	
-	public List<PaymentSubscribe> getByIsActive(int startPosition,int limit){
+
+	public List<PaymentSubscribe> getByIsActive(int startPosition, int limit) {
 		return paymentSubscribeDao.getByIsActive(startPosition, limit);
 	}
-	
-	public List<PaymentSubscribe> getByIsActive(){
+
+	public List<PaymentSubscribe> getByIsActive() {
 		return paymentSubscribeDao.getByIsActive();
 	}
-	
+
 	public PaymentSubscribe getTotalPaymentSubscribe() {
 		return paymentSubscribeDao.getTotalPaymentSubscribe();
 	}
@@ -114,13 +115,12 @@ public class PaymentSubscribeService extends BaseCoreService {
 	public ResponseMessageDto update(PaymentSubscribe data) {
 		valUpdate(data);
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
-//		responseMessageDto.setMessage("Approving Failed!");
 		PaymentSubscribe paymentSubscribe = paymentSubscribeDao.getById(PaymentSubscribe.class, data.getId());
-		if(paymentSubscribe.getApprove()==false) {
-			User userSystem = userDao.getById(User.class,userDao.getSystem("SYS").get().getId());
+		begin();
+		if (paymentSubscribe.getApprove() == false && data.getIsActive() == true) {
+			User userSystem = userDao.getById(User.class, userDao.getSystem("SYS").get().getId());
 			User member = userDao.getById(User.class, data.getCreatedBy());
 			PaymentSubscribe paymentApproving = paymentSubscribe;
-			begin();
 			try {
 				paymentApproving.setApprove(true);
 				paymentSubscribeDao.saveAndFlush(paymentApproving);
@@ -133,15 +133,24 @@ public class PaymentSubscribeService extends BaseCoreService {
 				userDao.save(userSystem);
 				member.setStatusSubscribe(true);
 				userDao.save(member);
-
 			} catch (Exception e) {
-				responseMessageDto.setMessage("Approving Failed!");
 				e.printStackTrace();
+				throw new RuntimeException("Approving Failed!");
 			}
-			commit();
-		}else {
+		} else if (data.getIsActive() != null) {
+			PaymentSubscribe paymentApproving = paymentSubscribe;
+			paymentApproving.setIsActive(data.getIsActive());
+			try {
+				paymentSubscribeDao.saveAndFlush(paymentApproving);
+				responseMessageDto.setMessage("Rejected");
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new RuntimeException("Rejecting Failed!");
+			}
+		} else {
 			throw new RuntimeException("Approving can only be done once!");
 		}
+		commit();
 		return responseMessageDto;
 	}
 }
