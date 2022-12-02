@@ -33,7 +33,8 @@ public class SecurityConfig {
 		requestMatchers.add(new AntPathRequestMatcher("/files/**", HttpMethod.GET.name()));
 		requestMatchers.add(new AntPathRequestMatcher("/swagger-ui/**", HttpMethod.GET.name()));
 		requestMatchers.add(new AntPathRequestMatcher("/v3/**", HttpMethod.GET.name()));
-		requestMatchers.add(new AntPathRequestMatcher("/login/**", HttpMethod.POST.name()));		
+		requestMatchers.add(new AntPathRequestMatcher("/login/**", HttpMethod.POST.name()));
+//		requestMatchers.add(new AntPathRequestMatcher("/reports/**", HttpMethod.GET.name()));
 		return requestMatchers;
 	}
 }
