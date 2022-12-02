@@ -103,12 +103,12 @@ public class PaymentActivityDetailService extends BaseCoreService {
 				ascending);
 	}
 
-	public List<PaymentActivityDetail> getByIsActiveTrueAndApprovedFalse(){
-		return paymentActivityDetailDao.getByIsActiveTrueAndApprovedFalse();
+  public List<PaymentActivityDetail> getByIsActiveTrueAndApprovedFalse(int startPosition,int limit, boolean isAscending){
+		return paymentActivityDetailDao.getByIsActiveTrueAndApprovedFalse(startPosition,limit, isAscending);
 	}
 	
-	public List<PaymentActivityDetail> getByIsActiveFalse(){
-		return paymentActivityDetailDao.getByIsActiveFalse();
+	public List<PaymentActivityDetail> getByIsActiveFalse(int startPosition,int limit, boolean isAscending){
+		return paymentActivityDetailDao.getByIsActiveFalse(startPosition,limit, isAscending);
 	}
 	
 	
@@ -425,7 +425,7 @@ public class PaymentActivityDetailService extends BaseCoreService {
 		PaymentActivityDetail paymentActivityDetail = paymentActivityDetailDao.getById(PaymentActivityDetail.class,
 				data.getId());
 		begin();
-		if (paymentActivityDetail.getApprove() == false && data.getIsActive() == null) {
+		if (paymentActivityDetail.getApprove() == false && data.getIsActive()== true) {
 			User user = userDao.getById(User.class, paymentActivityDetail.getActivity().getCreatedBy());
 			PaymentActivityDetail paymentApproving = paymentActivityDetail;
 			User userSystem = userDao.getById(User.class, userDao.getSystem("SYS").get().getId());
@@ -451,7 +451,7 @@ public class PaymentActivityDetailService extends BaseCoreService {
 				e.printStackTrace();
 				throw new RuntimeException("Approving Failed!");
 			}
-		} else if (data.getIsActive() != null) {
+		} else if (data.getIsActive() == false) {
 			PaymentActivityDetail paymentApproving = paymentActivityDetail;
 			paymentApproving.setIsActive(data.getIsActive());
 			try {

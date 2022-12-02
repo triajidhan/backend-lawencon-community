@@ -53,7 +53,15 @@ public class PaymentSubscribeService extends BaseCoreService {
 	public PaymentSubscribe getTotalPaymentSubscribe() {
 		return paymentSubscribeDao.getTotalPaymentSubscribe();
 	}
-
+	
+	public List<PaymentSubscribe> getByIsActiveFalse(int startPosition,int limit, boolean isAscending){
+		return paymentSubscribeDao.getByIsActiveFalse(startPosition, limit, isAscending);
+	}
+	
+	public List<PaymentSubscribe> getByIsActiveTrueAndApprovedFalse(int startPosition,int limit, boolean isAscending){
+		return paymentSubscribeDao.getByIsActiveTrueAndApprovedFalse(startPosition, limit, isAscending);
+	}
+	
 	public ResponseMessageDto insert(PaymentSubscribe data) {
 		valInsert(data);
 		File fileInsert = new File();
@@ -109,11 +117,10 @@ public class PaymentSubscribeService extends BaseCoreService {
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
 		PaymentSubscribe paymentSubscribe = paymentSubscribeDao.getById(PaymentSubscribe.class, data.getId());
 		begin();
-		if (paymentSubscribe.getApprove() == false && data.getIsActive() == null) {
+		if (paymentSubscribe.getApprove() == false && data.getIsActive() == true) {
 			User userSystem = userDao.getById(User.class, userDao.getSystem("SYS").get().getId());
 			User member = userDao.getById(User.class, data.getCreatedBy());
 			PaymentSubscribe paymentApproving = paymentSubscribe;
-
 			try {
 				paymentApproving.setApprove(true);
 				paymentSubscribeDao.saveAndFlush(paymentApproving);
