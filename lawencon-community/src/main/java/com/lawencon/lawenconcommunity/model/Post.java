@@ -59,4 +59,7 @@ public class Post extends BaseEntity{
 	@Transient
 	private User user;
 	
+	@Transient
+	private Integer countOfComment;
+	
 }

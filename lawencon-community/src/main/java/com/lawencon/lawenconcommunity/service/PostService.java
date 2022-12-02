@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.lawencon.base.BaseCoreService;
 import com.lawencon.lawenconcommunity.constant.PostType;
+import com.lawencon.lawenconcommunity.dao.CommentDao;
 import com.lawencon.lawenconcommunity.dao.FileDao;
 import com.lawencon.lawenconcommunity.dao.PollingDao;
 import com.lawencon.lawenconcommunity.dao.PostAttachmentDao;
@@ -37,6 +38,8 @@ public class PostService extends BaseCoreService {
 	private PostTypeDao postTypeDao;
 	@Autowired
 	private UserDao userDao;
+	@Autowired
+	private CommentDao commentDao;
 
 	public List<Post> getAll(Integer startPosition, Integer limitPage) {
 		final List<Post> posts = postDao.getAll(Post.class, startPosition, limitPage);
@@ -57,7 +60,10 @@ public class PostService extends BaseCoreService {
 	
 	public List<Post> getByUser(String userId,int startPosition,int limit, boolean ascending) {
 		final List<Post> posts = postDao.getByUser(userId,startPosition,limit,ascending);
-
+		for(int i = 0 ; i <posts.size();i++) {
+			posts.get(i).setUser(userDao.getById(User.class, posts.get(i).getCreatedBy()));
+			posts.get(i).setCountOfComment(commentDao.getTotalByPost(posts.get(i).getId()).getCountOfComment());
+		}
 		return posts;
 	}
 
@@ -86,6 +92,7 @@ public class PostService extends BaseCoreService {
 	public Post getById(String id) {
 		Post post = postDao.getByIdAndDetach(Post.class, id);
 		post.setUser(userDao.getById(User.class, post.getCreatedBy()));
+		post.setCountOfComment(commentDao.getTotalByPost(post.getId()).getCountOfComment());
 		return post;
 	}
 
@@ -93,6 +100,7 @@ public class PostService extends BaseCoreService {
 		List<Post> posts = postDao.getByIsActive(startPosition, limitPage);
 		for (int i = 0; i < posts.size(); i++) {
 			posts.get(i).setUser(userDao.getById(User.class, posts.get(i).getCreatedBy()));
+			posts.get(i).setCountOfComment(commentDao.getTotalByPost(posts.get(i).getId()).getCountOfComment());
 		}
 		return posts;
 	}
@@ -105,6 +113,7 @@ public class PostService extends BaseCoreService {
 		List<Post> posts = postDao.getByIsActiveAndOrder(startPosition, limit,ascending);
 		for (int i = 0; i < posts.size(); i++) {
 			posts.get(i).setUser(userDao.getById(User.class, posts.get(i).getCreatedBy()));
+			posts.get(i).setCountOfComment(commentDao.getTotalByPost(posts.get(i).getId()).getCountOfComment());
 		}
 		return posts;
 	}
