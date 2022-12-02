@@ -1,5 +1,6 @@
 package com.lawencon.lawenconcommunity.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -50,7 +51,7 @@ public class Activity extends BaseEntity{
 	private LocalDateTime finishSchedule;
 	
 	@Column(name="price")
-	private Float price;
+	private BigDecimal price;
 	
 	@OneToOne
 	@JoinColumn(name="activity_type_id")
