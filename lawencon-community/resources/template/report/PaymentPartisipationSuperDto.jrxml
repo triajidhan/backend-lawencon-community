@@ -9,8 +9,8 @@
 	<field name="activityTypeName" class="java.lang.String"/>
 	<field name="activityCode" class="java.lang.String"/>
 	<field name="title" class="java.lang.String"/>
-	<field name="beginSchedule" class="java.sql.Timestamp"/>
-	<field name="finishSchedule" class="java.sql.Timestamp"/>
+	<field name="beginSchedule" class="java.lang.String"/>
+	<field name="finishSchedule" class="java.lang.String"/>
 	<field name="location" class="java.lang.String"/>
 	<field name="price" class="java.math.BigDecimal"/>
 	<field name="provider" class="java.lang.String"/>
@@ -282,8 +282,7 @@
 					<font size="10"/>
 					<paragraph leftIndent="5"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Grand Total Participant"
-]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Grand Total Participant"]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="490" y="0" width="60" height="30" uuid="d7a1dd0c-3864-40dc-ad9b-a0dc7e90ee3d">

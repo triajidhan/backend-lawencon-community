@@ -256,8 +256,7 @@ public class PaymentActivityDetailService extends BaseCoreService {
 		
 		return partisipationMemberDtos;
 	}
-	
-	
+
 	public List<PaymentPartisipationSuperDto> getReportPaymentPartisipationSuperDto(LocalDateTime beginDate,LocalDateTime finishDate,boolean ascending){
 		List<PaymentActivityDetail> paymentActivityDetails =  paymentActivityDetailDao.getReportPartisipationSuper(beginDate, finishDate,ascending);
 		
@@ -391,7 +390,6 @@ public class PaymentActivityDetailService extends BaseCoreService {
 		
 		return totalIncomeMemberDtos;
 	}
-
 
 	public ResponseMessageDto insert(PaymentActivityDetail data) {
 		valInsert(data);
