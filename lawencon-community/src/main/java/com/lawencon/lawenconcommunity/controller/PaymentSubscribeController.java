@@ -70,6 +70,27 @@ public class PaymentSubscribeController {
 		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
 	}
 	
+	@GetMapping("total-is-active-approve-false")
+	public ResponseEntity<PaymentSubscribe> getTotalByIsActiveTrueAndApprovedFalse(){
+		PaymentSubscribe paymentSubscribe = paymentSubscribeService.getTotalByIsActiveTrueAndApprovedFalse();
+		
+		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
+	}
+	
+	@GetMapping("is-active-approve-true")
+	public ResponseEntity<List<PaymentSubscribe>> getByIsActiveTrueAndApprovedTrue(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit,@RequestParam("asc") boolean ascending){
+		List<PaymentSubscribe> paymentSubscribe = paymentSubscribeService.getByIsActiveTrueAndApprovedFalse(startPosition, limit, false);
+		
+		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
+	}
+	
+	@GetMapping("total-is-active-approve-true")
+	public ResponseEntity<PaymentSubscribe> getTotalByIsActiveTrueAndApprovedTrue(){
+		PaymentSubscribe paymentSubscribe = paymentSubscribeService.getTotalByIsActiveTrueAndApprovedTrue();
+		
+		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
+	}
+	
 	@PostMapping()
 	public ResponseEntity<ResponseMessageDto> insert(@RequestBody PaymentSubscribe data){
 		final ResponseMessageDto paymentSubscribeInsertResDto = paymentSubscribeService.insert(data);

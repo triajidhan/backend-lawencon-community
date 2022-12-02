@@ -72,9 +72,9 @@ public class PaymentActivityDetailService extends BaseCoreService {
 	public List<PaymentActivityDetail> getByIsActive() {
 		return paymentActivityDetailDao.getByIsActive();
 	}
-
-	public List<PaymentActivityDetail> getByIsActive(int startPosition, int limit) {
-		return paymentActivityDetailDao.getByIsActive(startPosition, limit);
+	
+	public List<PaymentActivityDetail> getByIsActive(int startPosition,int limit, boolean ascending){
+		return paymentActivityDetailDao.getByIsActive(startPosition, limit,ascending);
 	}
 
 	public List<PaymentActivityDetail> getByUser(String userId, int startPosition, int limit, boolean ascending) {
@@ -103,9 +103,35 @@ public class PaymentActivityDetailService extends BaseCoreService {
 				ascending);
 	}
 
-  public List<PaymentActivityDetail> getByIsActiveTrueAndApprovedFalse(int startPosition,int limit, boolean isAscending){
-		return paymentActivityDetailDao.getByIsActiveTrueAndApprovedFalse(startPosition,limit, isAscending);
+	public List<PaymentActivityDetail> getByIsActiveTrueAndApprovedFalse(int startPosition,int limit, boolean isAscending){
+		List<PaymentActivityDetail> activityDetails = paymentActivityDetailDao.getByIsActiveTrueAndApprovedFalse(startPosition,limit, isAscending);
+		for(int i = 0; i<activityDetails.size();i++) {
+			User user = userDao.getById(User.class, activityDetails.get(i).getCreatedBy());
+			activityDetails.get(i).setUser(user);
+		}
+		return activityDetails;
 	}
+	
+	public PaymentActivityDetail getTotalByIsActiveTrueAndApprovedFalse(){
+		return paymentActivityDetailDao.getTotalByIsActiveTrueAndApprovedFalse();
+	}
+	
+	public List<PaymentActivityDetail> getByIsActiveTrueAndApprovedTrue(int startPosition,int limit, boolean isAscending){
+		List<PaymentActivityDetail> activityDetails = paymentActivityDetailDao.getByIsActiveTrueAndApprovedTrue(startPosition,limit, isAscending);
+		for(int i = 0; i<activityDetails.size();i++) {
+			User user = userDao.getById(User.class, activityDetails.get(i).getCreatedBy());
+			activityDetails.get(i).setUser(user);
+		}
+		return activityDetails;
+
+	}
+	
+	
+	public PaymentActivityDetail getTotalByIsActiveTrueAndApprovedTrue(){
+		return paymentActivityDetailDao.getTotalByIsActiveTrueAndApprovedTrue();
+	}
+	
+	
 	
 	public List<PaymentActivityDetail> getByIsActiveFalse(int startPosition,int limit, boolean isAscending){
 		return paymentActivityDetailDao.getByIsActiveFalse(startPosition,limit, isAscending);
