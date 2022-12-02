@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import com.lawencon.base.AbstractJpaDao;
 import com.lawencon.base.ConnHandler;
-import com.lawencon.lawenconcommunity.model.PaymentActivityDetail;
 import com.lawencon.lawenconcommunity.model.PaymentSubscribe;
 
 @Repository
