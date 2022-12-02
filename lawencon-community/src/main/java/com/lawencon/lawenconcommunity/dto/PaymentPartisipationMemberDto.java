@@ -1,6 +1,6 @@
 package com.lawencon.lawenconcommunity.dto;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -14,10 +14,10 @@ public class PaymentPartisipationMemberDto {
 	
 	private String activityCode;
 	private String title;
-	private LocalDateTime beginSchedule;
-	private LocalDateTime finishSchedule;
+	private String beginSchedule;
+	private String finishSchedule;
 	private String location;
-	private Float price;
+	private BigDecimal price;
 	private String provider;
 	
 	private String id;

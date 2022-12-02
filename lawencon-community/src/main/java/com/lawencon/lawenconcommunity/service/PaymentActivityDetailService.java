@@ -202,8 +202,8 @@ public class PaymentActivityDetailService extends BaseCoreService {
 			Activity activity =  paymentActivityDetail.getActivity();
 			partisipationMemberDto.setActivityCode(activity.getActivityCode());
 			partisipationMemberDto.setTitle(activity.getTitle());
-			partisipationMemberDto.setBeginSchedule(activity.getBeginSchedule());
-			partisipationMemberDto.setFinishSchedule(activity.getFinishSchedule());
+			partisipationMemberDto.setBeginSchedule(activity.getBeginSchedule().toString());
+			partisipationMemberDto.setFinishSchedule(activity.getFinishSchedule().toString());
 			partisipationMemberDto.setLocation(activity.getLocation());
 			partisipationMemberDto.setPrice(activity.getPrice());
 			partisipationMemberDto.setProvider(activity.getProvider());
@@ -249,8 +249,8 @@ public class PaymentActivityDetailService extends BaseCoreService {
 			Activity activity =  paymentActivityDetail.getActivity();
 			partisipationSuperDto.setActivityCode(activity.getActivityCode());
 			partisipationSuperDto.setTitle(activity.getTitle());
-			partisipationSuperDto.setBeginSchedule(activity.getBeginSchedule());
-			partisipationSuperDto.setFinishSchedule(activity.getFinishSchedule());
+			partisipationSuperDto.setBeginSchedule(activity.getBeginSchedule().toString());
+			partisipationSuperDto.setFinishSchedule(activity.getFinishSchedule().toString());
 			partisipationSuperDto.setLocation(activity.getLocation());
 			partisipationSuperDto.setPrice(activity.getPrice());
 			partisipationSuperDto.setProvider(activity.getProvider());
@@ -300,8 +300,8 @@ public class PaymentActivityDetailService extends BaseCoreService {
 			Activity activity =  paymentActivityDetail.getActivity();
 			totalIncomeMemberDto.setActivityCode(activity.getActivityCode());
 			totalIncomeMemberDto.setTitle(activity.getTitle());
-			totalIncomeMemberDto.setBeginSchedule(activity.getBeginSchedule());
-			totalIncomeMemberDto.setFinishSchedule(activity.getFinishSchedule());
+			totalIncomeMemberDto.setBeginSchedule(activity.getBeginSchedule().toString());
+			totalIncomeMemberDto.setFinishSchedule(activity.getFinishSchedule().toString());
 			totalIncomeMemberDto.setLocation(activity.getLocation());
 			totalIncomeMemberDto.setPrice(activity.getPrice());
 			totalIncomeMemberDto.setProvider(activity.getProvider());
