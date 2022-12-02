@@ -10,7 +10,7 @@
 	<field name="activityTypeName" class="java.lang.String"/>
 	<field name="activityCode" class="java.lang.String"/>
 	<field name="title" class="java.lang.String"/>
-	<field name="beginSchedule" class="java.sql.Timestamp"/>
+	<field name="beginSchedule" class="java.lang.String"/>
 	<field name="finishSchedule" class="java.sql.Timestamp"/>
 	<field name="location" class="java.lang.String"/>
 	<field name="price" class="java.math.BigDecimal"/>

@@ -43,8 +43,8 @@ public class PaymentSubscribeController {
 	}
 	
 	@GetMapping("is-active")
-	public ResponseEntity<List<PaymentSubscribe>> getAllByIsActive(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit){
-		List<PaymentSubscribe> paymentSubscribe = paymentSubscribeService.getByIsActive(startPosition, limit);
+	public ResponseEntity<List<PaymentSubscribe>> getByIsActive(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit,@RequestParam("asc") boolean ascending){
+		List<PaymentSubscribe> paymentSubscribe = paymentSubscribeService.getByIsActive(startPosition, limit,ascending);
 		
 		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
 	}

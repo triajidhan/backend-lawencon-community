@@ -42,8 +42,9 @@ public class PaymentSubscribeService extends BaseCoreService {
 		return paymentSubscribeDao.getByIdAndDetach(PaymentSubscribe.class, id);
 	}
 
-	public List<PaymentSubscribe> getByIsActive(int startPosition, int limit) {
-		return paymentSubscribeDao.getByIsActive(startPosition, limit);
+	public List<PaymentSubscribe> getByIsActive(int startPosition, int limit,boolean ascending) {
+		List<PaymentSubscribe> subscribes = paymentSubscribeDao.getByIsActive(startPosition, limit,ascending);
+		return subscribes;
 	}
 
 	public List<PaymentSubscribe> getByIsActive() {
