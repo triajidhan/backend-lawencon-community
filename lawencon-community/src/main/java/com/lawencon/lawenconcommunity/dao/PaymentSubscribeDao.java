@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.lawencon.base.AbstractJpaDao;
 import com.lawencon.base.ConnHandler;
+import com.lawencon.lawenconcommunity.model.PaymentActivityDetail;
 import com.lawencon.lawenconcommunity.model.PaymentSubscribe;
 
 @Repository
@@ -67,5 +68,48 @@ public class PaymentSubscribeDao extends AbstractJpaDao{
 		}
 		
 		return paymentSubcribe;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<PaymentSubscribe> getByIsActiveFalse(int startPosition,int limit, boolean isAscending){
+		StringBuilder sql = new StringBuilder();
+		
+		String ascending = (isAscending) ? "ASC ":"DESC ";
+		
+		sql.append("SELECT * FROM tb_payment_subscribe tps ")
+		.append("WHERE tps.is_active = false ")
+		.append("ORDER BY tps.created_at ")
+		.append(ascending)
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		List<PaymentSubscribe> paymentSubscribes = ConnHandler.getManager()
+				.createNativeQuery(sql.toString(),PaymentSubscribe.class)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
+				.getResultList();
+		
+		return paymentSubscribes;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<PaymentSubscribe> getByIsActiveTrueAndApprovedFalse(int startPosition,int limit, boolean isAscending){
+		StringBuilder sql = new StringBuilder();
+		
+		String ascending = (isAscending) ? "ASC ":"DESC ";
+		
+		sql.append("SELECT * FROM tb_payment_subscribe tps ")
+		.append("WHERE tps.is_active = true AND tps.approve = false ")
+		.append("ORDER BY tps.created_at ")
+		.append(ascending)
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		
+		List<PaymentSubscribe> paymentSubscribes = ConnHandler.getManager()
+				.createNativeQuery(sql.toString(),PaymentSubscribe.class)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
+				.getResultList();
+		
+		return paymentSubscribes;
 	}
 }

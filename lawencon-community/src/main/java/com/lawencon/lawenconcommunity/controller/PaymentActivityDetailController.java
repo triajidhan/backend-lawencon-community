@@ -112,16 +112,16 @@ public class PaymentActivityDetailController {
 		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
 	}
 	
-	@GetMapping("is-active-approved-false")
-	public ResponseEntity<List<PaymentActivityDetail>> getByIsActiveTrueAndApprovedFalse(){
-		List<PaymentActivityDetail> paymentActivityDetail = paymentActivityDetailService.getByIsActiveTrueAndApprovedFalse();
+	@GetMapping("is-active-approve-false")
+	public ResponseEntity<List<PaymentActivityDetail>> getByIsActiveTrueAndApprovedFalse(int startPosition,int limit, boolean isAscending){
+		List<PaymentActivityDetail> paymentActivityDetail = paymentActivityDetailService.getByIsActiveTrueAndApprovedFalse(startPosition,limit, isAscending);
 		
 		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
 	}
 	
 	@GetMapping("is-active-false")
-	public ResponseEntity<List<PaymentActivityDetail>> getByIsActiveFalse(){
-		List<PaymentActivityDetail> paymentActivityDetail = paymentActivityDetailService.getByIsActiveFalse();
+	public ResponseEntity<List<PaymentActivityDetail>> getByIsActiveFalse(int startPosition,int limit, boolean isAscending){
+		List<PaymentActivityDetail> paymentActivityDetail = paymentActivityDetailService.getByIsActiveFalse(startPosition,limit, isAscending);
 		
 		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
 	}
