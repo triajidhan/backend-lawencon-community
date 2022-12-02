@@ -42,8 +42,9 @@ public class PaymentSubscribeService extends BaseCoreService {
 		return paymentSubscribeDao.getByIdAndDetach(PaymentSubscribe.class, id);
 	}
 
-	public List<PaymentSubscribe> getByIsActive(int startPosition, int limit) {
-		return paymentSubscribeDao.getByIsActive(startPosition, limit);
+	public List<PaymentSubscribe> getByIsActive(int startPosition, int limit,boolean ascending) {
+		List<PaymentSubscribe> subscribes = paymentSubscribeDao.getByIsActive(startPosition, limit,ascending);
+		return subscribes;
 	}
 
 	public List<PaymentSubscribe> getByIsActive() {
@@ -53,7 +54,27 @@ public class PaymentSubscribeService extends BaseCoreService {
 	public PaymentSubscribe getTotalPaymentSubscribe() {
 		return paymentSubscribeDao.getTotalPaymentSubscribe();
 	}
-
+	
+	public List<PaymentSubscribe> getByIsActiveFalse(int startPosition,int limit, boolean isAscending){
+		return paymentSubscribeDao.getByIsActiveFalse(startPosition, limit, isAscending);
+	}
+	
+	public List<PaymentSubscribe> getByIsActiveTrueAndApprovedFalse(int startPosition,int limit, boolean isAscending){
+		return paymentSubscribeDao.getByIsActiveTrueAndApprovedFalse(startPosition, limit, isAscending);
+	}
+	
+	public PaymentSubscribe getTotalByIsActiveTrueAndApprovedFalse(){
+		return paymentSubscribeDao.getTotalByIsActiveTrueAndApprovedFalse();
+	}
+	
+	public List<PaymentSubscribe> getByIsActiveTrueAndApprovedTrue(int startPosition,int limit, boolean isAscending){
+		return paymentSubscribeDao.getByIsActiveTrueAndApprovedTrue(startPosition, limit, isAscending);
+	}
+	
+	public PaymentSubscribe getTotalByIsActiveTrueAndApprovedTrue(){
+		return paymentSubscribeDao.getTotalByIsActiveTrueAndApprovedTrue();
+	}
+	
 	public ResponseMessageDto insert(PaymentSubscribe data) {
 		valInsert(data);
 		File fileInsert = new File();

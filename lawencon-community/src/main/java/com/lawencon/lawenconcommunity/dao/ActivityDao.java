@@ -1,5 +1,6 @@
 package com.lawencon.lawenconcommunity.dao;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -53,7 +54,7 @@ public class ActivityDao extends AbstractJpaDao{
 			activity.setLocation(objArr[4].toString());
 			activity.setBeginSchedule(Timestamp.valueOf(objArr[5].toString()).toLocalDateTime());
 			activity.setFinishSchedule(Timestamp.valueOf(objArr[6].toString()).toLocalDateTime());
-			activity.setPrice(Float.valueOf(objArr[7].toString()));
+			activity.setPrice(BigDecimal.valueOf(Double.valueOf(objArr[7].toString())));
 			
 
 			if(objArr[8] != null) {

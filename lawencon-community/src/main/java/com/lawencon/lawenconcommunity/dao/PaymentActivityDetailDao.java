@@ -21,12 +21,16 @@ import com.lawencon.lawenconcommunity.model.User;
 public class PaymentActivityDetailDao extends AbstractJpaDao{
 
 	@SuppressWarnings("unchecked")
-	public List<PaymentActivityDetail> getByIsActive(int startPosition,int limit){
+	public List<PaymentActivityDetail> getByIsActive(int startPosition,int limit, boolean isAscending){
 		StringBuilder sql = new StringBuilder();
+		
+		String ascending = (isAscending) ? "ASC ":"DESC ";
 		
 		sql.append("SELECT * FROM tb_payment_activity_detail tpad ")
 		.append("INNER JOIN tb_activity ta ON ta.id = tpad.activity_id ")
 		.append("WHERE tpad.is_active = true ")
+		.append("ORDER BY tpad.created_at ")
+		.append(ascending)
 		.append("LIMIT :limit OFFSET :startPosition");
 		
 		List<PaymentActivityDetail> paymentActivityDetail = ConnHandler.getManager()
@@ -52,38 +56,6 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		
 		return paymentActivityDetail;
 	}
-	
-	@SuppressWarnings("unchecked")
-	public List<PaymentActivityDetail> getByIsActiveFalse(){
-		StringBuilder sql = new StringBuilder();
-		
-		sql.append("SELECT * FROM tb_payment_activity_detail tpad ")
-		.append("INNER JOIN tb_activity ta ON ta.id = tpad.activity_id ")
-		.append("WHERE tpad.is_active = false");
-		
-		List<PaymentActivityDetail> paymentActivityDetail = ConnHandler.getManager()
-				.createNativeQuery(sql.toString(),PaymentActivityDetail.class)
-				.getResultList();
-		
-		return paymentActivityDetail;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public List<PaymentActivityDetail> getByIsActiveTrueAndApprovedFalse(){
-		StringBuilder sql = new StringBuilder();
-		
-		sql.append("SELECT * FROM tb_payment_activity_detail tpad ")
-		.append("INNER JOIN tb_activity ta ON ta.id = tpad.activity_id ")
-		.append("WHERE tpad.is_active = true AND tpad.approved = false ")
-		.append("tpad.is_active = true AND tpad.approved = false ");
-		
-		List<PaymentActivityDetail> paymentActivityDetail = ConnHandler.getManager()
-				.createNativeQuery(sql.toString(),PaymentActivityDetail.class)
-				.getResultList();
-		
-		return paymentActivityDetail;
-	}
-	
 	
 	public PaymentActivityDetail getTotalPaymentActivityDetail() {
 		StringBuilder sql = new StringBuilder();
@@ -112,6 +84,133 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		
 		return paymentActivity;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<PaymentActivityDetail> getByIsActiveFalse(int startPosition,int limit, boolean isAscending){
+		StringBuilder sql = new StringBuilder();
+		
+		String ascending = (isAscending) ? "ASC ":"DESC ";
+		
+		sql.append("SELECT * FROM tb_payment_activity_detail tpad ")
+		.append("INNER JOIN tb_activity ta ON ta.id = tpad.activity_id ")
+		.append("WHERE tpad.is_active = false ")
+		.append("ORDER BY tpad.created_at ")
+		.append(ascending)
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		List<PaymentActivityDetail> paymentActivityDetail = ConnHandler.getManager()
+				.createNativeQuery(sql.toString(),PaymentActivityDetail.class)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
+				.getResultList();
+		
+		return paymentActivityDetail;
+	}
+	
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<PaymentActivityDetail> getByIsActiveTrueAndApprovedFalse(int startPosition,int limit, boolean isAscending){
+		StringBuilder sql = new StringBuilder();
+		
+		String ascending = (isAscending) ? "ASC ":"DESC ";
+		
+		sql.append("SELECT * FROM tb_payment_activity_detail tpad ")
+		.append("INNER JOIN tb_activity ta ON ta.id = tpad.activity_id ")
+		.append("WHERE tpad.is_active = true AND tpad.approve = false ")
+		.append("ORDER BY tpad.created_at ")
+		.append(ascending)
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		
+		List<PaymentActivityDetail> paymentActivityDetail = ConnHandler.getManager()
+				.createNativeQuery(sql.toString(),PaymentActivityDetail.class)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
+				.getResultList();
+		
+		return paymentActivityDetail;
+	}
+	
+	public PaymentActivityDetail getTotalByIsActiveTrueAndApprovedFalse() {
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT count(*) FROM tb_payment_activity_detail tpad ")
+		.append("INNER JOIN tb_activity ta ON ta.id = tpad.activity_id ")
+		.append("WHERE tpad.is_active = true AND tpad.approve = false ");
+		
+		Object objPaymentActivity = null;
+		PaymentActivityDetail paymentActivity = null;
+		
+		try {
+			objPaymentActivity = ConnHandler.getManager().createNativeQuery(sql.toString())
+					.getSingleResult();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objPaymentActivity != null) {
+			Object obj = (Object) objPaymentActivity;
+			
+			paymentActivity = new PaymentActivityDetail();
+			
+			paymentActivity.setCountOfPaymentActivity(Integer.parseInt(obj.toString()));
+		}
+		
+		return paymentActivity;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<PaymentActivityDetail> getByIsActiveTrueAndApprovedTrue(int startPosition,int limit, boolean isAscending){
+		StringBuilder sql = new StringBuilder();
+		
+		String ascending = (isAscending) ? "ASC ":"DESC ";
+		
+		sql.append("SELECT * FROM tb_payment_activity_detail tpad ")
+		.append("INNER JOIN tb_activity ta ON ta.id = tpad.activity_id ")
+		.append("WHERE tpad.is_active = true AND tpad.approve = true ")
+		.append("ORDER BY tpad.created_at ")
+		.append(ascending)
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		
+		List<PaymentActivityDetail> paymentActivityDetail = ConnHandler.getManager()
+				.createNativeQuery(sql.toString(),PaymentActivityDetail.class)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
+				.getResultList();
+		
+		return paymentActivityDetail;
+	}
+	
+	public PaymentActivityDetail getTotalByIsActiveTrueAndApprovedTrue() {
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT count(*) FROM tb_payment_activity_detail tpad ")
+		.append("INNER JOIN tb_activity ta ON ta.id = tpad.activity_id ")
+		.append("WHERE tpad.is_active = true AND tpad.approve = true ");
+		
+		Object objPaymentActivity = null;
+		PaymentActivityDetail paymentActivity = null;
+		
+		try {
+			objPaymentActivity = ConnHandler.getManager().createNativeQuery(sql.toString())
+					.getSingleResult();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objPaymentActivity != null) {
+			Object obj = (Object) objPaymentActivity;
+			
+			paymentActivity = new PaymentActivityDetail();
+			
+			paymentActivity.setCountOfPaymentActivity(Integer.parseInt(obj.toString()));
+		}
+		
+		return paymentActivity;
+	}
+	
 		
 	@SuppressWarnings("unchecked")
 	public List<PaymentActivityDetail> getByActivity(String activityId,int startPosition,int limit){
@@ -377,7 +476,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			activity.setActivityCode(objArr[13].toString());
 			activity.setLocation(objArr[14].toString());
 			activity.setFinishSchedule(Timestamp.valueOf(objArr[15].toString()).toLocalDateTime());
-			activity.setPrice(Float.parseFloat(objArr[16].toString()));
+			activity.setPrice(BigDecimal.valueOf(Double.valueOf(objArr[16].toString())));
 		
 			user.setPosition(position);
 			user.setIndustry(industry);
@@ -468,7 +567,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			activity.setActivityCode(objArr[13].toString());
 			activity.setLocation(objArr[14].toString());
 			activity.setFinishSchedule(Timestamp.valueOf(objArr[15].toString()).toLocalDateTime());
-			activity.setPrice(Float.parseFloat(objArr[16].toString()));
+			activity.setPrice(BigDecimal.valueOf(Double.valueOf(objArr[16].toString())));
 		
 			user.setPosition(position);
 			user.setIndustry(industry);
@@ -551,7 +650,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			activity.setActivityCode(objArr[13].toString());
 			activity.setLocation(objArr[14].toString());
 			activity.setFinishSchedule(Timestamp.valueOf(objArr[15].toString()).toLocalDateTime());
-			activity.setPrice(Float.parseFloat(objArr[16].toString()));
+			activity.setPrice(BigDecimal.valueOf(Double.valueOf(objArr[16].toString())));
 			user.setId(objArr[17].toString());
 		
 			user.setPosition(position);
@@ -638,7 +737,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			activity.setActivityCode(objArr[13].toString());
 			activity.setLocation(objArr[14].toString());
 			activity.setFinishSchedule(Timestamp.valueOf(objArr[15].toString()).toLocalDateTime());
-			activity.setPrice(Float.parseFloat(objArr[16].toString()));
+			activity.setPrice(BigDecimal.valueOf(Double.valueOf(objArr[16].toString())));
 		
 			user.setPosition(position);
 			user.setIndustry(industry);
@@ -722,7 +821,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			activity.setActivityCode(objArr[11].toString());
 			activity.setLocation(objArr[12].toString());
 			activity.setFinishSchedule(Timestamp.valueOf(objArr[13].toString()).toLocalDateTime());
-			activity.setPrice(Float.parseFloat(objArr[14].toString()));
+			activity.setPrice(BigDecimal.valueOf(Double.valueOf(objArr[14].toString())));
 			activity.setProvider(objArr[15].toString());
 			
 			user.setFullName(objArr[16].toString());
@@ -814,7 +913,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			activity.setActivityCode(objArr[11].toString());
 			activity.setLocation(objArr[12].toString());
 			activity.setFinishSchedule(Timestamp.valueOf(objArr[13].toString()).toLocalDateTime());
-			activity.setPrice(Float.parseFloat(objArr[14].toString()));
+			activity.setPrice(BigDecimal.valueOf(Double.valueOf(objArr[14].toString())));
 			activity.setProvider(objArr[15].toString());
 		
 			user.setPosition(position);

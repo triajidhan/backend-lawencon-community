@@ -72,9 +72,9 @@ public class PaymentActivityDetailService extends BaseCoreService {
 	public List<PaymentActivityDetail> getByIsActive() {
 		return paymentActivityDetailDao.getByIsActive();
 	}
-
-	public List<PaymentActivityDetail> getByIsActive(int startPosition, int limit) {
-		return paymentActivityDetailDao.getByIsActive(startPosition, limit);
+	
+	public List<PaymentActivityDetail> getByIsActive(int startPosition,int limit, boolean ascending){
+		return paymentActivityDetailDao.getByIsActive(startPosition, limit,ascending);
 	}
 
 	public List<PaymentActivityDetail> getByUser(String userId, int startPosition, int limit, boolean ascending) {
@@ -103,12 +103,38 @@ public class PaymentActivityDetailService extends BaseCoreService {
 				ascending);
 	}
 
-	public List<PaymentActivityDetail> getByIsActiveTrueAndApprovedFalse(){
-		return paymentActivityDetailDao.getByIsActiveTrueAndApprovedFalse();
+	public List<PaymentActivityDetail> getByIsActiveTrueAndApprovedFalse(int startPosition,int limit, boolean isAscending){
+		List<PaymentActivityDetail> activityDetails = paymentActivityDetailDao.getByIsActiveTrueAndApprovedFalse(startPosition,limit, isAscending);
+		for(int i = 0; i<activityDetails.size();i++) {
+			User user = userDao.getById(User.class, activityDetails.get(i).getCreatedBy());
+			activityDetails.get(i).setUser(user);
+		}
+		return activityDetails;
 	}
 	
-	public List<PaymentActivityDetail> getByIsActiveFalse(){
-		return paymentActivityDetailDao.getByIsActiveFalse();
+	public PaymentActivityDetail getTotalByIsActiveTrueAndApprovedFalse(){
+		return paymentActivityDetailDao.getTotalByIsActiveTrueAndApprovedFalse();
+	}
+	
+	public List<PaymentActivityDetail> getByIsActiveTrueAndApprovedTrue(int startPosition,int limit, boolean isAscending){
+		List<PaymentActivityDetail> activityDetails = paymentActivityDetailDao.getByIsActiveTrueAndApprovedTrue(startPosition,limit, isAscending);
+		for(int i = 0; i<activityDetails.size();i++) {
+			User user = userDao.getById(User.class, activityDetails.get(i).getCreatedBy());
+			activityDetails.get(i).setUser(user);
+		}
+		return activityDetails;
+
+	}
+	
+	
+	public PaymentActivityDetail getTotalByIsActiveTrueAndApprovedTrue(){
+		return paymentActivityDetailDao.getTotalByIsActiveTrueAndApprovedTrue();
+	}
+	
+	
+	
+	public List<PaymentActivityDetail> getByIsActiveFalse(int startPosition,int limit, boolean isAscending){
+		return paymentActivityDetailDao.getByIsActiveFalse(startPosition,limit, isAscending);
 	}
 	
 	
@@ -202,8 +228,8 @@ public class PaymentActivityDetailService extends BaseCoreService {
 			Activity activity =  paymentActivityDetail.getActivity();
 			partisipationMemberDto.setActivityCode(activity.getActivityCode());
 			partisipationMemberDto.setTitle(activity.getTitle());
-			partisipationMemberDto.setBeginSchedule(activity.getBeginSchedule());
-			partisipationMemberDto.setFinishSchedule(activity.getFinishSchedule());
+			partisipationMemberDto.setBeginSchedule(activity.getBeginSchedule().toString());
+			partisipationMemberDto.setFinishSchedule(activity.getFinishSchedule().toString());
 			partisipationMemberDto.setLocation(activity.getLocation());
 			partisipationMemberDto.setPrice(activity.getPrice());
 			partisipationMemberDto.setProvider(activity.getProvider());
@@ -230,8 +256,7 @@ public class PaymentActivityDetailService extends BaseCoreService {
 		
 		return partisipationMemberDtos;
 	}
-	
-	
+
 	public List<PaymentPartisipationSuperDto> getReportPaymentPartisipationSuperDto(LocalDateTime beginDate,LocalDateTime finishDate,boolean ascending){
 		List<PaymentActivityDetail> paymentActivityDetails =  paymentActivityDetailDao.getReportPartisipationSuper(beginDate, finishDate,ascending);
 		
@@ -249,8 +274,8 @@ public class PaymentActivityDetailService extends BaseCoreService {
 			Activity activity =  paymentActivityDetail.getActivity();
 			partisipationSuperDto.setActivityCode(activity.getActivityCode());
 			partisipationSuperDto.setTitle(activity.getTitle());
-			partisipationSuperDto.setBeginSchedule(activity.getBeginSchedule());
-			partisipationSuperDto.setFinishSchedule(activity.getFinishSchedule());
+			partisipationSuperDto.setBeginSchedule(activity.getBeginSchedule().toString());
+			partisipationSuperDto.setFinishSchedule(activity.getFinishSchedule().toString());
 			partisipationSuperDto.setLocation(activity.getLocation());
 			partisipationSuperDto.setPrice(activity.getPrice());
 			partisipationSuperDto.setProvider(activity.getProvider());
@@ -300,8 +325,8 @@ public class PaymentActivityDetailService extends BaseCoreService {
 			Activity activity =  paymentActivityDetail.getActivity();
 			totalIncomeMemberDto.setActivityCode(activity.getActivityCode());
 			totalIncomeMemberDto.setTitle(activity.getTitle());
-			totalIncomeMemberDto.setBeginSchedule(activity.getBeginSchedule());
-			totalIncomeMemberDto.setFinishSchedule(activity.getFinishSchedule());
+			totalIncomeMemberDto.setBeginSchedule(activity.getBeginSchedule().toString());
+			totalIncomeMemberDto.setFinishSchedule(activity.getFinishSchedule().toString());
 			totalIncomeMemberDto.setLocation(activity.getLocation());
 			totalIncomeMemberDto.setPrice(activity.getPrice());
 			totalIncomeMemberDto.setProvider(activity.getProvider());
@@ -365,7 +390,6 @@ public class PaymentActivityDetailService extends BaseCoreService {
 		
 		return totalIncomeMemberDtos;
 	}
-
 
 	public ResponseMessageDto insert(PaymentActivityDetail data) {
 		valInsert(data);

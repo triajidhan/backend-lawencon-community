@@ -43,8 +43,8 @@ public class PaymentSubscribeController {
 	}
 	
 	@GetMapping("is-active")
-	public ResponseEntity<List<PaymentSubscribe>> getAllByIsActive(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit){
-		List<PaymentSubscribe> paymentSubscribe = paymentSubscribeService.getByIsActive(startPosition, limit);
+	public ResponseEntity<List<PaymentSubscribe>> getByIsActive(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit,@RequestParam("asc") boolean ascending){
+		List<PaymentSubscribe> paymentSubscribe = paymentSubscribeService.getByIsActive(startPosition, limit,ascending);
 		
 		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
 	}
@@ -52,6 +52,41 @@ public class PaymentSubscribeController {
 	@GetMapping("total")
 	public ResponseEntity<PaymentSubscribe> getTotalPayment(){
 		PaymentSubscribe paymentSubscribe = paymentSubscribeService.getTotalPaymentSubscribe();
+		
+		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
+	}
+	
+	@GetMapping("is-active-false")
+	public ResponseEntity<List<PaymentSubscribe>> getByIsActiveFalse(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit,@RequestParam("asc") boolean ascending){
+		List<PaymentSubscribe> paymentSubscribe = paymentSubscribeService.getByIsActiveFalse(startPosition, limit, false);
+		
+		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
+	}
+	
+	@GetMapping("is-active-approve-false")
+	public ResponseEntity<List<PaymentSubscribe>> getByIsActiveTrueAndApprovedFalse(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit,@RequestParam("asc") boolean ascending){
+		List<PaymentSubscribe> paymentSubscribe = paymentSubscribeService.getByIsActiveTrueAndApprovedFalse(startPosition, limit, false);
+		
+		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
+	}
+	
+	@GetMapping("total-is-active-approve-false")
+	public ResponseEntity<PaymentSubscribe> getTotalByIsActiveTrueAndApprovedFalse(){
+		PaymentSubscribe paymentSubscribe = paymentSubscribeService.getTotalByIsActiveTrueAndApprovedFalse();
+		
+		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
+	}
+	
+	@GetMapping("is-active-approve-true")
+	public ResponseEntity<List<PaymentSubscribe>> getByIsActiveTrueAndApprovedTrue(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit,@RequestParam("asc") boolean ascending){
+		List<PaymentSubscribe> paymentSubscribe = paymentSubscribeService.getByIsActiveTrueAndApprovedFalse(startPosition, limit, false);
+		
+		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
+	}
+	
+	@GetMapping("total-is-active-approve-true")
+	public ResponseEntity<PaymentSubscribe> getTotalByIsActiveTrueAndApprovedTrue(){
+		PaymentSubscribe paymentSubscribe = paymentSubscribeService.getTotalByIsActiveTrueAndApprovedTrue();
 		
 		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
 	}
