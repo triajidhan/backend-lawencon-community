@@ -402,7 +402,10 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		
 		return paymentActivity;
 	}
-		
+	
+	
+	
+	
 	public List<PaymentActivityDetail> getReportPartisipationMember(LocalDateTime beginDate,LocalDateTime finishDate,String userCreated,boolean isAscending){
 		StringBuilder sql = new StringBuilder();
 		
@@ -580,6 +583,48 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		return paymentActivityDetails;
 	}
 	
+	public PaymentActivityDetail getTotalByReportPartisipationMember(LocalDateTime beginDate,LocalDateTime finishDate,String userId){
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT count(*) ")
+		.append("from tb_activity as ta_prime ")
+		.append("INNER JOIN (")
+		.append("SELECT activity_id, count(activity_id) as partisipant ")
+		.append("FROM (")
+		.append("select ta.id as activity_id ")
+		.append("FROM tb_payment_activity_detail tpad ")
+		.append("INNER JOIN tb_activity ta ON tpad.activity_id = ta.id ")
+		.append("WHERE (begin_schedule between :beginDate AND :finishDate) ")
+		.append("AND tpad.approve = true")
+		.append(") tb_pay ")
+		.append("GROUP BY activity_id ")
+		.append(") tb_partisipant ON ta_prime.id = tb_partisipant.activity_id ")
+		.append("WHERE ta_prime.created_by = :userCreate ");
+		
+		Object objPaymentActivity = null;
+		PaymentActivityDetail paymentActivity = null;
+		try {
+			objPaymentActivity = ConnHandler.getManager().createNativeQuery(sql.toString())
+					.setParameter("beginDate", beginDate)
+					.setParameter("finishDate", finishDate)
+					.setParameter("userCreate", userId)
+					.getSingleResult();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objPaymentActivity != null) {
+			Object obj = (Object) objPaymentActivity;
+			
+			paymentActivity = new PaymentActivityDetail();
+			
+			paymentActivity.setCountOfPaymentActivity(Integer.parseInt(obj.toString()));
+		}
+		
+		return paymentActivity;
+	}
+	
+	
 	public List<PaymentActivityDetail> getReportPartisipationSuper(LocalDateTime beginDate,LocalDateTime finishDate,boolean isAscending){
 		StringBuilder sql = new StringBuilder();
 		
@@ -749,6 +794,46 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 	
 		return paymentActivityDetails;
 	}
+	
+	public PaymentActivityDetail getTotalByReportPartisipationSuper(LocalDateTime beginDate,LocalDateTime finishDate){
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT count(*) ")
+		.append("from tb_activity as ta_prime ")
+		.append("INNER JOIN (")
+		.append("SELECT activity_id, count(activity_id) as partisipant ")
+		.append("FROM (")
+		.append("select ta.id as activity_id ")
+		.append("FROM tb_payment_activity_detail tpad ")
+		.append("INNER JOIN tb_activity ta ON tpad.activity_id = ta.id ")
+		.append("WHERE (begin_schedule between :beginDate AND :finishDate) ")
+		.append("AND tpad.approve = true")
+		.append(") tb_pay ")
+		.append("GROUP BY activity_id ")
+		.append(") tb_partisipant ON ta_prime.id = tb_partisipant.activity_id ");
+		
+		Object objPaymentActivity = null;
+		PaymentActivityDetail paymentActivity = null;
+		try {
+			objPaymentActivity = ConnHandler.getManager().createNativeQuery(sql.toString())
+					.setParameter("beginDate", beginDate)
+					.setParameter("finishDate", finishDate)
+					.getSingleResult();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objPaymentActivity != null) {
+			Object obj = (Object) objPaymentActivity;
+			
+			paymentActivity = new PaymentActivityDetail();
+			
+			paymentActivity.setCountOfPaymentActivity(Integer.parseInt(obj.toString()));
+		}
+		
+		return paymentActivity;
+	}
+	
 	
 	public List<PaymentActivityDetail> getReportIncomeMember(LocalDateTime beginDate,LocalDateTime finishDate,String userId,boolean isAscending){
 		StringBuilder sql = new StringBuilder();
@@ -928,6 +1013,48 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		return paymentActivityDetails;
 	}
 	
+	public PaymentActivityDetail getTotalByReportIncomeMember(LocalDateTime beginDate,LocalDateTime finishDate,String userId){
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("select count(*) ")
+		.append("from tb_activity as ta_prime ")
+		.append("INNER JOIN (")
+		.append("SELECT activity_id, sum(net) as total_income ")
+		.append("FROM (")
+		.append("SELECT ta.id as activity_id, net ")
+		.append("FROM tb_payment_activity_detail tpad ")
+		.append("INNER JOIN tb_activity ta ON tpad.activity_id = ta.id ")
+		.append("WHERE (begin_schedule between :beginDate AND :finishDate) ")
+		.append("AND tpad.approve = true")
+		.append(") tb_pay ")
+		.append("GROUP BY activity_id ")
+		.append(") tb_income ON ta_prime.id = tb_income.activity_id ")
+		.append("WHERE ta_prime.created_by = :userId ");
+		
+		Object objPaymentActivity = null;
+		PaymentActivityDetail paymentActivity = null;
+		try {
+			objPaymentActivity = ConnHandler.getManager().createNativeQuery(sql.toString())
+					.setParameter("beginDate", beginDate)
+					.setParameter("finishDate", finishDate)
+					.setParameter("userCreate", userId)
+					.getSingleResult();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objPaymentActivity != null) {
+			Object obj = (Object) objPaymentActivity;
+			
+			paymentActivity = new PaymentActivityDetail();
+			
+			paymentActivity.setCountOfPaymentActivity(Integer.parseInt(obj.toString()));
+		}
+		
+		return paymentActivity;
+	}
+	
+	
 	public List<PaymentActivityDetail> getReportIncomeSuper(LocalDateTime beginDate,LocalDateTime finishDate,boolean isAscending){
 		StringBuilder sql = new StringBuilder();
 		
@@ -1084,5 +1211,48 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		});
 	
 		return paymentActivityDetails;
+	}
+
+	public PaymentActivityDetail getTotalByReportIncomeSuper(LocalDateTime beginDate,LocalDateTime finishDate){
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT count(*) ")
+		.append("FROM tb_user AS tb_activity_user_type ")
+		.append("INNER JOIN (")
+		.append("SELECT created_by,activity_type_id, sum(total_income) as total_income from tb_activity as tb_activity_grouping_user_type ")
+		.append("INNER JOIN (")
+		.append("SELECT activity_id, sum(net) as total_income ")
+		.append("FROM ( ")
+		.append("select ta.id as activity_id, net ")
+		.append("from tb_payment_activity_detail tpad ")
+		.append("INNER JOIN tb_activity ta ON tpad.activity_id = ta.id ")
+		.append("WHERE (begin_schedule between :beginDate AND :finishDate) ")
+		.append("AND tpad.approve = true ")
+		.append(") tb_pay ")
+		.append("GROUP BY activity_id ")
+		.append(") tb_income ON tb_activity_grouping_user_type.id = tb_income.activity_id ")
+		.append("GROUP BY created_by, activity_type_id ")
+		.append(") tb_income_group ON tb_activity_user_type.id = tb_income_group.created_by ");
+		
+		Object objPaymentActivity = null;
+		PaymentActivityDetail paymentActivity = null;
+		try {
+			objPaymentActivity = ConnHandler.getManager().createNativeQuery(sql.toString())
+					.setParameter("beginDate", beginDate)
+					.setParameter("finishDate", finishDate)
+					.getSingleResult();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objPaymentActivity != null) {
+			Object obj = (Object) objPaymentActivity;
+			
+			paymentActivity = new PaymentActivityDetail();
+			
+			paymentActivity.setCountOfPaymentActivity(Integer.parseInt(obj.toString()));
+		}
+		
+		return paymentActivity;
 	}
 }
