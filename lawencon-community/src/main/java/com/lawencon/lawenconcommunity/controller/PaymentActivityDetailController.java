@@ -167,6 +167,15 @@ public class PaymentActivityDetailController {
 		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
 	}
 	
+	@GetMapping("total-partisipatian-member")
+	public ResponseEntity<PaymentActivityDetail> getTotalByReportPartisipation(@RequestParam("beginDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime beginDate,
+			@RequestParam("finishDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime finishDate){
+		
+		PaymentActivityDetail paymentActivityDetail = paymentActivityDetailService.getTotalByReportPartisipationMember(beginDate, finishDate);
+		
+		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
+	}
+	
 	
 	@GetMapping("partisipatian-super-all")
 	public ResponseEntity<List<PaymentActivityDetail>> getReportPartisipationSuper(@RequestParam("beginDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime beginDate,
@@ -181,7 +190,16 @@ public class PaymentActivityDetailController {
 	public ResponseEntity<List<PaymentActivityDetail>> getReportPartisipationSuper(@RequestParam("beginDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime beginDate,
 			@RequestParam("finishDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime finishDate,@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit,@RequestParam("asc") boolean ascending){
 		
-		List<PaymentActivityDetail> paymentActivityDetail = paymentActivityDetailService.getReportPartisipationMember(beginDate, finishDate,startPosition,limit,ascending);
+		List<PaymentActivityDetail> paymentActivityDetail = paymentActivityDetailService.getReportPartisipationSuper(beginDate, finishDate,startPosition,limit,ascending);
+		
+		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
+	}
+	
+	@GetMapping("total-partisipatian-super")
+	public ResponseEntity<PaymentActivityDetail> getTotalByReportPartisipationSuper(@RequestParam("beginDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime beginDate,
+			@RequestParam("finishDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime finishDate){
+		
+		PaymentActivityDetail paymentActivityDetail = paymentActivityDetailService.getTotalByReportPartisipationSuper(beginDate, finishDate);
 		
 		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
 	}
@@ -203,6 +221,14 @@ public class PaymentActivityDetailController {
 		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
 	}
 	
+	@GetMapping("total-total-income-member")
+	public ResponseEntity<PaymentActivityDetail> getTotalByReportIncomeMember(@RequestParam("beginDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime beginDate,
+			@RequestParam("finishDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime finishDate){
+		
+		PaymentActivityDetail paymentActivityDetail = paymentActivityDetailService.getTotalByReportIncomeMember(beginDate, finishDate);
+		
+		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
+	}
 	
 	@GetMapping("total-income-super-all")
 	public ResponseEntity<List<PaymentActivityDetail>> getReportIncomeSuper(@RequestParam("beginDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime beginDate,
@@ -216,6 +242,15 @@ public class PaymentActivityDetailController {
 	public ResponseEntity<List<PaymentActivityDetail>> getReportIncomeSuper(@RequestParam("beginDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime beginDate,
 			@RequestParam("finishDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime finishDate,@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit,@RequestParam("asc") boolean ascending){
 		List<PaymentActivityDetail> paymentActivityDetail = paymentActivityDetailService.getReportIncomeSuper(beginDate, finishDate,startPosition,limit,ascending);
+		
+		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
+	}
+	
+	@GetMapping("total-total-income-super")
+	public ResponseEntity<PaymentActivityDetail> getTotalByReportIncomeSuper(@RequestParam("beginDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime beginDate,
+			@RequestParam("finishDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime finishDate){
+		
+		PaymentActivityDetail paymentActivityDetail = paymentActivityDetailService.getTotalByReportIncomeSuper(beginDate, finishDate);
 		
 		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
 	}
