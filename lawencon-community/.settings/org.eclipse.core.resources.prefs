@@ -1,9 +1,11 @@
+=\=\=\=\=\=\=
+<<<<<<<=HEAD
+>>>>>>>=38d6064544781fde280e43ed1fb0346f9b2372f8
 eclipse.preferences.version=1
-<<<<<<< HEAD
 encoding//resources/template/report/PaymentPartisipationMember.jrxml=UTF-8
 encoding//resources/template/report/PaymentPartisipationSuper.jrxml=UTF-8
-=======
->>>>>>> 38d6064544781fde280e43ed1fb0346f9b2372f8
+encoding//resources/template/report/PaymentTotalIncomeMember.jrxml=UTF-8
+encoding//resources/template/report/PaymentTotalIncomeSuper.jrxml=UTF-8
 encoding//src/main/java=UTF-8
 encoding//src/main/resources=UTF-8
 encoding//src/test/java=UTF-8

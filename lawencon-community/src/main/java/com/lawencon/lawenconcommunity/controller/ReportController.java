@@ -60,7 +60,7 @@ public class ReportController {
 	public ResponseEntity<?> PaymentTotalIncomeMember(@RequestParam("beginDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime beginDate,
 			@RequestParam("finishDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime finishDate) throws Exception {
 		final List<PaymentTotalIncomeMemberDto> data = paymentActivityDetailService.getPaymentTotalIncomeMemberDto(beginDate, finishDate, false);
-		final byte[] out = jasperUtil.responseToByteArray(data, null, "PaymentPartisipationSuper");
+		final byte[] out = jasperUtil.responseToByteArray(data, null, "PaymentTotalIncomeMember");
 		final String fileName = "PaymentTotalIncomeMember";
 		return ResponseEntity.ok()
 				.contentType(MediaType.APPLICATION_PDF)
