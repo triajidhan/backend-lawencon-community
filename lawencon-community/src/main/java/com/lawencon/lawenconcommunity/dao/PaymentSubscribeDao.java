@@ -12,15 +12,19 @@ import com.lawencon.lawenconcommunity.model.PaymentSubscribe;
 public class PaymentSubscribeDao extends AbstractJpaDao{
 
 	@SuppressWarnings("unchecked")
-	public List<PaymentSubscribe> getByIsActive(int startPosition,int limit){
+	public List<PaymentSubscribe> getByIsActive(int startPosition,int limit,boolean isAscending){
 		StringBuilder sql = new StringBuilder();
+		
+		String ascending = (isAscending) ? "ASC ":"DESC ";
 		
 		sql.append("SELECT * FROM tb_payment_subscribe ")
 		.append("WHERE is_active = true ")
+		.append("ORDER BY created_at ")
+		.append(ascending)
 		.append("LIMIT :limit OFFSET :startPosition");
 		
 		List<PaymentSubscribe> paymentSubscribes = ConnHandler.getManager()
-				.createNativeQuery(sql.toString())
+				.createNativeQuery(sql.toString(),PaymentSubscribe.class)
 				.setParameter("startPosition", startPosition)
 				.setParameter("limit", limit)
 				.getResultList();
@@ -36,7 +40,7 @@ public class PaymentSubscribeDao extends AbstractJpaDao{
 		.append("WHERE is_active = true ");
 		
 		List<PaymentSubscribe> paymentSubscribes = ConnHandler.getManager()
-				.createNativeQuery(sql.toString())
+				.createNativeQuery(sql.toString(),PaymentSubscribe.class)
 				.getResultList();
 		
 		return paymentSubscribes;

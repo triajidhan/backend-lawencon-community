@@ -72,8 +72,8 @@ public class CommentController {
 	}
 	
 	@GetMapping("posts-order")
-	public ResponseEntity<List<Comment>> getByPostAndOrder(@RequestParam("postId") String userId,@RequestParam("asc") boolean ascending){
-		List<Comment> comments = commentService.getByPostAndOrder(userId,ascending);
+	public ResponseEntity<List<Comment>> getByPostAndOrder(@RequestParam("postId") String postId,@RequestParam("asc") boolean ascending){
+		List<Comment> comments = commentService.getByPostAndOrder(postId,ascending);
 		
 		return new ResponseEntity<>(comments,HttpStatus.OK);
 	}

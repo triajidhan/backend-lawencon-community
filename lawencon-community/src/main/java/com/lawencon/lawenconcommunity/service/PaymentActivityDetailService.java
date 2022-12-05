@@ -126,7 +126,6 @@ public class PaymentActivityDetailService extends BaseCoreService {
 
 	}
 	
-	
 	public PaymentActivityDetail getTotalByIsActiveTrueAndApprovedTrue(){
 		return paymentActivityDetailDao.getTotalByIsActiveTrueAndApprovedTrue();
 	}
@@ -136,6 +135,7 @@ public class PaymentActivityDetailService extends BaseCoreService {
 	public List<PaymentActivityDetail> getByIsActiveFalse(int startPosition,int limit, boolean isAscending){
 		return paymentActivityDetailDao.getByIsActiveFalse(startPosition,limit, isAscending);
 	}
+	
 	
 	
 	public List<PaymentActivityDetail> getReportPartisipationMember(LocalDateTime beginDate,LocalDateTime finishDate,boolean ascending){
@@ -150,7 +150,6 @@ public class PaymentActivityDetailService extends BaseCoreService {
 		return paymentActivityDetails;
 	}
 
-	
 	public List<PaymentActivityDetail> getReportPartisipationMember(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit, boolean ascending){
 		List<PaymentActivityDetail> paymentActivityDetails = null;
 		try {
@@ -163,6 +162,19 @@ public class PaymentActivityDetailService extends BaseCoreService {
 		return paymentActivityDetails;
 	}
 
+	public PaymentActivityDetail getTotalByReportPartisipationMember(LocalDateTime beginDate,LocalDateTime finishDate){
+		PaymentActivityDetail paymentActivityDetail = null;
+		
+		try {
+			paymentActivityDetail =  paymentActivityDetailDao.getTotalByReportPartisipationMember(beginDate, finishDate,principalService.getAuthPrincipal());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return paymentActivityDetail;
+	}
+	
+	
 	public List<PaymentActivityDetail> getReportPartisipationSuper(LocalDateTime beginDate,LocalDateTime finishDate,boolean ascending){
 		return paymentActivityDetailDao.getReportPartisipationSuper(beginDate, finishDate,ascending);
 	}
@@ -170,6 +182,11 @@ public class PaymentActivityDetailService extends BaseCoreService {
 	public List<PaymentActivityDetail> getReportPartisipationSuper(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit, boolean ascending){
 		return paymentActivityDetailDao.getReportPartisipationSuper(beginDate, finishDate,startPosition,limit,ascending);
 	}
+	
+	public PaymentActivityDetail getTotalByReportPartisipationSuper(LocalDateTime beginDate,LocalDateTime finishDate){
+		return paymentActivityDetailDao.getTotalByReportPartisipationSuper(beginDate, finishDate);
+	}
+	
 	
 	public List<PaymentActivityDetail> getReportIncomeMember(LocalDateTime beginDate,LocalDateTime finishDate,boolean ascending){
 		List<PaymentActivityDetail> paymentActivityDetails = null;
@@ -182,7 +199,6 @@ public class PaymentActivityDetailService extends BaseCoreService {
 		return paymentActivityDetails;
 	}
 
-	
 	public List<PaymentActivityDetail> getReportIncomeMember(LocalDateTime beginDate,LocalDateTime finishDate,int startPosition,int limit, boolean ascending){
 		List<PaymentActivityDetail> paymentActivityDetails = null;
 		try {
@@ -192,6 +208,18 @@ public class PaymentActivityDetailService extends BaseCoreService {
 		}
 
 		return paymentActivityDetails;
+	}
+	
+	public PaymentActivityDetail getTotalByReportIncomeMember(LocalDateTime beginDate,LocalDateTime finishDate){
+		PaymentActivityDetail paymentActivityDetail = null;
+		
+		try {
+			paymentActivityDetail =  paymentActivityDetailDao.getTotalByReportIncomeMember(beginDate, finishDate,principalService.getAuthPrincipal());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return paymentActivityDetail;
 	}
 
 	
@@ -203,6 +231,9 @@ public class PaymentActivityDetailService extends BaseCoreService {
 		return paymentActivityDetailDao.getReportIncomeSuper(beginDate, finishDate,startPosition,limit, ascending);
 	}
 	
+	public PaymentActivityDetail getTotalByReportIncomeSuper(LocalDateTime beginDate,LocalDateTime finishDate){
+		return paymentActivityDetailDao.getTotalByReportIncomeSuper(beginDate, finishDate);
+	}
 	
 	
 	public List<PaymentPartisipationMemberDto> getReportPaymentPartisipationMemberDto(LocalDateTime beginDate,LocalDateTime finishDate, boolean ascending){
@@ -256,8 +287,7 @@ public class PaymentActivityDetailService extends BaseCoreService {
 		
 		return partisipationMemberDtos;
 	}
-	
-	
+
 	public List<PaymentPartisipationSuperDto> getReportPaymentPartisipationSuperDto(LocalDateTime beginDate,LocalDateTime finishDate,boolean ascending){
 		List<PaymentActivityDetail> paymentActivityDetails =  paymentActivityDetailDao.getReportPartisipationSuper(beginDate, finishDate,ascending);
 		
@@ -392,7 +422,7 @@ public class PaymentActivityDetailService extends BaseCoreService {
 		return totalIncomeMemberDtos;
 	}
 
-
+	
 	public ResponseMessageDto insert(PaymentActivityDetail data) {
 		valInsert(data);
 		File fileInsert = new File();
