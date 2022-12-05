@@ -696,7 +696,6 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			activity.setLocation(objArr[14].toString());
 			activity.setFinishSchedule(Timestamp.valueOf(objArr[15].toString()).toLocalDateTime());
 			activity.setPrice(BigDecimal.valueOf(Double.valueOf(objArr[16].toString())));
-			user.setId(objArr[17].toString());
 		
 			user.setPosition(position);
 			user.setIndustry(industry);
@@ -845,7 +844,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append("tp.position_code, tp.position_name, ")
 		.append("ti.industry_code, ti.industry_name, ")
 		.append("activity_type_code, ")
-		.append("activity_code, locations, finish_schedule, price, provider, tu.fullName ")
+		.append("activity_code, locations, finish_schedule, price, provider, tu.full_name ")
 		.append("from tb_activity as ta_prime ")
 		.append("INNER JOIN (")
 		.append("SELECT activity_id, sum(net) as total_income ")
@@ -853,7 +852,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append("SELECT ta.id as activity_id, net ")
 		.append("FROM tb_payment_activity_detail tpad ")
 		.append("INNER JOIN tb_activity ta ON tpad.activity_id = ta.id ")
-		.append("WHERE (begin_schedule between :beginDate AND :finishDate) ")
+		.append("WHERE (tpad.updated_at between :beginDate AND :finishDate) ")
 		.append("AND tpad.approve = true")
 		.append(") tb_pay ")
 		.append("GROUP BY activity_id ")
@@ -942,7 +941,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append("SELECT ta.id as activity_id, net ")
 		.append("FROM tb_payment_activity_detail tpad ")
 		.append("INNER JOIN tb_activity ta ON tpad.activity_id = ta.id ")
-		.append("WHERE (begin_schedule between :beginDate AND :finishDate) ")
+		.append("WHERE (tpad.updated_at between :beginDate AND :finishDate) ")
 		.append("AND tpad.approve = true")
 		.append(") tb_pay ")
 		.append("GROUP BY activity_id ")
@@ -1024,7 +1023,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append("SELECT ta.id as activity_id, net ")
 		.append("FROM tb_payment_activity_detail tpad ")
 		.append("INNER JOIN tb_activity ta ON tpad.activity_id = ta.id ")
-		.append("WHERE (begin_schedule between :beginDate AND :finishDate) ")
+		.append("WHERE (tpad.updated_at between :beginDate AND :finishDate) ")
 		.append("AND tpad.approve = true")
 		.append(") tb_pay ")
 		.append("GROUP BY activity_id ")
@@ -1073,7 +1072,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append("select ta.id as activity_id, net ")
 		.append("from tb_payment_activity_detail tpad ")
 		.append("INNER JOIN tb_activity ta ON tpad.activity_id = ta.id ")
-		.append("WHERE (begin_schedule between :beginDate AND :finishDate) ")
+		.append("WHERE (tpad.updated_at between :beginDate AND :finishDate) ")
 		.append("AND tpad.approve = true ")
 		.append(") tb_pay ")
 		.append("GROUP BY activity_id ")
@@ -1151,7 +1150,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append("select ta.id as activity_id, net ")
 		.append("from tb_payment_activity_detail tpad ")
 		.append("INNER JOIN tb_activity ta ON tpad.activity_id = ta.id ")
-		.append("WHERE (begin_schedule between :beginDate AND :finishDate) ")
+		.append("WHERE (tpad.updated_at between :beginDate AND :finishDate) ")
 		.append("AND tpad.approve = true ")
 		.append(") tb_pay ")
 		.append("GROUP BY activity_id ")
@@ -1226,7 +1225,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append("select ta.id as activity_id, net ")
 		.append("from tb_payment_activity_detail tpad ")
 		.append("INNER JOIN tb_activity ta ON tpad.activity_id = ta.id ")
-		.append("WHERE (begin_schedule between :beginDate AND :finishDate) ")
+		.append("WHERE (tpad.updated_at between :beginDate AND :finishDate) ")
 		.append("AND tpad.approve = true ")
 		.append(") tb_pay ")
 		.append("GROUP BY activity_id ")

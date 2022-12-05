@@ -28,13 +28,15 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch"/>
+		<band height="123" splitType="Stretch">
+			<image>
+				<reportElement x="20" y="9" width="670" height="89" uuid="331c341d-b005-4826-8392-333280684980"/>
+				<imageExpression><![CDATA["/target/classes/template/report/letterhead.png"]]></imageExpression>
+			</image>
+		</band>
 	</title>
-	<pageHeader>
-		<band height="35" splitType="Stretch"/>
-	</pageHeader>
 	<columnHeader>
-		<band height="30" splitType="Stretch">
+		<band height="41" splitType="Stretch">
 			<staticText>
 				<reportElement x="70" y="0" width="30" height="30" uuid="153680dc-5af6-4b10-90d8-ee5da742c511">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>

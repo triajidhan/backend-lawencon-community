@@ -274,14 +274,15 @@ public class UserDao extends AbstractJpaDao{
 		return objOpt;
 	}
 	
-	public int getTotalSubscribe() {
+	
+	public User getTotalBySubscribe() {
 		final StringBuilder sql = new StringBuilder();
 		
 		sql.append("select count(tu.id) as total_user from tb_user tu ")
 		.append("WHERE is_active = true AND status_subscribe = true ");
 		
 		Object objUser = null; 
-		int totalUserSubscribe = 0;
+		User user = new User();
 		try {
 			objUser = ConnHandler.getManager().createNativeQuery(sql.toString())
 			.getSingleResult();
@@ -292,12 +293,11 @@ public class UserDao extends AbstractJpaDao{
 		
 		if(objUser != null) {
 			Object objArr = (Object) objUser;
-			totalUserSubscribe =  Integer.parseInt(objArr.toString());
+			user.setCountOfUser(Integer.parseInt(objArr.toString()));
 		}
 		
-		return totalUserSubscribe;
+		return user;
 	}
-	
 	
 	@SuppressWarnings("unchecked")
 	public List<User> getByIsActive(int startPosition,int limit){

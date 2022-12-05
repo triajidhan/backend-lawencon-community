@@ -6,20 +6,12 @@
 	</queryString>
 	<field name="activityTypeCode" class="java.lang.String"/>
 	<field name="activityTypeName" class="java.lang.String"/>
-	<field name="activityCode" class="java.lang.String"/>
-	<field name="title" class="java.lang.String"/>
-	<field name="beginSchedule" class="java.lang.String"/>
-	<field name="finishSchedule" class="java.lang.String"/>
-	<field name="location" class="java.lang.String"/>
-	<field name="price" class="java.math.BigDecimal"/>
-	<field name="provider" class="java.lang.String"/>
 	<field name="fullName" class="java.lang.String"/>
 	<field name="company" class="java.lang.String"/>
 	<field name="positionCode" class="java.lang.String"/>
 	<field name="positionName" class="java.lang.String"/>
 	<field name="industryCode" class="java.lang.String"/>
 	<field name="industryName" class="java.lang.String"/>
-	<field name="partisipant" class="java.lang.Integer"/>
 	<field name="totalIncome" class="java.math.BigDecimal"/>
 	<variable name="countTotalIncome" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{totalIncome}]]></variableExpression>
@@ -28,7 +20,12 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch"/>
+		<band height="123" splitType="Stretch">
+			<image>
+				<reportElement x="20" y="9" width="670" height="89" uuid="331c341d-b005-4826-8392-333280684980"/>
+				<imageExpression><![CDATA["letterhead.png"]]></imageExpression>
+			</image>
+		</band>
 	</title>
 	<pageHeader>
 		<band height="35" splitType="Stretch"/>

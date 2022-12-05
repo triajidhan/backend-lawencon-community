@@ -27,7 +27,12 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch"/>
+		<band height="123" splitType="Stretch">
+			<image>
+				<reportElement x="20" y="9" width="670" height="89" uuid="331c341d-b005-4826-8392-333280684980"/>
+				<imageExpression><![CDATA["letterhead.png"]]></imageExpression>
+			</image>
+		</band>
 	</title>
 	<pageHeader>
 		<band height="35" splitType="Stretch"/>
