@@ -30,8 +30,8 @@
 	<title>
 		<band height="123" splitType="Stretch">
 			<image>
-				<reportElement x="20" y="9" width="670" height="89" uuid="331c341d-b005-4826-8392-333280684980"/>
-				<imageExpression><![CDATA["/target/classes/template/report/letterhead.png"]]></imageExpression>
+				<reportElement x="20" y="9" width="670" height="89" uuid="a57ae6c6-d4e2-4dd0-9d13-9eb2ac2892a6"/>
+				<imageExpression><![CDATA["https://raw.githubusercontent.com/triajidhan/backend-lawencon-community/main/lawencon-community/resources/template/report/letterhead.png"]]></imageExpression>
 			</image>
 		</band>
 	</title>
