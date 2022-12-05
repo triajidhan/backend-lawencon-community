@@ -185,6 +185,8 @@ public class CommentDao extends AbstractJpaDao{
 		
 		List<Comment> comments = ConnHandler.getManager().createNativeQuery(sql.toString(),Comment.class)
 				.setParameter("postId", postId)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
 				.getResultList();
 		
 		return comments;
