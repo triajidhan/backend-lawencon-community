@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lawencon.lawenconcommunity.dto.PaymentPartisipationMemberDto;
+import com.lawencon.lawenconcommunity.dto.PaymentPartisipationSuperDto;
+import com.lawencon.lawenconcommunity.dto.PaymentTotalIncomeMemberDto;
+import com.lawencon.lawenconcommunity.dto.PaymentTotalIncomeSuperDto;
 import com.lawencon.lawenconcommunity.service.PaymentActivityDetailService;
 import com.lawencon.util.JasperUtil;
 
@@ -35,6 +38,42 @@ public class ReportController {
 		final List<PaymentPartisipationMemberDto> data = paymentActivityDetailService.getReportPaymentPartisipationMemberDto(beginDate, finishDate, false);
 		final byte[] out = jasperUtil.responseToByteArray(data, null, "PaymentPartisipationMember");
 		final String fileName = "PaymentPartisipationMember";
+		return ResponseEntity.ok()
+				.contentType(MediaType.APPLICATION_PDF)
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName+ "\"")
+				.body(out);
+	}
+	
+	@GetMapping("payment-partisipation-super")
+	public ResponseEntity<?> PaymentPartisipationSuper(@RequestParam("beginDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime beginDate,
+			@RequestParam("finishDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime finishDate) throws Exception {
+		final List<PaymentPartisipationSuperDto> data = paymentActivityDetailService.getReportPaymentPartisipationSuperDto(beginDate, finishDate, false);
+		final byte[] out = jasperUtil.responseToByteArray(data, null, "PaymentPartisipationSuper");
+		final String fileName = "PaymentPartisipationSuper";
+		return ResponseEntity.ok()
+				.contentType(MediaType.APPLICATION_PDF)
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName+ "\"")
+				.body(out);
+	}
+	
+	@GetMapping("payment-total-income-member")
+	public ResponseEntity<?> PaymentTotalIncomeMember(@RequestParam("beginDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime beginDate,
+			@RequestParam("finishDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime finishDate) throws Exception {
+		final List<PaymentTotalIncomeMemberDto> data = paymentActivityDetailService.getPaymentTotalIncomeMemberDto(beginDate, finishDate, false);
+		final byte[] out = jasperUtil.responseToByteArray(data, null, "PaymentPartisipationSuper");
+		final String fileName = "PaymentTotalIncomeMember";
+		return ResponseEntity.ok()
+				.contentType(MediaType.APPLICATION_PDF)
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName+ "\"")
+				.body(out);
+	}
+	
+	@GetMapping("payment-total-income-super")
+	public ResponseEntity<?> PaymentTotalIncomeSuper(@RequestParam("beginDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime beginDate,
+			@RequestParam("finishDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime finishDate) throws Exception {
+		final List<PaymentTotalIncomeSuperDto> data = paymentActivityDetailService.getPaymentTotalIncomeSuperDto(beginDate, finishDate, false);
+		final byte[] out = jasperUtil.responseToByteArray(data, null, "PaymentTotalIncomeSuper");
+		final String fileName = "PaymentTotalIncomeSuper";
 		return ResponseEntity.ok()
 				.contentType(MediaType.APPLICATION_PDF)
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName+ "\"")
