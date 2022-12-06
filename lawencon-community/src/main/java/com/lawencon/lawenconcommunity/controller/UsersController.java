@@ -65,6 +65,12 @@ public class UsersController {
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 	
+	@GetMapping("total-user-subscribe")
+	public ResponseEntity<User> getTotalUserSubscribe(){
+		User user = userSevice.getTotalUserSubscribe();
+		return new ResponseEntity<>(user, HttpStatus.OK);
+	}
+	
 	@GetMapping("is-active")
 	public ResponseEntity<List<User>> getByIsActive(@RequestParam("startPosition") int startPosition, @RequestParam("limit") int limit){
 		final List<User> users = userSevice.getByIsActive(startPosition, limit);
