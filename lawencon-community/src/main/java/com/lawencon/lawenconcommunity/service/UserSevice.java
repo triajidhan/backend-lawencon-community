@@ -84,6 +84,10 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 		return userDao.getTotalByRoleCode(role);
 	}
 	
+	public User getTotalUserSubscribe() {
+		return userDao.getTotalBySubscribe();
+	}
+	
 	public List<User> getByIsActive(int startPosition,int limit){
 		return userDao.getByIsActive(startPosition,limit);
 	}

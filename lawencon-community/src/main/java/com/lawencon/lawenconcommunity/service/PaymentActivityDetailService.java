@@ -179,7 +179,7 @@ public class PaymentActivityDetailService extends BaseCoreService {
 		PaymentActivityDetail paymentActivityDetail = null;
 		
 		try {
-			paymentActivityDetail =  paymentActivityDetailDao.getTotalByReportPartisipationMember(beginDate, finishDate,principalService.getAuthPrincipal());
+			paymentActivityDetail =  paymentActivityDetailDao.getTotalByReportPartisipationMember(beginDate, finishDate, principalService.getAuthPrincipal());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

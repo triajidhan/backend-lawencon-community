@@ -23,7 +23,7 @@
 		<band height="123" splitType="Stretch">
 			<image>
 				<reportElement x="20" y="9" width="670" height="89" uuid="331c341d-b005-4826-8392-333280684980"/>
-				<imageExpression><![CDATA["letterhead.png"]]></imageExpression>
+				<imageExpression><![CDATA["https://raw.githubusercontent.com/triajidhan/backend-lawencon-community/main/lawencon-community/resources/template/report/letterhead.png"]]></imageExpression>
 			</image>
 		</band>
 	</title>

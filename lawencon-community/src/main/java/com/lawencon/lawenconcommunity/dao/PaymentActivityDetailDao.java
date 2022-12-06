@@ -599,7 +599,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append(") tb_pay ")
 		.append("GROUP BY activity_id ")
 		.append(") tb_partisipant ON ta_prime.id = tb_partisipant.activity_id ")
-		.append("WHERE ta_prime.created_by = :userCreate ");
+		.append("WHERE ta_prime.created_by = :userCreate");
 		
 		Object objPaymentActivity = null;
 		PaymentActivityDetail paymentActivity = null;
@@ -679,7 +679,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			activity.setProvider(objArr[3].toString());
 			activity.setBeginSchedule(Timestamp.valueOf(objArr[4].toString()).toLocalDateTime());
 			
-			paymentActivityDetail.setCountOfPaymentActivity(Integer.parseInt(objArr[5].toString()));
+			paymentActivityDetail.setPartisipation(Integer.parseInt(objArr[5].toString()));
 			activity.setCreatedBy(objArr[6].toString());
 			user.setId(objArr[6].toString());
 			
@@ -765,7 +765,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			activity.setProvider(objArr[3].toString());
 			activity.setBeginSchedule(Timestamp.valueOf(objArr[4].toString()).toLocalDateTime());
 			
-			paymentActivityDetail.setCountOfPaymentActivity(Integer.parseInt(objArr[5].toString()));
+			paymentActivityDetail.setPartisipation(Integer.parseInt(objArr[5].toString()));
 			activity.setCreatedBy(objArr[6].toString());
 			user.setId(objArr[6].toString());
 			
@@ -1036,7 +1036,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			objPaymentActivity = ConnHandler.getManager().createNativeQuery(sql.toString())
 					.setParameter("beginDate", beginDate)
 					.setParameter("finishDate", finishDate)
-					.setParameter("userCreate", userId)
+					.setParameter("userId", userId)
 					.getSingleResult();
 		}catch(Exception e) {
 			e.printStackTrace();
