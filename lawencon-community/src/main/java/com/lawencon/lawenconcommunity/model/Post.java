@@ -1,5 +1,6 @@
 package com.lawencon.lawenconcommunity.model;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -48,18 +49,61 @@ public class Post extends BaseEntity{
 	private List<File> file;
 	
 	@Transient
+	private List<String> fileId;
+	
+	@Transient
 	private List<String> pollContents;
 	
 	@Transient
-	private Integer countOfPost;
+	private List<String> pollId;
 	
 	@Transient
-	private String postTypeId;
+	private List<Integer>totalPoll;
+	
+	@Transient
+	private Boolean statusPolling;
+	
+	@Transient
+	private Integer totalVote;
 	
 	@Transient
 	private User user;
 	
 	@Transient
-	private Integer countOfComment;
+	private String postTypeId;
 	
+	@Transient
+	private Integer countOfLike;
+	
+	@Transient
+	private Boolean statusLike;
+		
+	@Transient
+	private String likeId;
+	
+	@Transient
+	private Boolean statusBookmark;
+
+	@Transient
+	private String bookmarkId;
+	
+	@Transient
+	private List<String> commentId;
+	
+	@Transient
+	private List<LocalDateTime> createdAtComment;
+	
+	@Transient
+	private List<String> commentBody;
+	
+	@Transient
+	private List<User> userComment;
+	
+	@Transient
+	private Integer countOfPost;
+	
+	@Transient
+	private Integer countOfComment;
+	@Transient
+	private String choosenPolling;
 }

@@ -100,7 +100,6 @@ public class BookmarkService extends BaseCoreService{
 	
 	public ResponseMessageDto insert(Bookmark data) {
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
-		responseMessageDto.setMessage("Bookmark Failed!");
 		begin();
 		try {
 			User user = new User();
@@ -109,9 +108,7 @@ public class BookmarkService extends BaseCoreService{
 			Bookmark bookmarkInsert = new Bookmark();
 			bookmarkInsert = bookmarkDao.save(data);
 			responseMessageDto.setId(bookmarkInsert.getId());
-			responseMessageDto.setMessage("Bookmark Success!");
 		} catch (Exception e) {
-			responseMessageDto.setMessage("Bookmark Failed!");
 			e.printStackTrace();
 		}
 		commit();
@@ -120,7 +117,6 @@ public class BookmarkService extends BaseCoreService{
 	
 	public ResponseMessageDto update(Bookmark data) {
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
-		responseMessageDto.setMessage("Failed!");
 		valId(data);
 		Bookmark Bookmark = bookmarkDao.getByIdAndDetach(Bookmark.class, data.getId());
 		Bookmark BookmarkUpdate = Bookmark;
@@ -128,9 +124,7 @@ public class BookmarkService extends BaseCoreService{
 		try {
 			BookmarkUpdate.setIsActive(data.getIsActive());
 			bookmarkDao.save(BookmarkUpdate);
-			responseMessageDto.setMessage("Success!");
 		} catch (Exception e) {
-			responseMessageDto.setMessage("Failed!");
 			e.printStackTrace();
 		}
 		commit();

@@ -83,14 +83,12 @@ public class PollingService extends BaseCoreService{
 				pollingStatus.setPolling(pollingUpdate);
 				pollingStatus = pollingStatusDao.save(pollingStatus);
 				responseMessageDto.setId(pollingStatus.getId());
-				responseMessageDto.setMessage("Polling Success!");
 			}else {
 				throw new RuntimeException("You can only do one poll!");
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new RuntimeException("Polling Failed!");
 		}
 		commit();
 		return responseMessageDto;

@@ -103,8 +103,10 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 		try {
 			begin();
 			if(data.getFile() != null) {
-				fileInsert = fileDao.save(data.getFile());	
-				data.setFile(fileInsert);
+				if(!data.getFile().getFiles().equals("")||data.getFile().getExt().equals("")) {
+					fileInsert = fileDao.save(data.getFile());	
+					data.setFile(fileInsert);
+				}
 			}
 			balanceInsert = balanceDao.save(balanceInsert);
 			String hashPassword = passwordEncoder.encode((data.getPass()));
@@ -131,9 +133,11 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 		valInsert(data);
 		try {
 			begin();
-			if(data.getFile() != null) {
-				fileInsert = fileDao.saveNoLogin(data.getFile(), () -> userDao.getSystem("SYS").get().getId());	
-				data.setFile(fileInsert);
+			if(data.getFile() != null ) {
+				if(!data.getFile().getFiles().equals("")||data.getFile().getExt().equals("")) {
+					fileInsert = fileDao.saveNoLogin(data.getFile(), () -> userDao.getSystem("SYS").get().getId());	
+					data.setFile(fileInsert);
+				}
 			}
 			balanceInsert = balanceDao.saveNoLogin(balanceInsert, () -> userDao.getSystem("SYS").get().getId());
 			String hashPassword = passwordEncoder.encode((data.getPass()));
@@ -240,9 +244,12 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 			}
 			try {
 				if (data.getFile() != null) {
-					File file = new File();
-					file = fileDao.save(data.getFile());
-					userUpdate.setFile(file);
+					if(!data.getFile().getFiles().equals("")||data.getFile().getExt().equals("")) {
+						File file = new File();
+						file = fileDao.save(data.getFile());
+						userUpdate.setFile(file);	
+					}
+					
 				}
 				
 				if(data.getIsActive() != null) {

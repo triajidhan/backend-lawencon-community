@@ -101,7 +101,6 @@ public class LikeService extends BaseCoreService{
 	
 	public ResponseMessageDto insert(Like data) {
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
-		responseMessageDto.setMessage("Like Failed!");
 		begin();
 		try {
 			Like likeInsert= new Like();
@@ -109,10 +108,8 @@ public class LikeService extends BaseCoreService{
 			user.setId(principalService.getAuthPrincipal());
 			data.setUser(user);
 			likeInsert = likeDao.save(data);
-			responseMessageDto.setMessage("Like Success!");		
 			responseMessageDto.setId(likeInsert.getId());
 		} catch (Exception e) {
-			responseMessageDto.setMessage("Like Failed!");
 			e.printStackTrace();
 		}
 		commit();
@@ -121,7 +118,6 @@ public class LikeService extends BaseCoreService{
 	
 	public ResponseMessageDto update(Like data) {
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
-		responseMessageDto.setMessage("Failed!");
 		valId(data);
 		Like like = likeDao.getByIdAndDetach(Like.class, data.getId());
 		Like likeUpdate = like;
@@ -129,9 +125,7 @@ public class LikeService extends BaseCoreService{
 		try {
 			likeUpdate.setIsActive(data.getIsActive());
 			likeDao.save(likeUpdate);
-			responseMessageDto.setMessage("Success!");
 		} catch (Exception e) {
-			responseMessageDto.setMessage("Failed!");
 			e.printStackTrace();
 		}
 		commit();
