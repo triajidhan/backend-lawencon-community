@@ -1,5 +1,6 @@
 package com.lawencon.lawenconcommunity.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import com.lawencon.lawenconcommunity.dto.ResponseMessageDto;
 import com.lawencon.lawenconcommunity.model.Activity;
 import com.lawencon.lawenconcommunity.model.ActivityType;
 import com.lawencon.lawenconcommunity.model.File;
+import com.lawencon.security.principal.PrincipalService;
 
 @Service
 public class ActivityService extends BaseCoreService{
@@ -25,6 +27,8 @@ public class ActivityService extends BaseCoreService{
 	private FileDao fileDao;
 	@Autowired
 	private GenerateService generateService;
+	@Autowired
+	private PrincipalService principalService;
 	
 	public List<Activity> getAll(){
 		final List<Activity> activities = activityDao.getAll(Activity.class);
@@ -91,19 +95,25 @@ public class ActivityService extends BaseCoreService{
 	}
 	
 	public List<Activity> getByIsActiveAndOrder(int startPosition,int limit,boolean ascending){
-		final List<Activity> activities = activityDao.getByIsActiveAndOrder(startPosition, limit,ascending);
-		
-		return activities;
-	}
-	
-	public List<Activity> getByIsActiveAndGreaterDateTimeNowAndOrder(int startPosition,int limit,boolean ascending){
-		final List<Activity> activities = activityDao.getByIsActiveAndGreaterDateTimeNowAndOrder(startPosition, limit,ascending);
+		List<Activity> activities = new ArrayList<>();
+		try {
+			activities = activityDao.getByIsActiveAndOrder(startPosition, limit,ascending,this.principalService.getAuthPrincipal());
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
 		
 		return activities;
 	}
 	
 	public Activity getTotalByIsActive(){
-		return activityDao.getTotalByIsActive();
+		Activity activity = new Activity();
+		try {
+			activity =  activityDao.getTotalByIsActive(this.principalService.getAuthPrincipal());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return activity;
 	}
 	
 	public Activity getTotalByActivityTypeCode(String activityCode) {
@@ -117,7 +127,12 @@ public class ActivityService extends BaseCoreService{
 	}
 	
 	public List<Activity> getByActivityTypeCode(String activityTypeCode,int startPosition,int limit,boolean ascending){
-		final List<Activity> activities = activityDao.getByActivityTypeCode(activityTypeCode,startPosition,limit,ascending);
+		List<Activity> activities = null;
+		try {
+			activities = activityDao.getByActivityTypeCode(activityTypeCode,startPosition,limit,ascending,this.principalService.getAuthPrincipal());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		return activities;
 	}

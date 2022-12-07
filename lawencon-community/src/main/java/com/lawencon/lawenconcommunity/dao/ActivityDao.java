@@ -196,10 +196,8 @@ public class ActivityDao extends AbstractJpaDao{
 		return objResultActivities;
 	}
 	
-	
-	
 	@SuppressWarnings("unchecked")
-	public List<Activity> getByActivityTypeCode(String activityTypeCode,int startPosition,int limit,boolean isAscending){
+	public List<Activity> getByActivityTypeCode(String activityTypeCode,int startPosition,int limit,boolean isAscending,String userId){
 		final StringBuilder sql = new StringBuilder();
 		
 		String ascending = (isAscending) ? "ASC ":"DESC ";
@@ -207,15 +205,20 @@ public class ActivityDao extends AbstractJpaDao{
 		sql.append("SELECT * ")
 		.append("FROM tb_activity ta ")
 		.append("INNER JOIN tb_activity_type tat  ON ta.activity_type_id = tat.id ")
-		.append("WHERE tat.activity_type_code = :activityTypeId AND ta.is_active = true ")
+		.append("LEFT JOIN tb_payment_activity_detail tpad ON tpad.activity_id = ta.id ")
+		.append("WHERE (ta.is_active = true  ")
+		.append("AND ta.begin_schedule < now() ")
+		.append("AND (tpad.is_active = false OR tpad.is_active is null OR tpad.created_by != :userId) ")
+		.append("AND tat.activity_type_code = :activityTypeCode) ")
 		.append("ORDER BY ta.created_at ")
 		.append(ascending)
 		.append("LIMIT :limit OFFSET :startPosition");
 		
 		final List<Activity> objResultActivities = ConnHandler.getManager().createNativeQuery(sql.toString(),Activity.class)
-				.setParameter("activityTypeId", activityTypeCode)
+				.setParameter("activityTypeCode", activityTypeCode)
 				.setParameter("startPosition", startPosition)
 				.setParameter("limit", limit)
+				.setParameter("userId", userId)
 				.getResultList();
 		
 		return objResultActivities;
@@ -331,15 +334,20 @@ public class ActivityDao extends AbstractJpaDao{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Activity> getByIsActiveAndOrder(int startPosition,int limit,boolean isAscending){
+	public List<Activity> getByIsActiveAndOrder(int startPosition,int limit,boolean isAscending,String userId){
 		final StringBuilder sql = new StringBuilder();
 		
 		String ascending = (isAscending) ? "ASC ":"DESC ";
 		
+		
 		sql.append("SELECT * ")
 		.append("FROM tb_activity ta ")
 		.append("INNER JOIN tb_activity_type tat  ON ta.activity_type_id = tat.id ")
-		.append("WHERE ta.is_active = true ")
+		.append("LEFT JOIN tb_payment_activity_detail tpad ON tpad.activity_id = ta.id ")
+		.append("WHERE (ta.is_active = true  ")
+		.append("AND ta.begin_schedule < now() ")
+		.append("AND (tpad.is_active = false OR tpad.is_active is null)) ")
+		.append("OR tpad.created_by != :userId ")
 		.append("ORDER BY ta.created_at ")
 		.append(ascending)
 		.append("LIMIT :limit OFFSET :startPosition");
@@ -347,45 +355,29 @@ public class ActivityDao extends AbstractJpaDao{
 		final List<Activity> objResultActivities = ConnHandler.getManager().createNativeQuery(sql.toString(),Activity.class)
 				.setParameter("startPosition", startPosition)
 				.setParameter("limit", limit)
+				.setParameter("userId", userId)
 				.getResultList();
 		
 		return objResultActivities;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<Activity> getByIsActiveAndGreaterDateTimeNowAndOrder(int startPosition,int limit,boolean isAscending){
+	public Activity getTotalByIsActive(String userId) {
 		final StringBuilder sql = new StringBuilder();
-		
-		String ascending = (isAscending) ? "ASC ":"DESC ";
 		
 		sql.append("SELECT * ")
 		.append("FROM tb_activity ta ")
 		.append("INNER JOIN tb_activity_type tat  ON ta.activity_type_id = tat.id ")
-		.append("WHERE ta.is_active = true AND begin_schedule > now() ")
-		.append("ORDER BY ta.created_at ")
-		.append(ascending)
-		.append("LIMIT :limit OFFSET :startPosition");
-		
-		final List<Activity> objResultActivities = ConnHandler.getManager().createNativeQuery(sql.toString(),Activity.class)
-				.setParameter("startPosition", startPosition)
-				.setParameter("limit", limit)
-				.getResultList();
-		
-		return objResultActivities;
-	}
-
-	public Activity getTotalByIsActive() {
-		final StringBuilder sql = new StringBuilder();
-		
-		sql.append("SELECT count(*) ")
-		.append("FROM tb_activity ta ")
-		.append("INNER JOIN tb_activity_type tat  ON ta.activity_type_id = tat.id ")
-		.append("WHERE ta.is_active = true ");
+		.append("LEFT JOIN tb_payment_activity_detail tpad ON tpad.activity_id = ta.id ")
+		.append("WHERE (ta.is_active = true  ")
+		.append("AND ta.begin_schedule < now() ")
+		.append("AND (tpad.is_active = false OR tpad.is_active is null)) ")
+		.append("OR tpad.created_by != :userId ");
 		
 		Object objActivity = null; 
 		Activity activity = new Activity();
 		try {
 			objActivity = ConnHandler.getManager().createNativeQuery(sql.toString())
+					.setParameter("userId", userId)
 			.getSingleResult();
 			
 		}catch(Exception e) {

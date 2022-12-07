@@ -129,6 +129,37 @@ public class PaymentActivityDetailService extends BaseCoreService {
 		return paymentActivityDetailDao.getTotalByIsActiveTrueAndApprovedFalse();
 	}
 	
+	
+	
+	public List<PaymentActivityDetail> getByPaymentActivityApprove(int startPosition,int limit, boolean isAscending){
+		List<PaymentActivityDetail> activityDetails = paymentActivityDetailDao.getByPaymentActivityApprove(startPosition,limit, isAscending);
+		for(int i = 0; i<activityDetails.size();i++) {
+			User user = userDao.getById(User.class, activityDetails.get(i).getCreatedBy());
+			activityDetails.get(i).setUser(user);
+		}
+		return activityDetails;
+	}
+	
+	public PaymentActivityDetail getTotalByPaymentActivityApprove(){
+		return paymentActivityDetailDao.getTotalByPaymentActivityApprove();
+	}
+	
+	
+	public List<PaymentActivityDetail> getByPaymentActivityReject(int startPosition,int limit, boolean isAscending){
+		List<PaymentActivityDetail> activityDetails = paymentActivityDetailDao.getByPaymentActivityReject(startPosition,limit, isAscending);
+		for(int i = 0; i<activityDetails.size();i++) {
+			User user = userDao.getById(User.class, activityDetails.get(i).getCreatedBy());
+			activityDetails.get(i).setUser(user);
+		}
+		return activityDetails;
+	}
+	
+	public PaymentActivityDetail getTotalByPaymentActivityReject(){
+		return paymentActivityDetailDao.getTotalByPaymentActivityReject();
+	}
+	
+	
+	
 	public List<PaymentActivityDetail> getByIsActiveTrueAndApprovedTrue(int startPosition,int limit, boolean isAscending){
 		List<PaymentActivityDetail> activityDetails = paymentActivityDetailDao.getByIsActiveTrueAndApprovedTrue(startPosition,limit, isAscending);
 		for(int i = 0; i< activityDetails.size();i++) {
