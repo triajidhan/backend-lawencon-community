@@ -95,11 +95,11 @@ public class ActivityService extends BaseCoreService{
 	}
 	
 	public List<Activity> getByIsActiveAndOrder(int startPosition,int limit,boolean ascending){
-		List<Activity> activities = new ArrayList<>();
+		
+		List<Activity> activities = null;
 		try {
-			activities = activityDao.getByIsActiveAndOrder(startPosition, limit,ascending,this.principalService.getAuthPrincipal());
+			activities = activityDao.getByIsActiveAndOrder(startPosition,limit,ascending,this.principalService.getAuthPrincipal());
 		} catch (Exception e) {
-			
 			e.printStackTrace();
 		}
 		

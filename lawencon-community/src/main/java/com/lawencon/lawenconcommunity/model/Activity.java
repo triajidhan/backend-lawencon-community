@@ -63,4 +63,7 @@ public class Activity extends BaseEntity{
 	
 	@Transient
 	private Integer countOfActivity;
+	
+	@Transient
+	private PaymentActivityDetail paymentActivityDetail;
 }
