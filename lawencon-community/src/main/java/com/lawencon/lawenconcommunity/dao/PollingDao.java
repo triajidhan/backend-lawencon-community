@@ -17,7 +17,7 @@ public class PollingDao extends AbstractJpaDao{
 		
 		sql.append("SELECT * FROM tb_polling tpol ")
 		.append("INNER JOIN tb_post tpos ON  tpos.id  = tpol.post_id ")
-		.append("WHERE tpos.id = :postId AND tpol.is_active = true");
+		.append("WHERE tpos.id = :postId AND tpol.is_active = true ORDER BY tpol.created_at DESC");
 		
 		List<Polling> pollings = ConnHandler.getManager()
 				.createNativeQuery(sql.toString(), Polling.class)
