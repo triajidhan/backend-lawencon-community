@@ -99,7 +99,6 @@ public class CommentService extends BaseCoreService{
 	
 	public ResponseMessageDto insert(Comment data) {
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
-		responseMessageDto.setMessage("Comment Failed!");
 		valInsert(data);
 		begin();
 		try {
@@ -110,9 +109,7 @@ public class CommentService extends BaseCoreService{
 			
 			commentInsert = commentDao.save(data);
 			responseMessageDto.setId(commentInsert.getId());
-			responseMessageDto.setMessage("Comment Success");
 		} catch (Exception e) {
-			responseMessageDto.setMessage("Comment Failed!");
 			e.printStackTrace();
 		}
 		commit();
@@ -148,7 +145,6 @@ public class CommentService extends BaseCoreService{
 	
 	public ResponseMessageDto update(Comment data) {
 		ResponseMessageDto responseMessageDto = new ResponseMessageDto();
-		responseMessageDto.setMessage("Comment Failed Update!");
 		valUpdate(data);
 		Comment comment = commentDao.getByIdAndDetach(Comment.class, data.getId());
 		Comment commentUpdate = comment;
@@ -162,9 +158,8 @@ public class CommentService extends BaseCoreService{
 				commentUpdate.setIsActive(data.getIsActive());
 			}
 			commentDao.save(commentUpdate);
-			responseMessageDto.setMessage("Comment Success Update!");
+			responseMessageDto.setId(commentUpdate.getId());
 		} catch (Exception e) {
-			responseMessageDto.setMessage("Comment Failed Update!");
 			e.printStackTrace();
 		}
 		commit();

@@ -127,7 +127,7 @@ public class PostService extends BaseCoreService {
 			try {
 				if(pollingStatusDao.getByUserAndPosting(principalService.getAuthPrincipal(),posts.get(i).getId())!= null) {
 					statusPolling = true;
-					choosenPolling = pollingStatusDao.getByUserAndPosting(principalService.getAuthPrincipal(),posts.get(i).getId()).getId();
+					choosenPolling = pollingStatusDao.getByUserAndPosting(principalService.getAuthPrincipal(),posts.get(i).getId()).getPolling().getId();
 				}else {
 					statusPolling = false;
 				}
@@ -235,7 +235,7 @@ public class PostService extends BaseCoreService {
 		try {
 			if(pollingStatusDao.getByUserAndPosting(principalService.getAuthPrincipal(),post.getId())!= null) {
 				statusPolling = true;
-				choosenPolling = pollingStatusDao.getByUserAndPosting(principalService.getAuthPrincipal(),post.getId()).getId();
+				choosenPolling = pollingStatusDao.getByUserAndPosting(principalService.getAuthPrincipal(),post.getId()).getPolling().getId();
 			}else {
 				statusPolling = false;
 			}
@@ -318,7 +318,7 @@ public class PostService extends BaseCoreService {
 			try {
 				if(pollingStatusDao.getByUserAndPosting(principalService.getAuthPrincipal(),posts.get(i).getId())!= null) {
 					statusPolling = true;
-					choosenPolling = pollingStatusDao.getByUserAndPosting(principalService.getAuthPrincipal(),posts.get(i).getId()).getId();
+					choosenPolling = pollingStatusDao.getByUserAndPosting(principalService.getAuthPrincipal(),posts.get(i).getId()).getPolling().getId();
 				}else {
 					statusPolling = false;
 				}
@@ -407,7 +407,7 @@ public class PostService extends BaseCoreService {
 			try {
 				if(pollingStatusDao.getByUserAndPosting(principalService.getAuthPrincipal(),posts.get(i).getId())!= null) {
 					statusPolling = true;
-					choosenPolling = pollingStatusDao.getByUserAndPosting(principalService.getAuthPrincipal(),posts.get(i).getId()).getId();
+					choosenPolling = pollingStatusDao.getByUserAndPosting(principalService.getAuthPrincipal(),posts.get(i).getId()).getPolling().getId();
 				}else {
 					statusPolling = false;
 				}
