@@ -112,13 +112,6 @@ public class PaymentActivityDetailController {
 		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
 	}
 	
-	@GetMapping("is-active-approve-false")
-	public ResponseEntity<List<PaymentActivityDetail>> getByIsActiveTrueAndApprovedFalse(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit, @RequestParam("asc") boolean isAscending){
-		List<PaymentActivityDetail> paymentActivityDetail = paymentActivityDetailService.getByIsActiveTrueAndApprovedFalse(startPosition,limit, isAscending);
-		
-		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
-	}
-	
 	@GetMapping("is-active-approve-true")
 	public ResponseEntity<List<PaymentActivityDetail>> getByIsActiveTrueAndApprovedTrue(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit, @RequestParam("asc") boolean isAscending){
 		List<PaymentActivityDetail> paymentActivityDetail = paymentActivityDetailService.getByIsActiveTrueAndApprovedTrue(startPosition,limit, isAscending);
@@ -141,6 +134,14 @@ public class PaymentActivityDetailController {
 	}
 	
 	
+	
+	@GetMapping("is-active-approve-false")
+	public ResponseEntity<List<PaymentActivityDetail>> getByIsActiveTrueAndApprovedFalse(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit, @RequestParam("asc") boolean isAscending){
+		List<PaymentActivityDetail> paymentActivityDetail = paymentActivityDetailService.getByIsActiveTrueAndApprovedFalse(startPosition,limit, isAscending);
+		
+		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
+	}
+	
 	@GetMapping("total-is-active-approve-false")
 	public ResponseEntity<PaymentActivityDetail> getTotalByIsActiveTrueAndApprovedFalse(){
 		PaymentActivityDetail paymentActivityDetail = paymentActivityDetailService.getTotalByIsActiveTrueAndApprovedFalse();
@@ -148,6 +149,35 @@ public class PaymentActivityDetailController {
 		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
 	}
 	
+	
+	@GetMapping("payment-approved")
+	public ResponseEntity<List<PaymentActivityDetail>> getByPaymentActivityApprove(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit, @RequestParam("asc") boolean isAscending){
+		List<PaymentActivityDetail> paymentActivityDetail = paymentActivityDetailService.getByPaymentActivityApprove(startPosition,limit, isAscending);
+		
+		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
+	}
+	
+	@GetMapping("total-payment-approved")
+	public ResponseEntity<PaymentActivityDetail> getTotalByPaymentActivityApprove(){
+		PaymentActivityDetail paymentActivityDetail = paymentActivityDetailService.getTotalByPaymentActivityApprove();
+		
+		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
+	}
+	
+	
+	@GetMapping("payment-reject")
+	public ResponseEntity<List<PaymentActivityDetail>> getByPaymentActivityReject(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit, @RequestParam("asc") boolean isAscending){
+		List<PaymentActivityDetail> paymentActivityDetail = paymentActivityDetailService.getByPaymentActivityReject(startPosition,limit, isAscending);
+		
+		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
+	}
+	
+	@GetMapping("total-payment-reject")
+	public ResponseEntity<PaymentActivityDetail> getTotalByPaymentActivityReject(){
+		PaymentActivityDetail paymentActivityDetail = paymentActivityDetailService.getTotalByPaymentActivityReject();
+		
+		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
+	}
 	
 	@GetMapping("partisipatian-member-all")
 	public ResponseEntity<List<PaymentActivityDetail>> getReportPartisipation(@RequestParam("beginDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime beginDate,

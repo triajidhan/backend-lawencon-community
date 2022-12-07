@@ -77,19 +77,36 @@ public class PaymentSubscribeController {
 		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
 	}
 	
-	@GetMapping("is-active-approve-true")
-	public ResponseEntity<List<PaymentSubscribe>> getByIsActiveTrueAndApprovedTrue(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit,@RequestParam("asc") boolean ascending){
-		List<PaymentSubscribe> paymentSubscribe = paymentSubscribeService.getByIsActiveTrueAndApprovedFalse(startPosition, limit, false);
+	
+	@GetMapping("payment-approved")
+	public ResponseEntity<List<PaymentSubscribe>> getByPaymentApproved(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit,@RequestParam("asc") boolean ascending){
+		List<PaymentSubscribe> paymentSubscribe = paymentSubscribeService.getByPaymentApproved(startPosition, limit, false);
 		
 		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
 	}
 	
-	@GetMapping("total-is-active-approve-true")
-	public ResponseEntity<PaymentSubscribe> getTotalByIsActiveTrueAndApprovedTrue(){
-		PaymentSubscribe paymentSubscribe = paymentSubscribeService.getTotalByIsActiveTrueAndApprovedTrue();
+	@GetMapping("total-payment-approved")
+	public ResponseEntity<PaymentSubscribe> getTotalByPaymentApproved(){
+		PaymentSubscribe paymentSubscribe = paymentSubscribeService.getTotalByPaymentApproved();
 		
 		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
 	}
+	
+	@GetMapping("payment-reject")
+	public ResponseEntity<List<PaymentSubscribe>> getByPaymentReject(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit,@RequestParam("asc") boolean ascending){
+		List<PaymentSubscribe> paymentSubscribe = paymentSubscribeService.getByPaymentReject(startPosition, limit, false);
+		
+		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
+	}
+	
+	@GetMapping("total-payment-reject")
+	public ResponseEntity<PaymentSubscribe> getTotalByPaymentReject(){
+		PaymentSubscribe paymentSubscribe = paymentSubscribeService.getTotalByPaymentReject();
+		
+		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
+	}
+	
+	
 	
 	@PostMapping()
 	public ResponseEntity<ResponseMessageDto> insert(@RequestBody PaymentSubscribe data){

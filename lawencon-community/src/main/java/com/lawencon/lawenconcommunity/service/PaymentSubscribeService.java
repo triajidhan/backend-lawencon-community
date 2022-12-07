@@ -59,6 +59,7 @@ public class PaymentSubscribeService extends BaseCoreService {
 		return paymentSubscribeDao.getByIsActiveFalse(startPosition, limit, isAscending);
 	}
 	
+	
 	public List<PaymentSubscribe> getByIsActiveTrueAndApprovedFalse(int startPosition,int limit, boolean isAscending){
 		return paymentSubscribeDao.getByIsActiveTrueAndApprovedFalse(startPosition, limit, isAscending);
 	}
@@ -67,13 +68,28 @@ public class PaymentSubscribeService extends BaseCoreService {
 		return paymentSubscribeDao.getTotalByIsActiveTrueAndApprovedFalse();
 	}
 	
-	public List<PaymentSubscribe> getByIsActiveTrueAndApprovedTrue(int startPosition,int limit, boolean isAscending){
-		return paymentSubscribeDao.getByIsActiveTrueAndApprovedTrue(startPosition, limit, isAscending);
+	
+	
+	
+	public List<PaymentSubscribe> getByPaymentApproved(int startPosition,int limit, boolean isAscending){
+		return paymentSubscribeDao.getByPaymentApproved(startPosition, limit, isAscending);
 	}
 	
-	public PaymentSubscribe getTotalByIsActiveTrueAndApprovedTrue(){
-		return paymentSubscribeDao.getTotalByIsActiveTrueAndApprovedTrue();
+	public PaymentSubscribe getTotalByPaymentApproved(){
+		return paymentSubscribeDao.getTotalByPaymentApproved();
 	}
+	
+	
+	public List<PaymentSubscribe> getByPaymentReject(int startPosition,int limit, boolean isAscending){
+		return paymentSubscribeDao.getByPaymentReject(startPosition, limit, isAscending);
+	}
+	
+	public PaymentSubscribe getTotalByPaymentReject(){
+		return paymentSubscribeDao.getTotalByPaymentReject();
+	}
+	
+	
+	
 	
 	public ResponseMessageDto insert(PaymentSubscribe data) {
 		valInsert(data);
