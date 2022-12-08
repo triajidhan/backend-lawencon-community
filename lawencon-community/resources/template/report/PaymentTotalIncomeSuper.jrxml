@@ -20,7 +20,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="123" splitType="Stretch">
+		<band height="157" splitType="Stretch">
 			<image>
 				<reportElement x="20" y="9" width="670" height="89" uuid="331c341d-b005-4826-8392-333280684980"/>
 				<imageExpression><![CDATA["https://raw.githubusercontent.com/triajidhan/backend-lawencon-community/main/lawencon-community/resources/template/report/letterhead.png"]]></imageExpression>
@@ -36,6 +36,13 @@
 				</box>
 				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="122" y="110" width="320" height="30" uuid="0c6aa568-dd04-4d1c-83d4-b62973751057"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Activity Income Report]]></text>
+			</staticText>
 		</band>
 	</title>
 	<columnHeader>
@@ -233,7 +240,7 @@
 				<imageExpression><![CDATA["https://raw.githubusercontent.com/triajidhan/backend-lawencon-community/main/lawencon-community/resources/template/report/letterhead.png"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="110" y="121" width="30" height="30" uuid="d0c4be50-71b0-4d9d-be7d-b2c8d360e302">
+				<reportElement x="110" y="150" width="30" height="30" uuid="d0c4be50-71b0-4d9d-be7d-b2c8d360e302">
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
 				<box>
@@ -248,7 +255,7 @@
 				<text><![CDATA[No.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="300" y="121" width="160" height="30" uuid="a825b99e-834a-42d9-81a1-17be9edf1765">
+				<reportElement x="300" y="150" width="160" height="30" uuid="a825b99e-834a-42d9-81a1-17be9edf1765">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f467ea56-7725-43b3-8d43-bfe439a5ebdc"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
@@ -264,7 +271,7 @@
 				<text><![CDATA[Total Income]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="140" y="121" width="60" height="30" uuid="9344f80a-b4af-4bf6-a4df-d9ba32c58fbc">
+				<reportElement x="140" y="150" width="60" height="30" uuid="9344f80a-b4af-4bf6-a4df-d9ba32c58fbc">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fbba2cbd-e1f1-4b4e-bbc8-9f41eea5eb3b"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
@@ -280,7 +287,7 @@
 				<text><![CDATA[Type]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="200" y="121" width="100" height="30" uuid="8e9cd1d7-0e19-404c-870e-75b43e37126d">
+				<reportElement x="200" y="150" width="100" height="30" uuid="8e9cd1d7-0e19-404c-870e-75b43e37126d">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="77b01480-cec4-4a4f-98f2-ad32266fb1fe"/>
 					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
 				</reportElement>
@@ -306,6 +313,13 @@
 				</box>
 				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="122" y="110" width="320" height="30" uuid="efd13d0b-5a8b-4752-b358-36e108d7a36e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Activity Income Report]]></text>
+			</staticText>
 		</band>
 	</noData>
 </jasperReport>
