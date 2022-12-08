@@ -64,6 +64,12 @@ public class BookmarkService extends BaseCoreService{
 	public List<Bookmark> getByUser(String userId,int startPosition,int limit,boolean ascending){
 		List<Bookmark> bookmarks = bookmarkDao.getByUser(userId,startPosition,limit,ascending);
 		
+		for(int i = 0;i < bookmarks.size();i++) {
+			Post post = postService.getById(bookmarks.get(i).getPost().getId());
+			
+			bookmarks.get(i).setPost(post);		
+		}
+		
 		return bookmarks;
 	}
 	

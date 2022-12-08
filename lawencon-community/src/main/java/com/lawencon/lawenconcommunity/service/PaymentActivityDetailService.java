@@ -303,7 +303,7 @@ public class PaymentActivityDetailService extends BaseCoreService {
 			Activity activity =  paymentActivityDetail.getActivity();
 			partisipationMemberDto.setActivityCode(activity.getActivityCode());
 			partisipationMemberDto.setTitle(activity.getTitle());
-			partisipationMemberDto.setBeginSchedule(activity.getBeginSchedule().toString());
+			partisipationMemberDto.setBeginSchedule(activity.getBeginSchedule().toLocalDate().toString());
 			partisipationMemberDto.setFinishSchedule(activity.getFinishSchedule().toString());
 			partisipationMemberDto.setLocation(activity.getLocation());
 			partisipationMemberDto.setPrice(activity.getPrice());
@@ -349,7 +349,7 @@ public class PaymentActivityDetailService extends BaseCoreService {
 			Activity activity =  paymentActivityDetail.getActivity();
 			partisipationSuperDto.setActivityCode(activity.getActivityCode());
 			partisipationSuperDto.setTitle(activity.getTitle());
-			partisipationSuperDto.setBeginSchedule(activity.getBeginSchedule().toString());
+			partisipationSuperDto.setBeginSchedule(activity.getBeginSchedule().toLocalDate().toString());
 			partisipationSuperDto.setFinishSchedule(activity.getFinishSchedule().toString());
 			partisipationSuperDto.setLocation(activity.getLocation());
 			partisipationSuperDto.setPrice(activity.getPrice());
