@@ -23,7 +23,7 @@ public class LikeDao extends AbstractJpaDao{
 		.append("FROM tb_like tl ")
 		.append("INNER JOIN tb_user tu ON tu.id = tl.user_id ")
 		.append("INNER JOIN tb_post tp ON tp.id = tl.post_id ")
-		.append("WHERE user_id  = :userId AND tl.is_active = true ")
+		.append("WHERE user_id  = :userId AND tl.is_active = true AND tp.is_active = true ")
 		.append("ORDER BY tl.created_by ")
 		.append(ascending)
 		.append("LIMIT :limit OFFSET :startPosition ");
