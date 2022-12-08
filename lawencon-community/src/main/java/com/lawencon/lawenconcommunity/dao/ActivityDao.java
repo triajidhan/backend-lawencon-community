@@ -202,14 +202,15 @@ public class ActivityDao extends AbstractJpaDao{
 		
 		String ascending = (isAscending) ? "ASC ":"DESC ";
 		
-		sql.append("SELECT * ")
-		.append("FROM tb_activity ta ")
-		.append("INNER JOIN tb_activity_type tat  ON ta.activity_type_id = tat.id ")
-		.append("LEFT JOIN tb_payment_activity_detail tpad ON tpad.activity_id = ta.id ")
-		.append("WHERE (ta.is_active = true  ")
-		.append("AND ta.begin_schedule < now() ")
-		.append("AND (tpad.is_active = false OR tpad.is_active is null OR tpad.created_by != :userId) ")
-		.append("AND tat.activity_type_code = :activityTypeCode) ")
+		sql.append("SELECT * FROM tb_activity ta ")
+		.append("INNER JOIN tb_activity_type tat ON ta.activity_type_id = tat.id ")
+		.append("WHERE ta.id NOT IN( ")
+		.append("select distinct(activity_id) from tb_payment_activity_detail tpad ")
+		.append("WHERE ((tpad.is_active = true AND tpad.approve = false) ")
+		.append("OR (tpad.is_active = true AND tpad.approve = true)) ")
+		.append("AND tpad.created_by = :userId ")
+		.append(") AND ta.begin_schedule > now() ")
+		.append("AND tat.activity_type_code = :activityTypeCode ")
 		.append("ORDER BY ta.created_at ")
 		.append(ascending)
 		.append("LIMIT :limit OFFSET :startPosition");
@@ -227,9 +228,15 @@ public class ActivityDao extends AbstractJpaDao{
 	public Activity getTotalByActivityTypeCode(String activityTypeCode) {
 		final StringBuilder sql = new StringBuilder();
 		
-		sql.append("select count(ta.id) as total from tb_activity ta ")
+		sql.append("SELECT * FROM tb_activity ta ")
 		.append("INNER JOIN tb_activity_type tat ON ta.activity_type_id = tat.id ")
-		.append("WHERE tat.activity_type_code iLike :activityTypeCode AND ta.is_active = true ");
+		.append("WHERE ta.id NOT IN( ")
+		.append("select distinct(activity_id) from tb_payment_activity_detail tpad ")
+		.append("WHERE ((tpad.is_active = true AND tpad.approve = false) ")
+		.append("OR (tpad.is_active = true AND tpad.approve = true)) ")
+		.append("AND tpad.created_by = :userId ")
+		.append(") AND ta.begin_schedule > now() ")
+		.append("AND tat.activity_type_code = :activityTypeCode ");
 		
 		Object objActivity = null; 
 		Activity activity = new Activity();
@@ -339,19 +346,18 @@ public class ActivityDao extends AbstractJpaDao{
 		
 		String ascending = (isAscending) ? "ASC ":"DESC ";
 		
-		
-		sql.append("SELECT * ")
-		.append("FROM tb_activity ta ")
-		.append("INNER JOIN tb_activity_type tat  ON ta.activity_type_id = tat.id ")
-		.append("LEFT JOIN tb_payment_activity_detail tpad ON tpad.activity_id = ta.id ")
-		.append("WHERE (ta.is_active = true  ")
-		.append("AND ta.begin_schedule < now() ")
-		.append("AND (tpad.is_active = false OR tpad.is_active is null)) ")
-		.append("OR tpad.created_by != :userId ")
+		sql.append("SELECT * FROM tb_activity ta ")
+		.append("INNER JOIN tb_activity_type tat ON ta.activity_type_id = tat.id ")
+		.append("WHERE ta.id NOT IN( ")
+		.append("select distinct(activity_id) from tb_payment_activity_detail tpad ")
+		.append("WHERE ((tpad.is_active = true AND tpad.approve = false) ")
+		.append("OR (tpad.is_active = true AND tpad.approve = true)) ")
+		.append("AND tpad.created_by = :userId ")
+		.append(") AND ta.begin_schedule > now() ")
 		.append("ORDER BY ta.created_at ")
 		.append(ascending)
 		.append("LIMIT :limit OFFSET :startPosition");
-		
+				
 		final List<Activity> objResultActivities = ConnHandler.getManager().createNativeQuery(sql.toString(),Activity.class)
 				.setParameter("startPosition", startPosition)
 				.setParameter("limit", limit)
@@ -364,14 +370,14 @@ public class ActivityDao extends AbstractJpaDao{
 	public Activity getTotalByIsActive(String userId) {
 		final StringBuilder sql = new StringBuilder();
 		
-		sql.append("SELECT * ")
-		.append("FROM tb_activity ta ")
-		.append("INNER JOIN tb_activity_type tat  ON ta.activity_type_id = tat.id ")
-		.append("LEFT JOIN tb_payment_activity_detail tpad ON tpad.activity_id = ta.id ")
-		.append("WHERE (ta.is_active = true  ")
-		.append("AND ta.begin_schedule < now() ")
-		.append("AND (tpad.is_active = false OR tpad.is_active is null)) ")
-		.append("OR tpad.created_by != :userId ");
+		sql.append("SELECT count(*) FROM tb_activity ta ")
+		.append("INNER JOIN tb_activity_type tat ON ta.activity_type_id = tat.id ")
+		.append("WHERE ta.id NOT IN( ")
+		.append("select distinct(activity_id) from tb_payment_activity_detail tpad ")
+		.append("WHERE ((tpad.is_active = true AND tpad.approve = false) ")
+		.append("OR (tpad.is_active = true AND tpad.approve = true)) ")
+		.append("AND tpad.created_by = :userId ")
+		.append(") AND ta.begin_schedule > now() ");
 		
 		Object objActivity = null; 
 		Activity activity = new Activity();

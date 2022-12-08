@@ -55,11 +55,6 @@ public class PaymentSubscribeService extends BaseCoreService {
 		return paymentSubscribeDao.getTotalPaymentSubscribe();
 	}
 	
-	public List<PaymentSubscribe> getByIsActiveFalse(int startPosition,int limit, boolean isAscending){
-		return paymentSubscribeDao.getByIsActiveFalse(startPosition, limit, isAscending);
-	}
-	
-	
 	public List<PaymentSubscribe> getByIsActiveTrueAndApprovedFalse(int startPosition,int limit, boolean isAscending){
 		return paymentSubscribeDao.getByIsActiveTrueAndApprovedFalse(startPosition, limit, isAscending);
 	}

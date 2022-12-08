@@ -533,8 +533,8 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append(") tb_partisipant ON ta_prime.id = tb_partisipant.activity_id ")
 		.append("INNER JOIN tb_activity_type tat ON tat.id = ta_prime.activity_type_id ")
 		.append("INNER JOIN tb_user tu ON ta_prime.created_by = tu.id ")
-		.append("INNER JOIN tb_position tp ON tp.id = tu.position_id ")
-		.append("INNER JOIN tb_industry ti ON ti.id = tu.industry_id ")
+		.append("LEFT JOIN tb_position tp ON tp.id = tu.position_id ")
+		.append("LEFT JOIN tb_industry ti ON ti.id = tu.industry_id ")
 		.append("WHERE ta_prime.created_by = :userCreate ")
 		.append("ORDER BY ta_prime.created_at ")
 		.append(ascending);
@@ -570,11 +570,15 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			user.setId(objArr[6].toString());
 			
 			user.setCompany(objArr[7].toString());
-			position.setPositionCode(objArr[8].toString());
-			position.setPositionName(objArr[9].toString());
+			if(objArr[8] != null) {				
+				position.setPositionCode(objArr[8].toString());
+				position.setPositionName(objArr[9].toString());
+			}
 			
-			industry.setIndustryCode(objArr[10].toString());
-			industry.setIndustryName(objArr[11].toString());
+			if(objArr[10] != null) {				
+				industry.setIndustryCode(objArr[10].toString());
+				industry.setIndustryName(objArr[11].toString());
+			}
 			
 			activityType.setActivityTypeCode(objArr[12].toString());
 			
@@ -619,8 +623,8 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append(") tb_partisipant ON ta_prime.id = tb_partisipant.activity_id ")
 		.append("INNER JOIN tb_activity_type tat ON tat.id = ta_prime.activity_type_id ")
 		.append("INNER JOIN tb_user tu ON ta_prime.created_by = tu.id ")
-		.append("INNER JOIN tb_position tp ON tp.id = tu.position_id ")
-		.append("INNER JOIN tb_industry ti ON ti.id = tu.industry_id ")
+		.append("LEFT JOIN tb_position tp ON tp.id = tu.position_id ")
+		.append("LEFT JOIN tb_industry ti ON ti.id = tu.industry_id ")
 		.append("WHERE ta_prime.created_by = :userCreate ")
 		.append("ORDER BY ta_prime.created_at ")
 		.append(ascending)
@@ -661,11 +665,15 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			user.setId(objArr[6].toString());
 			
 			user.setCompany(objArr[7].toString());
-			position.setPositionCode(objArr[8].toString());
-			position.setPositionName(objArr[9].toString());
+			if(objArr[8] != null) {				
+				position.setPositionCode(objArr[8].toString());
+				position.setPositionName(objArr[9].toString());
+			}
 			
-			industry.setIndustryCode(objArr[10].toString());
-			industry.setIndustryName(objArr[11].toString());
+			if(objArr[10] != null) {				
+				industry.setIndustryCode(objArr[10].toString());
+				industry.setIndustryName(objArr[11].toString());
+			}
 			
 			activityType.setActivityTypeCode(objArr[12].toString());
 			
@@ -752,8 +760,8 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append(") tb_partisipant ON ta_prime.id = tb_partisipant.activity_id ")
 		.append("INNER JOIN tb_activity_type tat ON tat.id = ta_prime.activity_type_id ")
 		.append("INNER JOIN tb_user tu ON ta_prime.created_by = tu.id ")
-		.append("INNER JOIN tb_position tp ON tp.id = tu.position_id ")
-		.append("INNER JOIN tb_industry ti ON ti.id = tu.industry_id ")
+		.append("LEFT JOIN tb_position tp ON tp.id = tu.position_id ")
+		.append("LEFT JOIN tb_industry ti ON ti.id = tu.industry_id ")
 		.append("ORDER BY ta_prime.created_at ")
 		.append(ascending);
 		
@@ -786,11 +794,16 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			user.setId(objArr[6].toString());
 			
 			user.setCompany(objArr[7].toString());
-			position.setPositionCode(objArr[8].toString());
-			position.setPositionName(objArr[9].toString());
 			
-			industry.setIndustryCode(objArr[10].toString());
-			industry.setIndustryName(objArr[11].toString());
+			if(objArr[8] != null) {				
+				position.setPositionCode(objArr[8].toString());
+				position.setPositionName(objArr[9].toString());
+			}
+			
+			if(objArr[10] != null) {				
+				industry.setIndustryCode(objArr[10].toString());
+				industry.setIndustryName(objArr[11].toString());
+			}
 			
 			activityType.setActivityTypeCode(objArr[12].toString());
 			
@@ -835,8 +848,8 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append(") tb_partisipant ON ta_prime.id = tb_partisipant.activity_id ")
 		.append("INNER JOIN tb_activity_type tat ON tat.id = ta_prime.activity_type_id ")
 		.append("INNER JOIN tb_user tu ON ta_prime.created_by = tu.id ")
-		.append("INNER JOIN tb_position tp ON tp.id = tu.position_id ")
-		.append("INNER JOIN tb_industry ti ON ti.id = tu.industry_id ")
+		.append("LEFT JOIN tb_position tp ON tp.id = tu.position_id ")
+		.append("LEFT JOIN tb_industry ti ON ti.id = tu.industry_id ")
 		.append("ORDER BY ta_prime.created_at ")
 		.append(ascending)
 		.append("LIMIT :limit OFFSET :startPosition");
@@ -872,11 +885,15 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			user.setId(objArr[6].toString());
 			
 			user.setCompany(objArr[7].toString());
-			position.setPositionCode(objArr[8].toString());
-			position.setPositionName(objArr[9].toString());
+			if(objArr[8] != null) {				
+				position.setPositionCode(objArr[8].toString());
+				position.setPositionName(objArr[9].toString());
+			}
 			
-			industry.setIndustryCode(objArr[10].toString());
-			industry.setIndustryName(objArr[11].toString());
+			if(objArr[10] != null) {				
+				industry.setIndustryCode(objArr[10].toString());
+				industry.setIndustryName(objArr[11].toString());
+			}
 			
 			activityType.setActivityTypeCode(objArr[12].toString());
 			
@@ -961,8 +978,8 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append(") tb_income ON ta_prime.id = tb_income.activity_id ")
 		.append("INNER JOIN tb_activity_type tat ON tat.id = ta_prime.activity_type_id ")
 		.append("INNER JOIN tb_user tu ON ta_prime.created_by = tu.id ")
-		.append("INNER JOIN tb_position tp ON tp.id = tu.position_id ")
-		.append("INNER JOIN tb_industry ti ON ti.id = tu.industry_id ")
+		.append("LEFT JOIN tb_position tp ON tp.id = tu.position_id ")
+		.append("LEFT JOIN tb_industry ti ON ti.id = tu.industry_id ")
 		.append("WHERE ta_prime.created_by = :userId ")
 		.append("ORDER BY ta_prime.created_at ")
 		.append(ascending);
@@ -996,11 +1013,16 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			user.setId(objArr[4].toString());
 			
 			user.setCompany(objArr[5].toString());
-			position.setPositionCode(objArr[6].toString());
-			position.setPositionName(objArr[7].toString());
 			
-			industry.setIndustryCode(objArr[8].toString());
-			industry.setIndustryName(objArr[9].toString());
+			if(objArr[6] != null) {				
+				position.setPositionCode(objArr[6].toString());
+				position.setPositionName(objArr[7].toString());
+			}
+			
+			if(objArr[8] != null) {				
+				industry.setIndustryCode(objArr[8].toString());
+				industry.setIndustryName(objArr[9].toString());
+			}
 			
 			activityType.setActivityTypeCode(objArr[10].toString());
 			
@@ -1050,8 +1072,8 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append(") tb_income ON ta_prime.id = tb_income.activity_id ")
 		.append("INNER JOIN tb_activity_type tat ON tat.id = ta_prime.activity_type_id ")
 		.append("INNER JOIN tb_user tu ON ta_prime.created_by = tu.id ")
-		.append("INNER JOIN tb_position tp ON tp.id = tu.position_id ")
-		.append("INNER JOIN tb_industry ti ON ti.id = tu.industry_id ")
+		.append("LEFT JOIN tb_position tp ON tp.id = tu.position_id ")
+		.append("LEFT JOIN tb_industry ti ON ti.id = tu.industry_id ")
 		.append("WHERE ta_prime.created_by = :userId ")
 		.append("ORDER BY ta_prime.created_at ")
 		.append(ascending)
@@ -1088,11 +1110,16 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			user.setId(objArr[4].toString());
 			
 			user.setCompany(objArr[5].toString());
-			position.setPositionCode(objArr[6].toString());
-			position.setPositionName(objArr[7].toString());
+			if(objArr[6] != null) {				
+				position.setPositionCode(objArr[6].toString());
+				position.setPositionName(objArr[7].toString());
+			}
 			
-			industry.setIndustryCode(objArr[8].toString());
-			industry.setIndustryName(objArr[9].toString());
+			if(objArr[8] != null) {				
+				industry.setIndustryCode(objArr[8].toString());
+				industry.setIndustryName(objArr[9].toString());
+			}
+			
 			
 			activityType.setActivityTypeCode(objArr[10].toString());
 			
@@ -1182,8 +1209,8 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append("GROUP BY created_by, activity_type_id ")
 		.append(") tb_income_group ON tb_activity_user_type.id = tb_income_group.created_by ")
 		.append("INNER JOIN tb_activity_type tat ON tat.id = tb_income_group.activity_type_id ")
-		.append("INNER JOIN tb_position tp ON tp.id = tb_activity_user_type.position_id ")
-		.append("INNER JOIN tb_industry ti ON ti.id = tb_activity_user_type.industry_id ")
+		.append("LEFT JOIN tb_position tp ON tp.id = tb_activity_user_type.position_id ")
+		.append("LEFT JOIN tb_industry ti ON ti.id = tb_activity_user_type.industry_id ")
 		.append("ORDER BY tb_activity_user_type.created_at ")
 		.append(ascending);
 		
@@ -1213,11 +1240,15 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			activity.setCreatedBy(objArr[3].toString());
 			
 			user.setCompany(objArr[4].toString());
-			position.setPositionCode(objArr[5].toString());
-			position.setPositionName(objArr[6].toString());
+			if(objArr[5] != null) {				
+				position.setPositionCode(objArr[5].toString());
+				position.setPositionName(objArr[6].toString());
+			}
 			
-			industry.setIndustryCode(objArr[7].toString());
-			industry.setIndustryName(objArr[8].toString());
+			if(objArr[7] != null) {				
+				industry.setIndustryCode(objArr[7].toString());
+				industry.setIndustryName(objArr[8].toString());
+			}
 			
 			user.setId(objArr[9].toString());
 			activityType.setActivityTypeCode(objArr[10].toString());
@@ -1260,8 +1291,8 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append("GROUP BY created_by, activity_type_id ")
 		.append(") tb_income_group ON tb_activity_user_type.id = tb_income_group.created_by ")
 		.append("INNER JOIN tb_activity_type tat ON tat.id = tb_income_group.activity_type_id ")
-		.append("INNER JOIN tb_position tp ON tp.id = tb_activity_user_type.position_id ")
-		.append("INNER JOIN tb_industry ti ON ti.id = tb_activity_user_type.industry_id ")
+		.append("LEFT JOIN tb_position tp ON tp.id = tb_activity_user_type.position_id ")
+		.append("LEFT JOIN tb_industry ti ON ti.id = tb_activity_user_type.industry_id ")
 		.append("ORDER BY tb_activity_user_type.created_at ")
 		.append(ascending)
 		.append("LIMIT :limit OFFSET :startPosition");
@@ -1294,11 +1325,15 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 			activity.setCreatedBy(objArr[3].toString());
 			
 			user.setCompany(objArr[4].toString());
-			position.setPositionCode(objArr[5].toString());
-			position.setPositionName(objArr[6].toString());
+			if(objArr[5] != null) {				
+				position.setPositionCode(objArr[5].toString());
+				position.setPositionName(objArr[6].toString());
+			}
 			
-			industry.setIndustryCode(objArr[7].toString());
-			industry.setIndustryName(objArr[8].toString());
+			if(objArr[7] != null) {				
+				industry.setIndustryCode(objArr[7].toString());
+				industry.setIndustryName(objArr[8].toString());
+			}
 			
 			user.setId(objArr[9].toString());
 			
