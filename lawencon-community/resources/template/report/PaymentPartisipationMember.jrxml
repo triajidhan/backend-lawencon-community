@@ -28,11 +28,22 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="123" splitType="Stretch">
+		<band height="138" splitType="Stretch">
 			<image>
 				<reportElement x="20" y="9" width="670" height="89" uuid="a57ae6c6-d4e2-4dd0-9d13-9eb2ac2892a6"/>
 				<imageExpression><![CDATA["https://raw.githubusercontent.com/triajidhan/backend-lawencon-community/main/lawencon-community/resources/template/report/letterhead.png"]]></imageExpression>
 			</image>
+			<textField>
+				<reportElement x="20" y="100" width="525" height="3" uuid="519ecbb8-5ec1-4417-bb63-008d2cef9ac3"/>
+				<box>
+					<pen lineWidth="2.0"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<columnHeader>
@@ -207,10 +218,20 @@
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="60" splitType="Stretch">
+		<band height="65" splitType="Stretch">
 			<textField>
-				<reportElement x="460" y="30" width="100" height="30" uuid="c11fe072-fbd0-46aa-bf70-1cc432dc0610"/>
-				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}+" of " + $V{PAGE_COUNT}]]></textFieldExpression>
+				<reportElement x="400" y="30" width="100" height="30" uuid="c11fe072-fbd0-46aa-bf70-1cc432dc0610"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}+" of "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="500" y="30" width="45" height="30" uuid="91c4bdd5-34c7-4855-9be3-1f49592132bd">
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+				</reportElement>
+				<textElement>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
@@ -339,6 +360,17 @@
 				</textElement>
 				<text><![CDATA[Total Partisipant]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="10" y="98" width="525" height="3" uuid="daf83626-152f-4a05-917c-c4d569ca3d15"/>
+				<box>
+					<pen lineWidth="2.0"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+			</textField>
 		</band>
 	</noData>
 </jasperReport>

@@ -58,11 +58,26 @@ public class LikeService extends BaseCoreService{
 	public List<Like> getByUser(String userId,int startPosition,int limit){
 		List<Like> likes = likeDao.getByUser(userId,startPosition,limit);
 		
+		for(int i = 0;i < likes.size();i++) {
+			
+			Post post = postService.getById(likes.get(i).getPost().getId());
+			
+			likes.get(i).setPost(post);		
+		}
+		
 		return likes;
 	}
 	
 	public List<Like> getByUser(String userId,int startPosition,int limit,boolean ascending){
 		List<Like> likes = likeDao.getByUser(userId,startPosition,limit,ascending);
+		
+		for(int i = 0;i < likes.size();i++) {
+			
+			Post post = postService.getById(likes.get(i).getPost().getId());
+			
+			likes.get(i).setPost(post);		
+		}
+		
 		return likes;
 	}
 	
