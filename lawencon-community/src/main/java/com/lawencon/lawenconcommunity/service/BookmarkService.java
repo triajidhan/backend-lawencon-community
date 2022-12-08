@@ -28,6 +28,9 @@ public class BookmarkService extends BaseCoreService{
 	private UserDao userDao;
 	
 	@Autowired
+	private PostService postService; 
+	
+	@Autowired
 	private PrincipalService principalService;
 	
 	public List<Bookmark> getAll(){
@@ -66,6 +69,18 @@ public class BookmarkService extends BaseCoreService{
 	
 	public List<Bookmark> getByPost(String postId){
 		List<Bookmark> bookmarks = bookmarkDao.getByPost(postId);
+		
+		return bookmarks;
+	}
+	
+	public List<Bookmark> getByPost(String postId,int startPosition,int limit,boolean ascending){
+		List<Bookmark> bookmarks = bookmarkDao.getByPost(postId,startPosition,limit,ascending);
+		
+		for(int i = 0;i < bookmarks.size();i++) {
+			Post post = postService.getById(postId);
+			
+			bookmarks.get(i).setPost(post);		
+		}
 		
 		return bookmarks;
 	}

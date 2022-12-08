@@ -28,6 +28,9 @@ public class LikeService extends BaseCoreService{
 	private UserDao userDao;
 	
 	@Autowired
+	private PostService postService;
+	
+	@Autowired
 	private PrincipalService principalService;
 	
 	public List<Like> getAll(Integer startPosition, Integer limitPage){
@@ -63,8 +66,21 @@ public class LikeService extends BaseCoreService{
 		return likes;
 	}
 	
+	public List<Like> getByPost(String postId,int startPosition,int limit,boolean ascending){
+		List<Like> likes = likeDao.getByPost(postId,startPosition,limit,ascending);
+		
+		for(int i = 0;i < likes.size();i++) {
+			Post post = postService.getById(postId);
+			
+			likes.get(i).setPost(post);		
+		}
+		
+		return likes;
+	}
+	
 	public List<Like> getByPost(String postId){
 		List<Like> likes = likeDao.getByPost(postId);
+		
 		
 		return likes;
 	}

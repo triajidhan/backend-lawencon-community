@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lawencon.lawenconcommunity.dto.ResponseMessageDto;
 import com.lawencon.lawenconcommunity.model.Bookmark;
+import com.lawencon.lawenconcommunity.model.Like;
 import com.lawencon.lawenconcommunity.service.BookmarkService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -64,6 +65,13 @@ public class BookmarkController {
 	}
 	
 	@GetMapping("posts")
+	public ResponseEntity<List<Bookmark>> getByPost(@RequestParam("postId") String postId,@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit,@RequestParam("asc") boolean ascending){
+		final List<Bookmark> bookmark = bookmarkService.getByPost(postId,startPosition,limit,ascending);
+		
+		return new ResponseEntity<>(bookmark,HttpStatus.OK);
+	}
+	
+	@GetMapping("posts-all")
 	public ResponseEntity<List<Bookmark>> getByPost(@RequestParam("postId") String postId){
 		final List<Bookmark> bookmarks = bookmarkService.getByPost(postId);
 		

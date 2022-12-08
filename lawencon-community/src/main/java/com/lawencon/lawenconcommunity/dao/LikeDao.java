@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.lawencon.base.AbstractJpaDao;
 import com.lawencon.base.ConnHandler;
 import com.lawencon.lawenconcommunity.model.Like;
+import com.lawencon.lawenconcommunity.service.PostService;
 
 @Repository
 public class LikeDao extends AbstractJpaDao{
@@ -101,6 +102,30 @@ public class LikeDao extends AbstractJpaDao{
 		}
 		
 		return like;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Like> getByPost(String postId,int startPosition,int limit,boolean isAscending){
+		final StringBuilder sql = new StringBuilder();
+		
+		String ascending = (isAscending)? "ASC ":"DESC ";
+		
+		sql.append("SELECT * ")
+		.append("FROM tb_like tl ")
+		.append("INNER JOIN tb_user tu ON tu.id = tl.user_id ")
+		.append("INNER JOIN tb_post tp ON tp.id = tl.post_id ")
+		.append("WHERE tl.post_id  = :postId AND tl.is_active = true ")
+		.append("ORDER BY tl.created_at ")
+		.append(ascending)
+		.append("LIMIT :limit OFFSET :startPosition");
+		
+		List<Like> likes = ConnHandler.getManager().createNativeQuery(sql.toString(),Like.class)
+				.setParameter("postId", postId)
+				.setParameter("startPosition", startPosition)
+				.setParameter("limit", limit)
+				.getResultList();
+		
+		return likes;
 	}
 	
 	@SuppressWarnings("unchecked")

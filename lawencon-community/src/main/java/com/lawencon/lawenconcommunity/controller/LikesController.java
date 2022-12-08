@@ -63,6 +63,13 @@ public class LikesController {
 	}
 	
 	@GetMapping("posts")
+	public ResponseEntity<List<Like>> getByPost(@RequestParam("postId") String postId,@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit,@RequestParam("asc") boolean ascending){
+		final List<Like> likes = likeService.getByPost(postId,startPosition,limit,ascending);
+		
+		return new ResponseEntity<>(likes,HttpStatus.OK);
+	}
+	
+	@GetMapping("posts-all")
 	public ResponseEntity<List<Like>> getByPost(@RequestParam("postId") String postId){
 		final List<Like> likes = likeService.getByPost(postId);
 		
