@@ -249,7 +249,7 @@ public class PostService extends BaseCoreService {
 		List<String>commentId =  new ArrayList<>();
 		List<String>commentBody =  new ArrayList<>();
 		List<LocalDateTime>createdAtComment=  new ArrayList<>();
-		List<Comment>comments = commentDao.getByPostAndOrder(post.getId(), 0, 2, false);
+		List<Comment>comments = commentDao.getByPostAndOrder(post.getId(),true);
 		for(int l = comments.size()-1 ; l>=0; l--) {
 			userComment.add(comments.get(l).getUser());
 			commentBody.add(comments.get(l).getCommentBody());
