@@ -122,14 +122,18 @@ public class BookmarkDao extends AbstractJpaDao{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Bookmark> getByPost(String postId,int startPosition,int limit){
+	public List<Bookmark> getByPost(String postId,int startPosition,int limit,boolean isAscending){
 		final StringBuilder sql = new StringBuilder();
+		
+		String ascending = (isAscending)? "ASC ":"DESC ";
 		
 		sql.append("SELECT * ")
 		.append("FROM tb_bookmark tb ")
 		.append("INNER JOIN tb_user tu ON tu.id = tb.user_id ")
 		.append("INNER JOIN tb_post tp ON tp.id = tb.post_id ")
 		.append("WHERE post_id  = :postId AND tb.is_active = true ")
+		.append("ORDER BY tb.created_at ")
+		.append(ascending)
 		.append("LIMIT :limit OFFSET :startPosition");
 		
 		List<Bookmark> bookmarks = ConnHandler.getManager().createNativeQuery(sql.toString(),Bookmark.class)
