@@ -59,7 +59,7 @@ public class BookmarkDao extends AbstractJpaDao{
 		.append("FROM tb_bookmark tb ")
 		.append("INNER JOIN tb_user tu ON tu.id = tb.user_id ")
 		.append("INNER JOIN tb_post tp ON tp.id = tb.post_id ")
-		.append("WHERE user_id  = :userId AND tb.is_active = true ")
+		.append("WHERE user_id  = :userId AND tb.is_active = true AND tp.is_active = true ")
 		.append("ORDER BY tb.created_at ")
 		.append(ascending)
 		.append("LIMIT :limit OFFSET :startPosition");
