@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,18 +30,13 @@ public class UsersController {
 		this.userSevice = userSevice;
 	}
 	
-	@GetMapping()
-	public ResponseEntity<List<User>> getAll(@RequestParam("startPosition") int startPosition, @RequestParam("limit") int limit){
-		final List<User> users = userSevice.getAll(startPosition, limit);
-		return new ResponseEntity<>(users, HttpStatus.OK);
-	}
-	
 	@GetMapping("id/{id}")
 	public ResponseEntity<User> getById(@PathVariable("id") String id ){
 		final User user = userSevice.getById(id);
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasAuthority('SA')")
 	@GetMapping("role")
 	public ResponseEntity<List<User>> getByRole(@RequestParam("roleCode") String roleCode,@RequestParam int startPosition,@RequestParam int limit){
 		final List<User> users = userSevice.getByRoleCode(roleCode,startPosition,limit);
@@ -59,24 +55,21 @@ public class UsersController {
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasAuthority('SA')")
 	@GetMapping("total-user/role-code")
 	public ResponseEntity<User> getTotalUserByRole(@RequestParam("roleCode") String roleCode){
 		final User user = userSevice.getTotalUserByRole(roleCode);
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasAuthority('SA')")
 	@GetMapping("total-user-subscribe")
 	public ResponseEntity<User> getTotalUserSubscribe(){
 		User user = userSevice.getTotalUserSubscribe();
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 	
-	@GetMapping("is-active")
-	public ResponseEntity<List<User>> getByIsActive(@RequestParam("startPosition") int startPosition, @RequestParam("limit") int limit){
-		final List<User> users = userSevice.getByIsActive(startPosition, limit);
-		return new ResponseEntity<>(users, HttpStatus.OK);
-	}
-	
+	@PreAuthorize("hasAuthority('SA')")
 	@PostMapping()
 	public ResponseEntity<ResponseMessageDto> registerAdmin(@RequestBody User data){
 		final ResponseMessageDto userInsertResDto = userSevice.insertWithLogin(data);

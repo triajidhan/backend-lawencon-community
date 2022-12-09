@@ -36,11 +36,4 @@ public class ActivityTypeController {
 		
 		return new ResponseEntity<>(activities,HttpStatus.OK);
 	}
-	
-	@GetMapping("is-active")
-	public ResponseEntity<List<ActivityType>> getByIsActive(){
-		final List<ActivityType> activityTypes = activityTypeService.getByIsActive();
-		
-		return new ResponseEntity<>(activityTypes,HttpStatus.OK);
-	}
 }

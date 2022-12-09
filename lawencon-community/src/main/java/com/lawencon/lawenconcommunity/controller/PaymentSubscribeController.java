@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,13 +29,7 @@ public class PaymentSubscribeController {
 	@Autowired
 	private PaymentSubscribeService paymentSubscribeService;
 	
-	@GetMapping()
-	public ResponseEntity<List<PaymentSubscribe>> getAll(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit){
-		List<PaymentSubscribe> paymentSubscribe = paymentSubscribeService.getAll(startPosition, limit);
-		
-		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
-	}
-	
+	@PreAuthorize("hasAuthority('A')")
 	@GetMapping("id/{id}")
 	public ResponseEntity<PaymentSubscribe> getById(@PathVariable("id") String paymentSubscribeId){
 		final PaymentSubscribe paymentSubscribe = paymentSubscribeService.getById(paymentSubscribeId);
@@ -42,20 +37,7 @@ public class PaymentSubscribeController {
 		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
 	}
 	
-	@GetMapping("is-active")
-	public ResponseEntity<List<PaymentSubscribe>> getByIsActive(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit,@RequestParam("asc") boolean ascending){
-		List<PaymentSubscribe> paymentSubscribe = paymentSubscribeService.getByIsActive(startPosition, limit,ascending);
-		
-		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
-	}
-	
-	@GetMapping("total")
-	public ResponseEntity<PaymentSubscribe> getTotalPayment(){
-		PaymentSubscribe paymentSubscribe = paymentSubscribeService.getTotalPaymentSubscribe();
-		
-		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
-	}
-	
+	@PreAuthorize("hasAuthority('A')")
 	@GetMapping("is-active-approve-false")
 	public ResponseEntity<List<PaymentSubscribe>> getByIsActiveTrueAndApprovedFalse(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit,@RequestParam("asc") boolean ascending){
 		List<PaymentSubscribe> paymentSubscribe = paymentSubscribeService.getByIsActiveTrueAndApprovedFalse(startPosition, limit, false);
@@ -63,6 +45,7 @@ public class PaymentSubscribeController {
 		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasAuthority('A')")
 	@GetMapping("total-is-active-approve-false")
 	public ResponseEntity<PaymentSubscribe> getTotalByIsActiveTrueAndApprovedFalse(){
 		PaymentSubscribe paymentSubscribe = paymentSubscribeService.getTotalByIsActiveTrueAndApprovedFalse();
@@ -70,7 +53,7 @@ public class PaymentSubscribeController {
 		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
 	}
 	
-	
+	@PreAuthorize("hasAuthority('A')")
 	@GetMapping("payment-approved")
 	public ResponseEntity<List<PaymentSubscribe>> getByPaymentApproved(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit,@RequestParam("asc") boolean ascending){
 		List<PaymentSubscribe> paymentSubscribe = paymentSubscribeService.getByPaymentApproved(startPosition, limit, false);
@@ -78,6 +61,7 @@ public class PaymentSubscribeController {
 		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasAuthority('A')")
 	@GetMapping("total-payment-approved")
 	public ResponseEntity<PaymentSubscribe> getTotalByPaymentApproved(){
 		PaymentSubscribe paymentSubscribe = paymentSubscribeService.getTotalByPaymentApproved();
@@ -85,6 +69,7 @@ public class PaymentSubscribeController {
 		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasAuthority('A')")
 	@GetMapping("payment-reject")
 	public ResponseEntity<List<PaymentSubscribe>> getByPaymentReject(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit,@RequestParam("asc") boolean ascending){
 		List<PaymentSubscribe> paymentSubscribe = paymentSubscribeService.getByPaymentReject(startPosition, limit, false);
@@ -92,6 +77,7 @@ public class PaymentSubscribeController {
 		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasAuthority('A')")
 	@GetMapping("total-payment-reject")
 	public ResponseEntity<PaymentSubscribe> getTotalByPaymentReject(){
 		PaymentSubscribe paymentSubscribe = paymentSubscribeService.getTotalByPaymentReject();
@@ -99,14 +85,14 @@ public class PaymentSubscribeController {
 		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
 	}
 	
-	
-	
+	@PreAuthorize("hasAuthority('M')")
 	@PostMapping()
 	public ResponseEntity<ResponseMessageDto> insert(@RequestBody PaymentSubscribe data){
 		final ResponseMessageDto paymentSubscribeInsertResDto = paymentSubscribeService.insert(data);
 		return new ResponseEntity<>(paymentSubscribeInsertResDto, HttpStatus.CREATED);
 	}
 	
+	@PreAuthorize("hasAuthority('A')")
 	@PutMapping()
 	public ResponseEntity<ResponseMessageDto> update(@RequestBody PaymentSubscribe data){
 		final ResponseMessageDto paymentSubscribeInsertResDto = paymentSubscribeService.update(data);
