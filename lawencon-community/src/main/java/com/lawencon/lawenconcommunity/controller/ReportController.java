@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,6 +33,7 @@ public class ReportController {
 	@Autowired
 	private PaymentActivityDetailService paymentActivityDetailService;
 	
+	@PreAuthorize("hasAuthority('M')")
 	@GetMapping("payment-partisipation-member")
 	public ResponseEntity<?> PaymentPartisipationMember(@RequestParam("beginDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime beginDate,
 			@RequestParam("finishDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime finishDate) throws Exception {
@@ -44,6 +46,7 @@ public class ReportController {
 				.body(out);
 	}
 	
+	@PreAuthorize("hasAuthority('SA')")
 	@GetMapping("payment-partisipation-super")
 	public ResponseEntity<?> PaymentPartisipationSuper(@RequestParam("beginDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime beginDate,
 			@RequestParam("finishDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime finishDate) throws Exception {
@@ -56,6 +59,7 @@ public class ReportController {
 				.body(out);
 	}
 	
+	@PreAuthorize("hasAuthority('M')")
 	@GetMapping("payment-total-income-member")
 	public ResponseEntity<?> PaymentTotalIncomeMember(@RequestParam("beginDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime beginDate,
 			@RequestParam("finishDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime finishDate) throws Exception {
@@ -68,6 +72,7 @@ public class ReportController {
 				.body(out);
 	}
 	
+	@PreAuthorize("hasAuthority('SA')")
 	@GetMapping("payment-total-income-super")
 	public ResponseEntity<?> PaymentTotalIncomeSuper(@RequestParam("beginDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime beginDate,
 			@RequestParam("finishDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime finishDate) throws Exception {

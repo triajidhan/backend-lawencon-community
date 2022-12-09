@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -65,12 +66,14 @@ public class IndustryController {
 		return new ResponseEntity<>(industries,HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasAuthority('SA')")
 	@PostMapping()
 	public ResponseEntity<ResponseMessageDto> insert(@RequestBody Industry data){
 		final ResponseMessageDto industryInsertResDto = industryService.insert(data);
 		return new ResponseEntity<>(industryInsertResDto, HttpStatus.CREATED);
 	}
 	
+	@PreAuthorize("hasAuthority('SA')")
 	@PutMapping()
 	public ResponseEntity<ResponseMessageDto> update(@RequestBody Industry data){
 		final ResponseMessageDto industryUpdateResDto = industryService.update(data);

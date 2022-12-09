@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +28,7 @@ public class LikesController {
 	@Autowired
 	private LikeService likeService;
 	
+	@PreAuthorize("hasAuthority('M')")
 	@GetMapping("id/{id}")
 	public ResponseEntity<Like> getById(@PathVariable("id") String id){
 		final Like like = likeService.getById(id);
@@ -34,6 +36,7 @@ public class LikesController {
 		return new ResponseEntity<>(like,HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasAuthority('M')")
 	@GetMapping("users-order")
 	public ResponseEntity<List<Like>> getByUser(@RequestParam("userId") String userId,@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit,@RequestParam("asc") boolean ascending){
 		final List<Like> likes = likeService.getByUser(userId,startPosition,limit,ascending);
@@ -41,6 +44,7 @@ public class LikesController {
 		return new ResponseEntity<>(likes,HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasAuthority('M')")
 	@GetMapping("user-like")
 	public ResponseEntity<Like> getUserLikePost(@RequestParam("postId") String postId,@RequestParam("userId") String userId){
 		final Like like = likeService.getUserLikePost(userId,postId);
@@ -48,12 +52,14 @@ public class LikesController {
 		return new ResponseEntity<>(like,HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasAuthority('M')")
 	@PostMapping
 	public ResponseEntity<ResponseMessageDto> insert(@RequestBody Like data){
 		final ResponseMessageDto responseMessageDto = likeService.insert(data);
 		return new ResponseEntity<ResponseMessageDto>(responseMessageDto, HttpStatus.CREATED);
 	}
 	
+	@PreAuthorize("hasAuthority('M')")
 	@PutMapping
 	public ResponseEntity<ResponseMessageDto> update(@RequestBody Like data){
 		final ResponseMessageDto responseMessageDto = likeService.update(data);
