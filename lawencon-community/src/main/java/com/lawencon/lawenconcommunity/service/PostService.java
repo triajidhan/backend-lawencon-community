@@ -264,6 +264,90 @@ public class PostService extends BaseCoreService {
 		post.setCountOfComment(countOfComment.getCountOfComment());
 		return post;
 	}
+	
+	public Post getByIdCommentLimit(String id) {
+		Post post = postDao.getByIdAndDetach(Post.class, id);
+		post.setUser(userDao.getById(User.class, post.getCreatedBy()));
+		
+			post.setCountOfLike(likeDao.getTotalByPost(post.getId()).getCountOfLike());
+
+			try {
+				if(likeDao.userLikePost(principalService.getAuthPrincipal(), post.getId())!= null) {
+					post.setStatusLike(likeDao.userLikePost(principalService.getAuthPrincipal(), post.getId()).get().getIsActive());
+					post.setLikeId(likeDao.userLikePost(principalService.getAuthPrincipal(), post.getId()).get().getLikeId());
+				}
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			
+			try {
+				if(bookmarkDao.getUserBookmarkPost(principalService.getAuthPrincipal(), post.getId())!= null) {
+					post.setStatusBookmark(bookmarkDao.getUserBookmarkPost(principalService.getAuthPrincipal(), post.getId()).get().getIsActive());
+					post.setBookmarkId(bookmarkDao.getUserBookmarkPost(principalService.getAuthPrincipal(), post.getId()).get().getBookmarkId());
+				}
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		
+		
+		List<PostAttachment>attachments = postAttachmentDao.getByPost(post.getId());
+		List<String>fileId = new ArrayList<>();
+		for(int j = 0 ; j<attachments.size();j++) {
+			fileId.add(attachments.get(j).getFile().getId());
+		}
+		post.setFileId(fileId);
+		
+		List<Polling>pollings = pollingDao.getByPost(post.getId());
+		List<String>pollContents = new ArrayList<>();
+		List<String>pollId = new ArrayList<>();
+		List<Integer>totalPoll = new ArrayList<>();
+		Boolean statusPolling = false;
+		Integer totalVote = 0;
+		for(int k = 0; k<pollings.size();k++) {
+			pollContents.add(pollings.get(k).getPollContent());
+			pollId.add(pollings.get(k).getId());
+			totalPoll.add(pollings.get(k).getTotalPoll());	
+			totalVote += pollings.get(k).getTotalPoll();
+		}
+		post.setPollContents(pollContents);
+		post.setPollId(pollId);
+		post.setTotalPoll(totalPoll);
+		post.setTotalVote(totalVote);
+		
+		String choosenPolling = null;
+		try {
+			if(pollingStatusDao.getByUserAndPosting(principalService.getAuthPrincipal(),post.getId())!= null) {
+				statusPolling = true;
+				choosenPolling = pollingStatusDao.getByUserAndPosting(principalService.getAuthPrincipal(),post.getId()).getPolling().getId();
+			}else {
+				statusPolling = false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		post.setStatusPolling(statusPolling);
+		post.setChoosenPolling(choosenPolling);
+		
+		List<User> userComment= new ArrayList<>();
+		List<String>commentId =  new ArrayList<>();
+		List<String>commentBody =  new ArrayList<>();
+		List<LocalDateTime>createdAtComment=  new ArrayList<>();
+		List<Comment>comments = commentDao.getByPostAndOrder(post.getId(), 0, 2, true);
+		for(int l = comments.size()-1 ; l>=0; l--) {
+			userComment.add(comments.get(l).getUser());
+			commentBody.add(comments.get(l).getCommentBody());
+			commentId.add(comments.get(l).getId());
+			createdAtComment.add(comments.get(l).getCreatedAt());
+		}
+		post.setCommentBody(commentBody);
+		post.setCommentId(commentId);
+		post.setCreatedAtComment(createdAtComment);
+		post.setUserComment(userComment);
+		Comment countOfComment = commentDao.getTotalByPost(post.getId());
+		post.setCountOfComment(countOfComment.getCountOfComment());
+		return post;
+	}
+
 
 	public List<Post> getByIsActive(Integer startPosition, Integer limitPage) {
 		List<Post> posts = postDao.getByIsActive(startPosition, limitPage);
