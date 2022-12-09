@@ -276,7 +276,7 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 	
 	public void idAvailableUpdate(User data) {
 		if(userDao.getByIdAndDetach(User.class, data.getId()) == null) {
-			throw new RuntimeException("No User Found!");
+			throw new RuntimeException("Sorry, your password/email was incorrect.");
 		}
 	}
 	

@@ -65,7 +65,7 @@ public class BookmarkService extends BaseCoreService{
 		List<Bookmark> bookmarks = bookmarkDao.getByUser(userId,startPosition,limit,ascending);
 		
 		for(int i = 0;i < bookmarks.size();i++) {
-			Post post = postService.getById(bookmarks.get(i).getPost().getId());
+			Post post = postService.getByIdCommentLimit(bookmarks.get(i).getPost().getId());
 			
 			bookmarks.get(i).setPost(post);		
 		}

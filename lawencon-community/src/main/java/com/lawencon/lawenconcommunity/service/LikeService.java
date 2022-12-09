@@ -73,7 +73,7 @@ public class LikeService extends BaseCoreService{
 		
 		for(int i = 0;i < likes.size();i++) {
 			
-			Post post = postService.getById(likes.get(i).getPost().getId());
+			Post post = postService.getByIdCommentLimit(likes.get(i).getPost().getId());
 			
 			likes.get(i).setPost(post);		
 		}
