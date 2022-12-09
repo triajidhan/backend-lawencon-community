@@ -29,12 +29,6 @@ public class UsersController {
 		this.userSevice = userSevice;
 	}
 	
-	@GetMapping()
-	public ResponseEntity<List<User>> getAll(@RequestParam("startPosition") int startPosition, @RequestParam("limit") int limit){
-		final List<User> users = userSevice.getAll(startPosition, limit);
-		return new ResponseEntity<>(users, HttpStatus.OK);
-	}
-	
 	@GetMapping("id/{id}")
 	public ResponseEntity<User> getById(@PathVariable("id") String id ){
 		final User user = userSevice.getById(id);
@@ -69,12 +63,6 @@ public class UsersController {
 	public ResponseEntity<User> getTotalUserSubscribe(){
 		User user = userSevice.getTotalUserSubscribe();
 		return new ResponseEntity<>(user, HttpStatus.OK);
-	}
-	
-	@GetMapping("is-active")
-	public ResponseEntity<List<User>> getByIsActive(@RequestParam("startPosition") int startPosition, @RequestParam("limit") int limit){
-		final List<User> users = userSevice.getByIsActive(startPosition, limit);
-		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
 	
 	@PostMapping()

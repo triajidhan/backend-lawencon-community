@@ -28,30 +28,9 @@ public class PaymentSubscribeController {
 	@Autowired
 	private PaymentSubscribeService paymentSubscribeService;
 	
-	@GetMapping()
-	public ResponseEntity<List<PaymentSubscribe>> getAll(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit){
-		List<PaymentSubscribe> paymentSubscribe = paymentSubscribeService.getAll(startPosition, limit);
-		
-		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
-	}
-	
 	@GetMapping("id/{id}")
 	public ResponseEntity<PaymentSubscribe> getById(@PathVariable("id") String paymentSubscribeId){
 		final PaymentSubscribe paymentSubscribe = paymentSubscribeService.getById(paymentSubscribeId);
-		
-		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
-	}
-	
-	@GetMapping("is-active")
-	public ResponseEntity<List<PaymentSubscribe>> getByIsActive(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit,@RequestParam("asc") boolean ascending){
-		List<PaymentSubscribe> paymentSubscribe = paymentSubscribeService.getByIsActive(startPosition, limit,ascending);
-		
-		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
-	}
-	
-	@GetMapping("total")
-	public ResponseEntity<PaymentSubscribe> getTotalPayment(){
-		PaymentSubscribe paymentSubscribe = paymentSubscribeService.getTotalPaymentSubscribe();
 		
 		return new ResponseEntity<>(paymentSubscribe,HttpStatus.OK);
 	}

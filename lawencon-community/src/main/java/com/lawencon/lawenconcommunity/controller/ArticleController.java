@@ -28,23 +28,9 @@ public class ArticleController {
 	@Autowired
 	private ArticleService articleService;
 	
-	@GetMapping()
-	public ResponseEntity<List<Article>> getAll(@RequestParam("startPosition") int startPosition, @RequestParam("limit") int limit){
-		final List<Article> articles = articleService.getAll(startPosition, limit);
-		
-		return new ResponseEntity<>(articles,HttpStatus.OK);
-	}
-	
 	@GetMapping("id/{id}")
 	public ResponseEntity<Article> getById(@PathVariable("id") String id){
 		final Article article = articleService.getById(id);
-		return new ResponseEntity<>(article,HttpStatus.OK);
-	}
-	
-	@GetMapping("article-code")
-	public ResponseEntity<Article> getByArticleCode(@RequestParam("articleCode") String articleCode){
-		final Article article = articleService.getByArticleCode(articleCode);
-		
 		return new ResponseEntity<>(article,HttpStatus.OK);
 	}
 	
@@ -58,13 +44,6 @@ public class ArticleController {
 	@GetMapping("is-active")
 	public ResponseEntity<List<Article>> getByIsActive(@RequestParam("startPosition") int startPosition, @RequestParam("limit") int limit){
 		final List<Article> articles = articleService.getByIsActive(startPosition, limit);
-		
-		return new ResponseEntity<>(articles,HttpStatus.OK);
-	}
-	
-	@GetMapping("is-active-all")
-	public ResponseEntity<List<Article>> getByIsActive(){
-		final List<Article> articles = articleService.getByIsActive();
 		
 		return new ResponseEntity<>(articles,HttpStatus.OK);
 	}

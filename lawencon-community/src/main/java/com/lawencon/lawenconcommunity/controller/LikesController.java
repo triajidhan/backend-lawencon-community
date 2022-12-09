@@ -27,25 +27,11 @@ public class LikesController {
 	@Autowired
 	private LikeService likeService;
 	
-	@GetMapping
-	public ResponseEntity<List<Like>> getAll(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limitPage){
-		final List<Like> likes = likeService.getAll(startPosition, limitPage);
-		
-		return new ResponseEntity<>(likes,HttpStatus.OK);
-	}
-	
 	@GetMapping("id/{id}")
 	public ResponseEntity<Like> getById(@PathVariable("id") String id){
 		final Like like = likeService.getById(id);
 		
 		return new ResponseEntity<>(like,HttpStatus.OK);
-	}
-	
-	@GetMapping("users")
-	public ResponseEntity<List<Like>> getByUser(@RequestParam("userId") String userId,@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit){
-		final List<Like> likes = likeService.getByUser(userId,startPosition,limit);
-		
-		return new ResponseEntity<>(likes,HttpStatus.OK);
 	}
 	
 	@GetMapping("users-order")
@@ -55,53 +41,11 @@ public class LikesController {
 		return new ResponseEntity<>(likes,HttpStatus.OK);
 	}
 	
-	@GetMapping("users-all")
-	public ResponseEntity<List<Like>> getByUser(@RequestParam("userId") String userId){
-		final List<Like> likes = likeService.getByUser(userId);
-		
-		return new ResponseEntity<>(likes,HttpStatus.OK);
-	}
-	
-	@GetMapping("posts")
-	public ResponseEntity<List<Like>> getByPost(@RequestParam("postId") String postId,@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit,@RequestParam("asc") boolean ascending){
-		final List<Like> likes = likeService.getByPost(postId,startPosition,limit,ascending);
-		
-		return new ResponseEntity<>(likes,HttpStatus.OK);
-	}
-	
-	@GetMapping("posts-all")
-	public ResponseEntity<List<Like>> getByPost(@RequestParam("postId") String postId){
-		final List<Like> likes = likeService.getByPost(postId);
-		
-		return new ResponseEntity<>(likes,HttpStatus.OK);
-	}
-	
-	@GetMapping("total-posts")
-	public ResponseEntity<Like> getTotalByPost(@RequestParam("postId") String postId){
-		Like Like = likeService.getTotalByPost(postId);
-		
-		return new ResponseEntity<>(Like,HttpStatus.OK);
-	}
-	
-	@GetMapping("total-users")
-	public ResponseEntity<Like> getTotalByUser(@RequestParam("userId") String userId){
-		Like Like = likeService.getTotalByUser(userId);
-		
-		return new ResponseEntity<>(Like,HttpStatus.OK);
-	}
-	
 	@GetMapping("user-like")
 	public ResponseEntity<Like> getUserLikePost(@RequestParam("postId") String postId,@RequestParam("userId") String userId){
 		final Like like = likeService.getUserLikePost(userId,postId);
 		
 		return new ResponseEntity<>(like,HttpStatus.OK);
-	}
-	
-	@GetMapping("is-active")
-	public ResponseEntity<List<Like>> getByIsActive(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limitPage){
-		final List<Like> likes = likeService.getByIsActive(startPosition, limitPage);
-		
-		return new ResponseEntity<>(likes,HttpStatus.OK);
 	}
 	
 	@PostMapping

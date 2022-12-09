@@ -24,37 +24,11 @@ public class PollingStatusController {
 	@Autowired
 	private PollingStatusService pollingStatusService; 
 	
-	@GetMapping()
-	public ResponseEntity<List<PollingStatus>> getAll(){
-		final List<PollingStatus> pollingStatus = pollingStatusService.getAll();
-		
-		return new ResponseEntity<>(pollingStatus,HttpStatus.OK);
-	}
-	
-	@GetMapping("pollings")
-	public ResponseEntity<PollingStatus> getByPolling(@RequestParam("pollingId")String pollingId){
-		final PollingStatus pollingStatus = pollingStatusService.getByPolling(pollingId);
-		
-		return new ResponseEntity<>(pollingStatus,HttpStatus.OK);
-	}
-	
-	@GetMapping("users")
-	public ResponseEntity<PollingStatus> getByUser(@RequestParam("userId")String userId){
-		final PollingStatus pollingStatus = pollingStatusService.getByUser(userId);
-		
-		return new ResponseEntity<>(pollingStatus,HttpStatus.OK);
-	}
-	
 	@GetMapping("user-posting")
 	public ResponseEntity<PollingStatus> getByUserAndPosting(@RequestParam("userId")String userId,@RequestParam("pollingId")String postingId){
 		final PollingStatus pollingStatus = pollingStatusService.getByUserAndPosting(userId,postingId);
 		
 		return new ResponseEntity<>(pollingStatus,HttpStatus.OK);
 	}
-	
-	@GetMapping("id/{id}")
-	public ResponseEntity<PollingStatus> getByUserAndPosting(@PathVariable("id")String id){
-		final PollingStatus pollingStatus = pollingStatusService.getId(id);
-		return new ResponseEntity<>(pollingStatus,HttpStatus.OK);
-	}
+
 }

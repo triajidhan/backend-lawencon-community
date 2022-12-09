@@ -27,34 +27,12 @@ public class PollingController {
 	@Autowired
 	private PollingService pollingService;
 	
-	@GetMapping
-	public ResponseEntity<List<Polling>> getAll(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limitPage){
-		final List<Polling> pollings = pollingService.getAll(startPosition, limitPage);
-		
-		return new ResponseEntity<>(pollings,HttpStatus.OK);
-	}
-	
 	@GetMapping("id/{id}")
 	public ResponseEntity<Polling> getById(@PathVariable("id") String pollingId){
 		final Polling polling = pollingService.getById(pollingId);
 		
 		return new ResponseEntity<>(polling,HttpStatus.OK);
 	}
-	
-	@GetMapping("posts")
-	public ResponseEntity<List<Polling>> getByPost(@RequestParam("postId") String postId){
-		final List<Polling> pollings = pollingService.getByPost(postId);
-		
-		return new ResponseEntity<>(pollings,HttpStatus.OK);
-	}
-	
-	@GetMapping("users")
-	public ResponseEntity<List<Polling>> getByUser(@RequestParam("userId") String userId){
-		final List<Polling> pollings = pollingService.getByUser(userId);
-		
-		return new ResponseEntity<>(pollings,HttpStatus.OK);
-	}
-	
 	
 	@PutMapping()
 	public ResponseEntity<ResponseMessageDto> update(@RequestBody Polling data){

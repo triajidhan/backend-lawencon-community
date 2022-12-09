@@ -28,20 +28,6 @@ public class PostsController {
 	@Autowired
 	private PostService postService;
 	
-	@GetMapping()
-	public ResponseEntity<List<Post>> getAll(@RequestParam("startPosition") int startPosition, @RequestParam("limit") int limit){
-		final List<Post> posts = postService.getByIsActive(startPosition, limit);
-		
-		return new ResponseEntity<>(posts,HttpStatus.OK);
-	}
-	
-	@GetMapping("users")
-	public ResponseEntity<List<Post>> getByUser(@RequestParam("userId") String userId){
-		final List<Post> posts = postService.getByUser(userId);
-		
-		return new ResponseEntity<>(posts,HttpStatus.OK);
-	}
-	
 	@GetMapping("users-order")
 	public ResponseEntity<List<Post>> getByUser(@RequestParam("userId") String userId,@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit,@RequestParam("asc") boolean ascending){
 		final List<Post> posts = postService.getByUser(userId,startPosition,limit,ascending);
@@ -49,43 +35,9 @@ public class PostsController {
 		return new ResponseEntity<>(posts,HttpStatus.OK);
 	}
 	
-	@GetMapping("post-type")
-	public ResponseEntity<List<Post>> getByPostType(@RequestParam("postTypeId") String postTypeId){
-		final List<Post> posts = postService.getByPostType(postTypeId);
-		
-		return new ResponseEntity<>(posts,HttpStatus.OK);
-	}
-	
-	@GetMapping("post-code")
-	public ResponseEntity<Post> getByPostCode(@RequestParam("postCode") String postCode){
-		final Post post = postService.getByPostCode(postCode);
-		
-		return new ResponseEntity<>(post,HttpStatus.OK);
-	}
-	
 	@GetMapping("id/{id}")
 	public ResponseEntity<Post> getById(@PathVariable("id") String id){
 		final Post post = postService.getById(id);
-		return new ResponseEntity<>(post,HttpStatus.OK);
-	}
-	
-	@GetMapping("total-post-user")
-	public ResponseEntity<Post> getTotalByUser(@RequestParam("userId") String userId){
-		Post post = postService.getTotalByUser(userId);
-		return new ResponseEntity<>(post,HttpStatus.OK);
-	}
-	
-	@GetMapping("total-post-type")
-	public ResponseEntity<Post> getTotalByPostType(@RequestParam("postTypeId") String postTypeId){
-		Post post = postService.getTotalByPostType(postTypeId);
-		
-		return new ResponseEntity<>(post,HttpStatus.OK);
-	}
-	
-	@GetMapping("total-post")
-	public ResponseEntity<Post> getTotalPost(){
-		Post post = postService.getTotal();
-		
 		return new ResponseEntity<>(post,HttpStatus.OK);
 	}
 	

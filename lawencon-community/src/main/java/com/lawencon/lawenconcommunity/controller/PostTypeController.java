@@ -24,18 +24,7 @@ public class PostTypeController {
 	@Autowired
 	private PostTypeService postTypeService;
 	
-	@GetMapping()
-	public ResponseEntity<List<PostType>> getAll(){
-		List<PostType> postTypes = postTypeService.getAll();
-		
-		return new ResponseEntity<>(postTypes,HttpStatus.OK);
-	}
 	
-	@GetMapping("id/{id}")
-	public ResponseEntity<PostType> getById(@PathVariable("id") String id){
-		final PostType postTypes = postTypeService.getById(id);
-		return new ResponseEntity<>(postTypes,HttpStatus.OK);
-	}
 	
 	@GetMapping("post-code")
 	public ResponseEntity<PostType> getByPostTypeCode(@RequestParam("postTypeCode") String postTypeCode){

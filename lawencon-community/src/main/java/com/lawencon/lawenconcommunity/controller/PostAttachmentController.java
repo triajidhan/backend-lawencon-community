@@ -24,24 +24,10 @@ public class PostAttachmentController {
 	@Autowired
 	private PostAttachmentService postAttachmentService;
 	
-	@GetMapping()
-	public ResponseEntity<List<PostAttachment>> getAll(){
-		List<PostAttachment> postAttachments = postAttachmentService.getByAll();
-		
-		return new ResponseEntity<>(postAttachments,HttpStatus.OK);
-	}
-	
 	@GetMapping("posts")
 	public ResponseEntity<List<PostAttachment>> getByPost(@RequestParam("postId") String postId){
 		List<PostAttachment> postAttachments = postAttachmentService.getByPost(postId);
 		
 		return new ResponseEntity<>(postAttachments,HttpStatus.OK);
-	}
-	
-	@GetMapping("id/{id}")
-	public ResponseEntity<PostAttachment> getById(@PathVariable("id") String id){
-		PostAttachment postAttachment = postAttachmentService.getById(id);
-		
-		return new ResponseEntity<>(postAttachment,HttpStatus.OK);
 	}
 }
