@@ -47,7 +47,7 @@ public class ErrorHandler {
 	public ResponseEntity<ExceptionDto<String>> badCredentialsException(BadCredentialsException be) {
 
 		final ExceptionDto<String> exceptionDto = new ExceptionDto<>();
-		exceptionDto.setMessage("USER NOT FOUND!");
+		exceptionDto.setMessage("Sorry, your password/email was incorrect.");
 
 		return new ResponseEntity<>(exceptionDto, HttpStatus.BAD_REQUEST);
 

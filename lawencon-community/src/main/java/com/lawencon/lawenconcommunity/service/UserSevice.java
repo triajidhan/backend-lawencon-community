@@ -244,7 +244,7 @@ public class UserSevice extends BaseCoreService implements UserDetailsService{
 			}
 			try {
 				if (data.getFile() != null) {
-					if(!data.getFile().getFiles().equals("")||data.getFile().getExt().equals("")) {
+					if(!data.getFile().getFiles().equals("")&&!data.getFile().getExt().equals("")) {
 						File file = new File();
 						file = fileDao.save(data.getFile());
 						userUpdate.setFile(file);	
