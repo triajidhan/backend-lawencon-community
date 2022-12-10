@@ -62,7 +62,7 @@ public class UsersController {
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 	
-	@PreAuthorize("hasAuthority('SA')")
+	@PreAuthorize("hasAuthority('A')")
 	@GetMapping("total-user-subscribe")
 	public ResponseEntity<User> getTotalUserSubscribe(){
 		User user = userSevice.getTotalUserSubscribe();

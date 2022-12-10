@@ -260,6 +260,38 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		return paymentActivity;
 	}
 	
+	public PaymentActivityDetail getTotalByPaymentActivityApproveAndActivityType(String activityTypeId) {
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT count(*) FROM tb_payment_activity_detail tpad ")
+		.append("INNER JOIN tb_activity ta ON ta.id = tpad.activity_id ")
+		.append("INNER JOIN tb_activity_type tat ON tat.id = ta.activity_type_id ")
+		.append("WHERE tpad.is_active = true AND tpad.approve = true ")
+		.append("AND tat.id = :activityTypeId ");
+		
+		
+		Object objPaymentActivity = null;
+		PaymentActivityDetail paymentActivity = null;
+		
+		try {
+			objPaymentActivity = ConnHandler.getManager().createNativeQuery(sql.toString())
+					.setParameter("activityTypeId", activityTypeId)
+					.getSingleResult();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		if(objPaymentActivity != null) {
+			Object obj = (Object) objPaymentActivity;
+			
+			paymentActivity = new PaymentActivityDetail();
+			
+			paymentActivity.setCountOfPaymentActivity(Integer.parseInt(obj.toString()));
+		}
+		
+		return paymentActivity;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<PaymentActivityDetail> getByPaymentActivityReject(int startPosition,int limit, boolean isAscending){
 		StringBuilder sql = new StringBuilder();

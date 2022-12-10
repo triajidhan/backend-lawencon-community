@@ -144,6 +144,12 @@ public class PaymentActivityDetailService extends BaseCoreService {
 		return paymentActivityDetailDao.getTotalByPaymentActivityApprove();
 	}
 	
+	public PaymentActivityDetail getTotalByPaymentActivityApproveAndActivityType(String activityTypeId){
+		return paymentActivityDetailDao.getTotalByPaymentActivityApproveAndActivityType(activityTypeId);
+	}
+	
+	
+	
 	
 	public List<PaymentActivityDetail> getByPaymentActivityReject(int startPosition,int limit, boolean isAscending){
 		List<PaymentActivityDetail> activityDetails = paymentActivityDetailDao.getByPaymentActivityReject(startPosition,limit, isAscending);
@@ -156,9 +162,7 @@ public class PaymentActivityDetailService extends BaseCoreService {
 	
 	public PaymentActivityDetail getTotalByPaymentActivityReject(){
 		return paymentActivityDetailDao.getTotalByPaymentActivityReject();
-	}
-	
-	
+	}	
 	
 	public List<PaymentActivityDetail> getByIsActiveTrueAndApprovedTrue(int startPosition,int limit, boolean isAscending){
 		List<PaymentActivityDetail> activityDetails = paymentActivityDetailDao.getByIsActiveTrueAndApprovedTrue(startPosition,limit, isAscending);

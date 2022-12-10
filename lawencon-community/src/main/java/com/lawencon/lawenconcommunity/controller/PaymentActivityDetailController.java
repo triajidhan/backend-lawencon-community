@@ -93,6 +93,14 @@ public class PaymentActivityDetailController {
 	}
 	
 	@PreAuthorize("hasAuthority('A')")
+	@GetMapping("total-payment-approved-activity-type")
+	public ResponseEntity<PaymentActivityDetail> getTotalByPaymentActivityApproveAndActivityType(@RequestParam("activityType") String activityTypeId){
+		PaymentActivityDetail paymentActivityDetail = paymentActivityDetailService.getTotalByPaymentActivityApproveAndActivityType(activityTypeId);
+		
+		return new ResponseEntity<>(paymentActivityDetail,HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasAuthority('A')")
 	@GetMapping("payment-reject")
 	public ResponseEntity<List<PaymentActivityDetail>> getByPaymentActivityReject(@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit, @RequestParam("asc") boolean isAscending){
 		List<PaymentActivityDetail> paymentActivityDetail = paymentActivityDetailService.getByPaymentActivityReject(startPosition,limit, isAscending);
