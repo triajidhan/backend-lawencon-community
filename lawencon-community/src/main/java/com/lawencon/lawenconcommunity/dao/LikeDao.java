@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import com.lawencon.base.AbstractJpaDao;
 import com.lawencon.base.ConnHandler;
 import com.lawencon.lawenconcommunity.model.Like;
-import com.lawencon.lawenconcommunity.service.PostService;
 
 @Repository
 public class LikeDao extends AbstractJpaDao{
