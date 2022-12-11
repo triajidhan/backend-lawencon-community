@@ -400,7 +400,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append("WHERE ")
 		.append("activity_type_id = :activityId ")
 		.append("AND tpad.created_by = :userId ")
-		.append("ORDER BY tpad.created_by ")
+		.append("ORDER BY ta.begin_schedule ")
 		.append(ascending)
 		.append("LIMIT :limit OFFSET :startPosition");
 		
@@ -452,7 +452,7 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		.append("WHERE tpad.is_active = true ")
 		.append("AND activity_type_id = :activityCode ")
 		.append("AND tpad.created_by = :userId ")
-		.append("ORDER BY tpad.created_by ")
+		.append("ORDER BY ta.begin_schedule ")
 		.append(ascending)
 		.append("LIMIT :limit OFFSET :startPosition");
 		
@@ -476,9 +476,10 @@ public class PaymentActivityDetailDao extends AbstractJpaDao{
 		
 		sql.append("SELECT * FROM tb_payment_activity_detail tpad ")
 		.append("INNER JOIN tb_activity ta ON ta.id = tpad.activity_id ")
+		.append("INNER JOIN tb_activity_type tat ON ta.activity_type_id = tat.id ")
 		.append("WHERE ")
 		.append("tpad.created_by = :userId ")
-		.append("ORDER BY tpad.created_by ")
+		.append("ORDER BY ta.begin_schedule ")
 		.append(ascending)
 		.append("LIMIT :limit OFFSET :startPosition");
 		
