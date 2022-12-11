@@ -38,7 +38,7 @@ public class UsersController {
 	
 	@PreAuthorize("hasAuthority('SA')")
 	@GetMapping("role")
-	public ResponseEntity<List<User>> getByRole(@RequestParam("roleCode") String roleCode,@RequestParam int startPosition,@RequestParam int limit){
+	public ResponseEntity<List<User>> getByRole(@RequestParam("roleCode") String roleCode,@RequestParam("startPosition") int startPosition,@RequestParam("limit") int limit){
 		final List<User> users = userSevice.getByRoleCode(roleCode,startPosition,limit);
 		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
