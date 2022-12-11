@@ -279,7 +279,8 @@ public class UserDao extends AbstractJpaDao{
 		final StringBuilder sql = new StringBuilder();
 		
 		sql.append("select count(tu.id) as total_user from tb_user tu ")
-		.append("WHERE is_active = true AND status_subscribe = true ");
+		.append("INNER JOIN tb_role tr ON tu.role_id = tr.id ")
+		.append("WHERE tu.is_active = true AND status_subscribe = true AND role_code = 'M'");
 		
 		Object objUser = null; 
 		User user = new User();
