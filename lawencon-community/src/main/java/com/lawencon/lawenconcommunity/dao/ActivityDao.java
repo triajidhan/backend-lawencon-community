@@ -268,7 +268,7 @@ public class ActivityDao extends AbstractJpaDao{
 		.append("FROM tb_activity ta ")
 		.append("INNER JOIN tb_activity_type tat  ON ta.activity_type_id = tat.id ")
 		.append("WHERE ta.created_by = :userId AND ta.is_active = true ")
-		.append("ORDER BY ta.created_at ")
+		.append("ORDER BY ta.begin_schedule ")
 		.append(ascending)
 		.append("LIMIT :limit OFFSET :startPosition");
 		
@@ -292,7 +292,7 @@ public class ActivityDao extends AbstractJpaDao{
 		.append("INNER JOIN tb_activity_type tat  ON ta.activity_type_id = tat.id ")
 		.append("WHERE ta.created_by = :userId AND ta.is_active = true ")
 		.append("AND tat.activity_type_code = :activityTypeCode ")
-		.append("ORDER BY ta.created_at ")
+		.append("ORDER BY ta.begin_schedule ")
 		.append(ascending)
 		.append("LIMIT :limit OFFSET :startPosition");
 		
