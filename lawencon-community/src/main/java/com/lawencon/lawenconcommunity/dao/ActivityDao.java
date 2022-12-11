@@ -211,7 +211,7 @@ public class ActivityDao extends AbstractJpaDao{
 		.append("AND tpad.created_by = :userId ")
 		.append(") AND ta.begin_schedule > now() ")
 		.append("AND tat.activity_type_code = :activityTypeCode ")
-		.append("ORDER BY ta.created_at ")
+		.append("ORDER BY ta.begin_schedule ")
 		.append(ascending)
 		.append("LIMIT :limit OFFSET :startPosition");
 		
@@ -354,7 +354,7 @@ public class ActivityDao extends AbstractJpaDao{
 		.append("OR (tpad.is_active = true AND tpad.approve = true)) ")
 		.append("AND tpad.created_by = :userId ")
 		.append(") AND ta.begin_schedule > now() ")
-		.append("ORDER BY ta.created_at ")
+		.append("ORDER BY ta.begin_schedule ")
 		.append(ascending)
 		.append("LIMIT :limit OFFSET :startPosition");
 				
