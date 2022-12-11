@@ -52,7 +52,6 @@ public class IndustryDao extends AbstractJpaDao{
 		sql.append("SELECT count(*) from tb_industry ")
 		.append("WHERE is_active = true");
 		
-		
 		Object objIndustry = null;
 		Industry industry = new Industry();
 		try {
@@ -78,6 +77,7 @@ public class IndustryDao extends AbstractJpaDao{
 		sql.append("SELECT * ")
 		.append("FROM tb_industry tp ")
 		.append("WHERE is_active = true ")
+		.append("ORDER BY created_at DESC ")
 		.append("LIMIT :limit OFFSET :startPosition");
 		
 		final List<Industry> objResultIndustries = ConnHandler.getManager().createNativeQuery(sql.toString(),Industry.class)
@@ -94,6 +94,7 @@ public class IndustryDao extends AbstractJpaDao{
 		
 		sql.append("SELECT * ")
 		.append("FROM tb_industry tp ")
+		.append("ORDER BY industry_name ")
 		.append("WHERE is_active = true ");
 		
 		final List<Industry> objResultIndustries = ConnHandler.getManager().createNativeQuery(sql.toString(),Industry.class)
