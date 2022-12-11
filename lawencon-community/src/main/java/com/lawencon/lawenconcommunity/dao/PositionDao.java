@@ -79,6 +79,7 @@ public class PositionDao extends AbstractJpaDao
 		sql.append("SELECT * ")
 		.append("FROM tb_position tp ")
 		.append("WHERE is_active = true ")
+		.append("ORDER BY created_at DESC ")
 		.append("LIMIT :limit OFFSET :startPosition");
 		
 		final List<Position> objResultPositions = ConnHandler.getManager().createNativeQuery(sql.toString(),Position.class)
@@ -95,6 +96,7 @@ public class PositionDao extends AbstractJpaDao
 		
 		sql.append("SELECT * ")
 		.append("FROM tb_position tp ")
+		.append("ORDER BY position_name ")
 		.append("WHERE is_active = true ");
 		
 		final List<Position> objResultPositions = ConnHandler.getManager().createNativeQuery(sql.toString(),Position.class)
