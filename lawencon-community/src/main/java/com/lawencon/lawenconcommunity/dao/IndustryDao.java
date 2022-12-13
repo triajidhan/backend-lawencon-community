@@ -94,8 +94,8 @@ public class IndustryDao extends AbstractJpaDao{
 		
 		sql.append("SELECT * ")
 		.append("FROM tb_industry tp ")
-		.append("ORDER BY industry_name ")
-		.append("WHERE is_active = true ");
+		.append("WHERE is_active = true ")
+		.append("ORDER BY industry_name ");
 		
 		final List<Industry> objResultIndustries = ConnHandler.getManager().createNativeQuery(sql.toString(),Industry.class)
 				.getResultList();
