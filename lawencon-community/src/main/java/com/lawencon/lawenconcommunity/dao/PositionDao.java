@@ -96,8 +96,8 @@ public class PositionDao extends AbstractJpaDao
 		
 		sql.append("SELECT * ")
 		.append("FROM tb_position tp ")
-		.append("ORDER BY position_name ")
-		.append("WHERE is_active = true ");
+		.append("WHERE is_active = true ")
+		.append("ORDER BY position_name ");
 		
 		final List<Position> objResultPositions = ConnHandler.getManager().createNativeQuery(sql.toString(),Position.class)
 				.getResultList();
